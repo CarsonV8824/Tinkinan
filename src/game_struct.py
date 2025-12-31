@@ -226,8 +226,13 @@ class GameStruct:
         self.graph.add_edge("House39", "Piece19")
         self.graph.add_edge("House40", "Piece19")
         
+    def add_image_color_to_piece(self, piece_number, resource_type):
+        node_name = f"Piece{piece_number}"
+        if node_name in self.graph.nodes:
+            self.graph.nodes[node_name]['Resource'] = resource_type
+        else:
+            raise ValueError(f"Piece {piece_number} does not exist in the graph.")
 
-    #test dunder method to print edge data
     def __str__(self):
         return f"nodes: {len(list(self.graph.nodes))}. number of edges {len(list(self.graph.edges))}"
 

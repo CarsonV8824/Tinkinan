@@ -5,6 +5,7 @@ from tabs import Tabs
 from canvas import Canvas
 from game_struct import GameStruct
 from db import Database
+from game_struct import GameStruct
 
 def load_data():
     try:
@@ -18,8 +19,10 @@ def main():
     root = ThemedTk(theme="breeze")
     root.geometry("1200x800")
     root.title("Catan in Tkinter")
+
+    game_struct = GameStruct()
     
-    board = Canvas(root)
+    board = Canvas(root, game_struct)
     
     tab = Tabs(root)
 
