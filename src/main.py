@@ -33,6 +33,8 @@ def main():
     trade_tab = tab.trade_tab(tabs)
 
     biuld_tab = tab.biuld_tab(tabs)
+
+    rules_tab = tab.rules_tab(tabs)
     
     root.mainloop()
 
