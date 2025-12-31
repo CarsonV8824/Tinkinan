@@ -5,3 +5,5 @@ I need to plan
 game board reference
 
 ![Game Board](Game_Board.png)
+
+![Data Structure](Data_struct.png)
