@@ -33,7 +33,7 @@ class Canvas:
             self.pieces.append(self.pieces_ref["ore"])
         self.pieces.append(self.pieces_ref["desert"])
 
-    def __draw_hexagon(self, x: float, y: float, size: float, fill_color: str):
+    def __draw_hexagon(self, x: float, y: float, size: float, fill_color: str) -> None:
         points = []
         for i in range(6):
             angle = math.radians(60 * i - 30)
