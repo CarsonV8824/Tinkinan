@@ -4,6 +4,6 @@ I need to plan
 
 game board reference
 
-![Game Board](Game_Board.png)
+![Game Board](/docs/images/Game_Board.png)
 
-![Data Structure](Data_Struct.png)
+![Data Structure](/docs/images/Data_Struct.png)
