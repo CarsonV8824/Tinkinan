@@ -17,29 +17,11 @@ def main():
     
     root = ThemedTk(theme="breeze")
     root.geometry("1200x800")
+    root.title("Catan in Tkinter")
     
-    #===Scrollbar======================================================================================
-
-    canvas = tk.Canvas(root)
-    scrollbar = ttk.Scrollbar(root, orient="vertical", command=canvas.yview)
-    scrollable_frame = ttk.Frame(canvas)
-        
-    scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
-        
-    canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-    canvas.configure(yscrollcommand=scrollbar.set)
-
-    canvas.pack(side="left", fill="both", expand=True)
-    scrollbar.pack(side="right", fill="y")
-        
-    frame = ttk.Frame(scrollable_frame)
-    frame.pack()
-
-    #=====================================================================================
+    board = Canvas(root)
     
-    board = Canvas(frame)
-    
-    tab = Tabs(frame)
+    tab = Tabs(root)
 
     tabs = tab.tabs()
 
