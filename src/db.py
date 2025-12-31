@@ -3,7 +3,7 @@ import json
 
 class Database:
 
-    def __init__(self, file="database/db/Catan.db"):
+    def __init__(self, file="database/Catan.db"):
         self.connection = sqlite3.connect(file)
         self.cursor = self.connection.cursor()
         self.__make_table()
