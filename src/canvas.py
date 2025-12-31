@@ -53,7 +53,7 @@ class Canvas:
         row_9_start_x = 325 - (40 * math.sqrt(3))
         self.__draw_hexagon(row_9_start_x, 325, 40, self.__choose_radom_color_from_piece_list())
         
-        self.__draw_hexagon(325, 325, 40, self.__choose_radom_color_from_piece_list())
+        self.__draw_hexagon(row_10_start_x := 325, 325, 40, self.__choose_radom_color_from_piece_list())
         
         row_11_start_x = 325 + (40 * math.sqrt(3))
         self.__draw_hexagon(row_11_start_x, 325, 40, self.__choose_radom_color_from_piece_list())
