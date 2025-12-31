@@ -18,7 +18,6 @@ def main():
     root = ThemedTk(theme="breeze")
     root.geometry("1200x800")
     
-    
     #===Scrollbar======================================================================================
 
     canvas = tk.Canvas(root)

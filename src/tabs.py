@@ -16,12 +16,73 @@ class Tabs:
 
         dice_tab = ttk.Frame(notebook)
         notebook.add(dice_tab, text="dice")
+        
+
+        #===Scrollbar======================================================================================
+
+        canvas = tk.Canvas(dice_tab)
+        scrollbar = ttk.Scrollbar(dice_tab, orient="vertical", command=canvas.yview)
+        scrollable_frame = ttk.Frame(canvas)
+        
+        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        frame = ttk.Frame(scrollable_frame)
+        frame.pack(expand=True, fill="both")
+
+
+    #=====================================================================================
 
     def trade_tab(self, notebook:ttk.Notebook):
 
         trade_tab = ttk.Frame(notebook)
         notebook.add(trade_tab, text="trade")
+        
+
+        #===Scrollbar======================================================================================
+
+        canvas = tk.Canvas(trade_tab)
+        scrollbar = ttk.Scrollbar(trade_tab, orient="vertical", command=canvas.yview)
+        scrollable_frame = ttk.Frame(canvas)
+        
+        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        frame = ttk.Frame(scrollable_frame)
+        frame.pack(expand=True, fill="both")
+
+    #=====================================================================================
 
     def biuld_tab(self, notebook:ttk.Notebook):
         biuld_tab = ttk.Frame(notebook)
         notebook.add(biuld_tab, text="biuld")
+        
+
+        #===Scrollbar======================================================================================
+
+        canvas = tk.Canvas(biuld_tab)
+        scrollbar = ttk.Scrollbar(biuld_tab, orient="vertical", command=canvas.yview)
+        scrollable_frame = ttk.Frame(canvas)
+        
+        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        frame = ttk.Frame(scrollable_frame)
+        frame.pack(expand=True, fill="both")
+
+    #=====================================================================================
