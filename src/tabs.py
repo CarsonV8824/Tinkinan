@@ -4,7 +4,7 @@ import tkinter as tk
 
 class Tabs:
 
-    def __init__(self, root:ttk.Frame):
+    def __init__(self, root:ThemedTk):
         self.root = root
 
     def tabs(self):

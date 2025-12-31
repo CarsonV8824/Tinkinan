@@ -5,8 +5,7 @@ import math
 
 class Canvas:
 
-    
-    def __init__(self, root: ttk.Frame):
+    def __init__(self, root: ThemedTk):
         self.root = root
         self.canvas = tk.Canvas(self.root, height=650, width=650)
         self.canvas.pack(expand=True, fill="both", anchor="center")
