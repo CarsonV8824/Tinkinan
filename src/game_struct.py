@@ -8,7 +8,7 @@ class GameStruct:
         
         self.graph = nx.Graph()
         
-        #---adds all of the places where a person can place a house or road. Use reference photo
+        #---adds all of the places where a person can place a house or road. Use reference photo (Game_Board.png)---
         
         for i in range(1, 55):
             self.graph.add_node(f"House{i}", Player=None, Type=None)
@@ -28,7 +28,7 @@ class GameStruct:
                 self.graph.add_edge(f"House{i-1}", f"House{i}", Player=None)
                 self.graph.add_edge(f"House{i}", "House49", Player=None)
         
-        # Add extra edges as in your original code
+        #---Add extra edges as in your original code---
 
         self.graph.add_edge("House2", "House31", Player=None)
         self.graph.add_edge("House4", "House33", Player=None)
@@ -51,7 +51,7 @@ class GameStruct:
         self.graph.add_edge("House54", "House47", Player=None)
 
         #---tile pieces themselves---
-        
+
         for i in range(1, 20):
             self.graph.add_node(f"Piece{i}", Resource=None)
         
@@ -67,6 +67,25 @@ class GameStruct:
         #---piece 2---
 
         self.graph.add_edge("House2", "Piece2")
+        self.graph.add_edge("House3", "Piece2")
+        self.graph.add_edge("House4", "Piece2")
+        self.graph.add_edge("House33", "Piece2")
+        self.graph.add_edge("House32", "Piece2")
+        self.graph.add_edge("House31", "Piece2")
+        
+        #---piece 3---
+
+        self.graph.add_edge("House4", "Piece3")
+        self.graph.add_edge("House5", "Piece3")
+        self.graph.add_edge("House6", "Piece3")
+        self.graph.add_edge("House7", "Piece3")
+        self.graph.add_edge("House33", "Piece3")
+        self.graph.add_edge("House34", "Piece3")
+
+        #---piece 4---
+
+
+        
 
 
 
