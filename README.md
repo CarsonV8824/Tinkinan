@@ -6,4 +6,4 @@ game board reference
 
 ![Game Board](Game_Board.png)
 
-![Data Structure](Data_struct.png)
+![Data Structure](Data_Struct.png)
