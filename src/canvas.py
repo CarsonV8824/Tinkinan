@@ -19,6 +19,7 @@ class Canvas:
         self.pieces = []
         self.__get_pieces()
         self.__draw_board()
+        self.on_canvas_click(None)
         
         #self.canvas.bind("<Button-1>", self.on_canvas_click)
 
@@ -157,6 +158,10 @@ class Canvas:
 
     def __choose_radom_color_from_piece_list(self) -> str:
         return self.pieces.pop(random.randint(0, len(self.pieces)-1))
+    
+    def on_canvas_click(self, event):
+        x, y = self.canvas.winfo_pointerxy()
+        print(f"Canvas clicked at ({x}, {y})")
     
 
 

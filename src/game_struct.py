@@ -230,7 +230,7 @@ class GameStruct:
         node_name = f"Piece{piece_number}"
 
         self.graph.nodes[node_name]['Resource'] = resource_type
-        print(f"Added {self.graph.nodes[node_name]['Resource']} to {node_name}")
+        
             
     def __str__(self):
         return f"nodes: {len(list(self.graph.nodes))}. number of edges {len(list(self.graph.edges))}"

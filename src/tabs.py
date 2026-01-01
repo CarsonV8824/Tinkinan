@@ -1,6 +1,7 @@
 from tkinter import ttk  
 from ttkthemes import ThemedTk
 import tkinter as tk
+from player import Player
 
 class Tabs:
 
@@ -37,6 +38,62 @@ class Tabs:
         #=====================================================================================
 
         return dice_tab
+    
+    def player_stats_tab(self, notebook:ttk.Notebook, players:list):
+        player_stats_tab = ttk.Frame(notebook)
+        notebook.add(player_stats_tab, text="player stats")
+        
+        #===Scrollbar======================================================================================
+
+        canvas = tk.Canvas(player_stats_tab)
+        scrollbar = ttk.Scrollbar(player_stats_tab, orient="vertical", command=canvas.yview)
+        scrollable_frame = ttk.Frame(canvas)
+        
+        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        frame = ttk.Frame(scrollable_frame)
+        frame.pack(expand=True, fill="both")
+
+        #=====================================================================================
+        self.player_stat_vars = {}
+        for player in players:
+            player:Player = player
+            player_frame = ttk.LabelFrame(frame, text=player.name, padding=10)
+            player_frame.pack(fill="x", padx=10, pady=5)
+
+            color_var = tk.StringVar(self.root, value=f"Color: {player.color}")
+            ttk.Label(player_frame, textvariable=color_var).pack(anchor="w")
+
+            resources_label = ttk.Label(player_frame, text="Resources:")
+            resources_label.pack(anchor="w")
+
+            resource_vars = {}
+            for resource, amount in player.resources.items():
+                res_var = tk.StringVar(self.root, value=f"  {resource.capitalize()}: {amount}")
+                resource_vars[resource] = res_var
+                ttk.Label(player_frame, textvariable=res_var).pack(anchor="w")
+
+            self.player_stat_vars[player.name] = {"color": color_var, "resources": resource_vars}
+
+        return player_stats_tab
+    
+    def update_player_stats(self, players: list):
+        for player in players:
+            player:Player = player
+            vars_map = self.player_stat_vars.get(player.name)
+            if not vars_map:
+                continue  
+            vars_map["color"].set(f"Color: {player.color}")
+            for resource, amount in player.resources.items():
+                res_var = vars_map["resources"].get(resource)
+                if res_var:
+                    res_var.set(f"  {resource.capitalize()}: {amount}")
 
     def trade_tab(self, notebook:ttk.Notebook):
 

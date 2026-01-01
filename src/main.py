@@ -6,6 +6,9 @@ from canvas import Canvas
 from game_struct import GameStruct
 from db import Database
 from game_struct import GameStruct
+from game_loop import GameLoop
+from player import Player
+import random
 
 def load_data():
     
@@ -24,12 +27,26 @@ def main():
     game_struct = GameStruct()
     
     board = Canvas(root, game_struct)
+
+    player_count = GameLoop(root, game_struct, board).start_screen()
+
+    players = []
     
+    colors = ["red", "blue", "green", "yellow"]
+    
+    for i in range(player_count):
+        
+        players.append(Player(f"Player {i+1}", colors[random.randint(0, len(colors)-1)]))
+
     tab = Tabs(root)
 
     tabs = tab.tabs()
 
     dice_tab = tab.dice_tab(tabs)
+
+    player_stats_tab = tab.player_stats_tab(tabs, players)
+
+    tab.update_player_stats(players) #use this to update player stats later
 
     trade_tab = tab.trade_tab(tabs)
 
