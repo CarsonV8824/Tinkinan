@@ -8,6 +8,8 @@ class GameStruct:
         
         self.graph = nx.Graph()
         
+        self.dice_numbers = [2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12]
+
         #---adds all of the places where a person can place a house or road. Use reference photo (Game_Board.png)---
         
         for i in range(1, 55):
@@ -53,7 +55,9 @@ class GameStruct:
         #---tile pieces themselves---
 
         for i in range(1, 20):
-            self.graph.add_node(f"Piece{i}", Resource=None)
+
+            
+            self.graph.add_node(f"Piece{i}", Resource=None, dice_number=None)
         
         #---piece 1---
 
@@ -230,8 +234,25 @@ class GameStruct:
         node_name = f"Piece{piece_number}"
 
         self.graph.nodes[node_name]['Resource'] = resource_type
+
+        if resource_type == "tan" or resource_type == "desert":
+            dice_number = None
+            self.graph.nodes[node_name]['dice_number'] = dice_number
+        else:
+            try:
+                choosen_number = self.dice_numbers.pop(random.randint(0, len(self.dice_numbers)-1))
+            except Exception as e:
+                print(e)
+            dice_number = choosen_number
+            self.graph.nodes[node_name]['dice_number'] = dice_number
+
+        print(f"Added {self.graph.nodes[node_name]['Resource']} with dice number {self.graph.nodes[node_name]['dice_number']}")
+
+    def get_piece_dice_number(self, piece_number):
+        node = f"Piece{piece_number}"
         
-            
+        return self.graph.nodes[node]['dice_number']
+        
     def __str__(self):
         return f"nodes: {len(list(self.graph.nodes))}. number of edges {len(list(self.graph.edges))}"
 

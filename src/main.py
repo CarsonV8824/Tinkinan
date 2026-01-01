@@ -41,7 +41,7 @@ def main():
     tab = Tabs(root)
 
     tabs = tab.tabs()
-
+    
     dice_tab = tab.dice_tab(tabs)
 
     player_stats_tab = tab.player_stats_tab(tabs, players)
