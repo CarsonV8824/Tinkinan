@@ -236,7 +236,7 @@ class GameStruct:
         self.graph.nodes[node_name]['Resource'] = resource_type
 
         if resource_type == "tan" or resource_type == "desert":
-            dice_number = None
+            dice_number = ""
             self.graph.nodes[node_name]['dice_number'] = dice_number
         else:
             try:
