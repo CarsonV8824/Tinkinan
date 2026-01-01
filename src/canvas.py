@@ -14,7 +14,7 @@ class Canvas:
         self.game_struct = game_struct
         self.canvas = tk.Canvas(self.root, height=650, width=650)
         self.canvas.configure(bg='lightblue', border=2, relief='ridge', borderwidth=2)
-        self.canvas.pack(expand=True, fill="none", anchor="center")
+        self.canvas.pack(expand=True, fill="none", side="left")
         self.hexagons = []
         self.pieces = []
         self.__get_pieces()
