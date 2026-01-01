@@ -118,9 +118,25 @@ class Tabs:
             rules_toplevel = tk.Toplevel(rules_tab)
             rules_toplevel.title("Game Rules")
             rules_toplevel.geometry("600x400")
-            rules_text = tk.Text(rules_toplevel, wrap="word")
-            rules_text.pack(expand=True, fill="both")
-            rules_text.insert("1.0", "Here are the rules of the game...\n\n1. Rule one...\n2. Rule two...\n3. Rule three...\n\nEnjoy playing Catan!")
+            
+            
+            frame = ttk.Frame(rules_toplevel)
+            frame.pack(expand=True, fill="both", padx=10, pady=10)
+            
+           
+            scrollbar = ttk.Scrollbar(frame, orient="vertical")
+            scrollbar.pack(side="right", fill="y")
+            
+            
+            rules_text = tk.Text(frame, wrap="word", yscrollcommand=scrollbar.set)
+            rules_text.pack(side="left", expand=True, fill="both")
+            
+            
+            scrollbar.config(command=rules_text.yview)
+            
+            with open("config/rules.txt", "r") as file:
+                rules_content = file.read()
+            rules_text.insert("1.0", rules_content)
             rules_text.config(state="disabled")
             
         rule_button  = ttk.Button(frame, text="Show Rules", command=show_rules)

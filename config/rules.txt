@@ -1,0 +1,60 @@
+CATAN GAME RULES
+
+=== SETUP ===
+- Each player places 2 settlements and 2 roads on the board
+- Settlements must be placed at least 2 intersections apart
+- Each player receives resources from their second settlement
+
+=== VICTORY CONDITION ===
+- First player to reach 10 victory points wins
+
+=== TURN STRUCTURE ===
+1. Roll two dice
+2. Resource production (all players with settlements/cities adjacent to tiles matching the roll collect resources)
+3. Trading (optional)
+4. Building (optional)
+
+=== RESOURCES ===
+- Brick (from hills)
+- Lumber/Wood (from forest)
+- Wool/Sheep (from pasture)
+- Grain/Wheat (from fields)
+- Ore (from mountains)
+
+=== BUILDING COSTS ===
+Road: 1 brick + 1 lumber
+Settlement: 1 brick + 1 lumber + 1 wool + 1 grain
+City: 3 ore + 2 grain
+Development Card: 1 ore + 1 wool + 1 grain
+
+=== VICTORY POINTS ===
+- Settlement: 1 point
+- City: 2 points
+- Longest Road (5+ roads): 2 points
+- Largest Army (3+ knights): 2 points
+- Victory Point cards: 1 point each
+
+=== THE ROBBER ===
+- Activated when a 7 is rolled
+- Players with 8+ cards must discard half (rounded down)
+- Active player moves robber to a new tile
+- Robber blocks resource production on that tile
+- Active player steals 1 random resource card from a player with a settlement/city on that tile
+
+=== TRADING ===
+- Trade with other players at any ratio (negotiable)
+- Trade with bank at 4:1 ratio (4 identical resources for 1 of any type)
+- Trade with ports at 3:1 or 2:1 ratios (if you have a settlement/city on a port)
+
+=== DEVELOPMENT CARDS ===
+- Knight: Move the robber and steal a resource
+- Victory Point: +1 victory point (keep hidden until winning)
+- Road Building: Place 2 free roads
+- Year of Plenty: Take any 2 resources from the bank
+- Monopoly: All players give you all cards of one declared resource type
+
+=== SPECIAL RULES ===
+- Cannot play a development card on the turn you bought it (except Victory Points)
+- Can only play one development card per turn (Knights don't count toward this limit in some versions)
+- Longest road must be continuous and at least 5 roads
+- If longest road is broken or tied, the card returns to the table

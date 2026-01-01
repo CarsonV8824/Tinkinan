@@ -23,7 +23,7 @@ class Canvas:
         #self.canvas.bind("<Button-1>", self.on_canvas_click)
 
     def __get_pieces(self) -> None:
-        self.pieces_ref = {"sheep":"lime", "wood":"green", "brick":"brown", "wheat":"yellow", "ore":"gray", "desert":"sienna"}
+        self.pieces_ref = {"sheep":"lime", "wood":"green", "brick":"brown", "wheat":"yellow", "ore":"gray", "desert":"tan"}
         
         for i in range(4):
             self.pieces.append(self.pieces_ref["sheep"])

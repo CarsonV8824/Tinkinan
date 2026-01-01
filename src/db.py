@@ -14,7 +14,7 @@ class Database:
         """CREATE TABLE IF NOT EXISTS Catan (
         Canvas BLOB,
         GameStruct BLOB,
-        PlayerData BLOB,
+        PlayerData BLOB
         );""")
         self.connection.commit()
 
@@ -38,4 +38,9 @@ class Database:
     def __del__(self):
         self.connection.close()
     
+    def __enter__(self):
+        return self
+    
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.connection.close()
 
