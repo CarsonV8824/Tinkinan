@@ -17,12 +17,12 @@ class Canvas:
         self.canvas.pack(expand=True, fill="none", anchor="center")
         self.hexagons = []
         self.pieces = []
-        self.get_pieces()
+        self.__get_pieces()
         self.__draw_board()
         
         #self.canvas.bind("<Button-1>", self.on_canvas_click)
 
-    def get_pieces(self) -> None:
+    def __get_pieces(self) -> None:
         self.pieces_ref = {"sheep":"lime", "wood":"green", "brick":"brown", "wheat":"yellow", "ore":"gray", "desert":"sienna"}
         
         for i in range(4):
