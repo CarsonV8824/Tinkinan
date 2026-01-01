@@ -8,6 +8,7 @@ from db import Database
 from game_struct import GameStruct
 
 def load_data():
+    
     try:
         db = Database()
         return db.get_data()

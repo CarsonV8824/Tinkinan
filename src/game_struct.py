@@ -228,14 +228,14 @@ class GameStruct:
         
     def add_image_color_to_piece(self, piece_number, resource_type):
         node_name = f"Piece{piece_number}"
-        if node_name in self.graph.nodes:
-            self.graph.nodes[node_name]['Resource'] = resource_type
-        else:
-            raise ValueError(f"Piece {piece_number} does not exist in the graph.")
 
+        self.graph.nodes[node_name]['Resource'] = resource_type
+        print(f"Added {self.graph.nodes[node_name]['Resource']} to {node_name}")
+            
     def __str__(self):
         return f"nodes: {len(list(self.graph.nodes))}. number of edges {len(list(self.graph.edges))}"
 
 if __name__ == "__main__":
     game = GameStruct()
-    print(game)
+    game.add_image_color_to_piece(1, "wood")
+    #print(game)
