@@ -1,5 +1,4 @@
 from game_struct import GameStruct
-
 from tkinter import ttk  
 from ttkthemes import ThemedTk
 import tkinter as tk
@@ -19,9 +18,70 @@ class Canvas:
         self.pieces = []
         self.__get_pieces()
         self.__draw_board()
-        self.on_canvas_click(None)
         
-        #self.canvas.bind("<Button-1>", self.on_canvas_click)
+        
+        
+        self.canvas.bind("<Button-1>", self.on_canvas_click)
+
+        self.coords = ()
+
+        #look at Game_Board.png to see how the corner coords are mapped to piece numbers
+        self.corner_coords = {
+            1: (238.39745962155615, 125.0),
+            2: (281.6987298107781, 150.0),
+            3: (325.0, 125.0),
+            4: (368.30127018922195, 150.0),
+            5: (411.60254037844385, 125.0),
+            6: (454.9038105676658, 150.0),
+            7: (454.9038105676658, 200.0),
+            8: (498.20508075688775, 225.0),
+            9: (498.20508075688775, 275.0),
+            10: (541.5063509461096, 300.0),
+            11: (541.5063509461096, 350.0),
+            12: (498.2050807568877, 375.0),
+            13: (498.20508075688775, 425.0),
+            14: (454.9038105676658, 450.0),
+            15: (454.9038105676658, 500.0),
+            16: (411.60254037844385, 525.0),
+            17: (368.30127018922195, 500.0),
+            18: (325.0, 525.0),
+            19: (281.6987298107781, 500.0),
+            20: (238.39745962155615, 525.0),
+            21: (195.0961894323342, 500.0),
+            22: (195.0961894323342, 450.0),
+            23: (151.79491924311225, 425.0),
+            24: (151.79491924311228, 375.0),
+            25: (108.49364905389034, 350.0),
+            26: (108.49364905389035, 300.0),
+            27: (151.79491924311225, 275.0),
+            28: (151.79491924311228, 225.0),
+            29: (195.0961894323342, 200.0),
+            30: (195.09618943233423, 150.0),
+            31: (281.6987298107781, 200.0),
+            32: (325.0, 225.0),
+            33: (368.30127018922195, 200.0),
+            34: (411.60254037844385, 225.0),
+            35: (411.6025403784439, 275.0),
+            36: (454.9038105676658, 300.0),
+            37: (454.9038105676658, 350.0),
+            38: (411.60254037844385, 375.0),
+            39: (411.6025403784439, 425.0),
+            40: (368.30127018922195, 450.0),
+            41: (325.0, 425.0),
+            42: (281.69872981077805, 450.0),
+            43: (238.39745962155615, 425.0),
+            44: (238.39745962155615, 375.0),
+            45: (195.0961894323342, 350.0),
+            46: (195.0961894323342, 300.0),
+            47: (238.39745962155615, 275.0),
+            48: (238.39745962155615, 225.0),
+            49: (325.0, 275.0),
+            50: (368.30127018922195, 300.0),
+            51: (368.30127018922195, 350.0),
+            52: (325.0, 375.0),
+            53: (281.6987298107781, 350.0),
+            54: (281.69872981077805, 300.0)
+        }
 
     def __get_pieces(self) -> None:
         self.pieces_ref = {"sheep":"lime", "wood":"green", "brick":"brown", "wheat":"yellow", "ore":"gray", "desert":"tan"}
@@ -213,9 +273,30 @@ class Canvas:
     def __choose_radom_color_from_piece_list(self) -> str:
         return self.pieces.pop(random.randint(0, len(self.pieces)-1))
     
+    def is_corner_hit(self, event, tolerance=8):
+
+        cx, cy = self.canvas.canvasx(event.x), self.canvas.canvasy(event.y)
+        for idx, flat_points in enumerate(self.hexagons, start=1):
+            for x_i, y_i in zip(flat_points[0::2], flat_points[1::2]):
+                dx, dy = cx - x_i, cy - y_i
+                if (dx*dx + dy*dy) ** 0.5 <= tolerance:
+                    return idx, (x_i, y_i)  # piece number, corner coords
+        return None, None
+
     def on_canvas_click(self, event):
-        x, y = self.canvas.winfo_pointerxy()
-        print(f"Canvas clicked at ({x}, {y})")
+        hit_piece, corner = self.is_corner_hit(event)
+        if hit_piece:
+            print(f"Corner hit on piece {hit_piece} at {corner}")
+            with open("logs/corner.txt", "a") as f:
+                f.write(f"Corner hit on piece {hit_piece} at {corner}\n")
+        else:
+            print("No corner hit")
+
+    
+    
+    
+
+        
     
 
 

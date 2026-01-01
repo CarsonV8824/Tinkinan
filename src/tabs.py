@@ -145,6 +145,14 @@ class Tabs:
 
         #=====================================================================================
 
+        combo = ttk.Combobox(frame, values=["road", "settlement", "city"], state="readonly")
+        combo.current(0)  
+        combo.pack(padx=10, pady=10)
+
+        def on_select(event):
+            print("Selected:", combo.get())
+        combo.bind("<<ComboboxSelected>>", on_select)
+        
         return biuld_tab
 
     def rules_tab(self, notebook:ttk.Notebook):
