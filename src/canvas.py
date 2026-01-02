@@ -119,6 +119,8 @@ class Canvas:
 
     def __draw_board(self) -> None:
         
+        #--- Row 1 ---
+
         row_1_start_x = 325 - (50 * math.sqrt(3))
         row1_start_y = 325 - 150
         color = self.__choose_radom_color_from_piece_list()
@@ -129,6 +131,8 @@ class Canvas:
         self.__draw_hexagon(row_1_start_x, row1_start_y, 50, color)
         self.draw_number_on_piece(1, number)
 
+        #--- Row 2 ---
+
         row_2_start_x = 325
         row2_start_y = 325 - 150
         color = self.__choose_radom_color_from_piece_list()
@@ -137,6 +141,8 @@ class Canvas:
         number = self.game_struct.get_piece_dice_number(2)
         self.__draw_hexagon(row_2_start_x, row2_start_y, 50, color)
         self.draw_number_on_piece(2, number)
+
+        #--- Row 3 ---
 
         row_3_start_x = 325 + (50 * math.sqrt(3))
         row3_start_y = 325 - (150)
@@ -147,128 +153,163 @@ class Canvas:
         self.__draw_hexagon(row_3_start_x, row3_start_y, 50, color)
         self.draw_number_on_piece(3, number)
 
-        row_4_start_x = 325 - (1.5 * 50 * math.sqrt(3))
-        row4_start_y = 325 - (50 * 1.5)
-        color = self.__choose_radom_color_from_piece_list()
-        self.game_struct.add_image_color_to_piece(4, color)
-
-        number = self.game_struct.get_piece_dice_number(4)
-        self.__draw_hexagon(row_4_start_x, row4_start_y, 50, color)
-        self.draw_number_on_piece(4, number)
-
-        row_5_start_x = 325 - (50 * 0.5 * math.sqrt(3))
-        row5_start_y = 325 - (50 * 1.5)
-        color = self.__choose_radom_color_from_piece_list()
-        self.game_struct.add_image_color_to_piece(5, color)
-        number = self.game_struct.get_piece_dice_number(5)
-        self.__draw_hexagon(row_5_start_x, row5_start_y, 50, color)
-        self.draw_number_on_piece(5, number)
-
-        row_6_start_x = 325 + (50 * 0.5 * math.sqrt(3))
-        row6_start_y = 325 - (50 * 1.5)
-        color = self.__choose_radom_color_from_piece_list()
-        self.game_struct.add_image_color_to_piece(6, color)
-        number = self.game_struct.get_piece_dice_number(6)
-        self.__draw_hexagon(row_6_start_x, row6_start_y, 50, color)
-        self.draw_number_on_piece(6, number)
+        #--- Row 4 ---
 
         row_7_start_x = 325 + (50 * 1.5 * math.sqrt(3))
         row7_start_y = 325 - (50 * 1.5)
         color = self.__choose_radom_color_from_piece_list()
-        self.game_struct.add_image_color_to_piece(7, color)
-        number = self.game_struct.get_piece_dice_number(7)
+        self.game_struct.add_image_color_to_piece(4, color)
+        number = self.game_struct.get_piece_dice_number(4)
         self.__draw_hexagon(row_7_start_x, row7_start_y, 50, color)
-        self.draw_number_on_piece(7, number)
-        
-        row_8_start_x = 325 - (2 * 50 * math.sqrt(3))
-        color = self.__choose_radom_color_from_piece_list()
-        self.game_struct.add_image_color_to_piece(8, color)
-        number = self.game_struct.get_piece_dice_number(8)
-        self.__draw_hexagon(row_8_start_x, 325, 50, color)
-        self.draw_number_on_piece(8, number)
-        
-        row_9_start_x = 325 - (50 * math.sqrt(3))
-        color = self.__choose_radom_color_from_piece_list()
-        self.game_struct.add_image_color_to_piece(9, color)
-        number = self.game_struct.get_piece_dice_number(9)
-        self.__draw_hexagon(row_9_start_x, 325, 50, color)
-        self.draw_number_on_piece(9, number)
-        
-        color = self.__choose_radom_color_from_piece_list()
-        self.game_struct.add_image_color_to_piece(10, color)
-        self.__draw_hexagon(row_10_start_x := 325, 325, 50, color)
-        number = self.game_struct.get_piece_dice_number(10)
-        self.draw_number_on_piece(10, number)
-        
-        row_11_start_x = 325 + (50 * math.sqrt(3))
-        color = self.__choose_radom_color_from_piece_list()
-        self.game_struct.add_image_color_to_piece(11, color)
-        self.__draw_hexagon(row_11_start_x, 325, 50, color)
-        number = self.game_struct.get_piece_dice_number(11)
-        self.draw_number_on_piece(11, number)
-        
+        self.draw_number_on_piece(4, number)
+
+        #-- Row 5 ---
+
         row_12_start_x = 325 + (2 * 50 * math.sqrt(3))
         color = self.__choose_radom_color_from_piece_list()
-        self.game_struct.add_image_color_to_piece(12, color)
+        self.game_struct.add_image_color_to_piece(5, color)
         self.__draw_hexagon(row_12_start_x, 325, 50, color)
-        number = self.game_struct.get_piece_dice_number(12)
-        self.draw_number_on_piece(12, number)
+        number = self.game_struct.get_piece_dice_number(5)
+        self.draw_number_on_piece(5, number)
 
-        row_13_start_x = 325 - (1.5 * 50 * math.sqrt(3))
-        row13_start_y = 325 + (50 * 1.5)
-        color = self.__choose_radom_color_from_piece_list()
-        self.game_struct.add_image_color_to_piece(13, color)
-        self.__draw_hexagon(row_13_start_x, row13_start_y, 50, color)
-        number = self.game_struct.get_piece_dice_number(13)
-        self.draw_number_on_piece(13, number)
-
-        row_14_start_x = 325 - (0.5 * 50 * math.sqrt(3))
-        row14_start_y = 325 + (50 * 1.5)
-        color = self.__choose_radom_color_from_piece_list()
-        self.game_struct.add_image_color_to_piece(14, color)
-        number = self.game_struct.get_piece_dice_number(14)
-        self.__draw_hexagon(row_14_start_x, row14_start_y, 50, color)
-        self.draw_number_on_piece(14, number)
-
-        row_15_start_x = 325 + (0.5 * 50 * math.sqrt(3))
-        row15_start_y = 325 + (50 * 1.5)
-        color = self.__choose_radom_color_from_piece_list()
-        self.game_struct.add_image_color_to_piece(15, color)
-        number = self.game_struct.get_piece_dice_number(15)
-        self.__draw_hexagon(row_15_start_x, row15_start_y, 50, color)
-        self.draw_number_on_piece(15, number)
+        #-- Row 6 ---
 
         row_16_start_x = 325 + (1.5 * 50 * math.sqrt(3))
         row16_start_y = 325 + (50 * 1.5)
         color = self.__choose_radom_color_from_piece_list()
-        self.game_struct.add_image_color_to_piece(16, color)
-        number = self.game_struct.get_piece_dice_number(16)
+        self.game_struct.add_image_color_to_piece(6, color)
+        number = self.game_struct.get_piece_dice_number(6)
         self.__draw_hexagon(row_16_start_x, row16_start_y, 50, color)
-        self.draw_number_on_piece(16, number)
-        
-        row_17_start_x = 325 - (50 * math.sqrt(3))
-        row17_start_y = 325 + 150
-        color = self.__choose_radom_color_from_piece_list()
-        self.game_struct.add_image_color_to_piece(17, color)
-        number = self.game_struct.get_piece_dice_number(17)
-        self.__draw_hexagon(row_17_start_x, row17_start_y, 50, color)
-        self.draw_number_on_piece(17, number)
+        self.draw_number_on_piece(6, number)
 
-        row_18_start_x = 325
-        row18_start_y = 325 + 150
-        color = self.__choose_radom_color_from_piece_list()
-        self.game_struct.add_image_color_to_piece(18, color)
-        number = self.game_struct.get_piece_dice_number(18)
-        self.__draw_hexagon(row_18_start_x, row18_start_y, 50, color)
-        self.draw_number_on_piece(18, number)
+        #-- Row 7 ---
 
         row_19_start_x = 325 + (50 * math.sqrt(3))
         row19_start_y = 325 + 150
         color = self.__choose_radom_color_from_piece_list()
-        self.game_struct.add_image_color_to_piece(19, color)
-        number = self.game_struct.get_piece_dice_number(19)
+        self.game_struct.add_image_color_to_piece(7, color)
+        number = self.game_struct.get_piece_dice_number(7)
         self.__draw_hexagon(row_19_start_x, row19_start_y, 50, color)
+        self.draw_number_on_piece(7, number)
+        
+        #--- Row 8 ---
+
+        row_18_start_x = 325
+        row18_start_y = 325 + 150
+        color = self.__choose_radom_color_from_piece_list()
+        self.game_struct.add_image_color_to_piece(8, color)
+        number = self.game_struct.get_piece_dice_number(8)
+        self.__draw_hexagon(row_18_start_x, row18_start_y, 50, color)
+        self.draw_number_on_piece(8, number)
+        
+        #--- Row 9 ---
+
+        row_17_start_x = 325 - (50 * math.sqrt(3))
+        row17_start_y = 325 + 150
+        color = self.__choose_radom_color_from_piece_list()
+        self.game_struct.add_image_color_to_piece(9, color)
+        number = self.game_struct.get_piece_dice_number(9)
+        self.__draw_hexagon(row_17_start_x, row17_start_y, 50, color)
+        self.draw_number_on_piece(9, number)
+        
+        #--- Row 10 ---
+
+        row_13_start_x = 325 - (1.5 * 50 * math.sqrt(3))
+        row13_start_y = 325 + (50 * 1.5)
+        color = self.__choose_radom_color_from_piece_list()
+        self.game_struct.add_image_color_to_piece(10, color)
+        self.__draw_hexagon(row_13_start_x, row13_start_y, 50, color)
+        number = self.game_struct.get_piece_dice_number(10)
+        self.draw_number_on_piece(10, number)
+        
+        #--- Row 11 ---
+
+        
+
+        row_8_start_x = 325 - (2 * 50 * math.sqrt(3))
+        color = self.__choose_radom_color_from_piece_list()
+        self.game_struct.add_image_color_to_piece(11, color)
+        number = self.game_struct.get_piece_dice_number(11)
+        self.__draw_hexagon(row_8_start_x, 325, 50, color)
+        self.draw_number_on_piece(11, number)
+        
+        #--- Row 12 ---
+
+        row_4_start_x = 325 - (1.5 * 50 * math.sqrt(3))
+        row4_start_y = 325 - (50 * 1.5)
+        color = self.__choose_radom_color_from_piece_list()
+        self.game_struct.add_image_color_to_piece(12, color)
+
+        number = self.game_struct.get_piece_dice_number(12)
+        self.__draw_hexagon(row_4_start_x, row4_start_y, 50, color)
+        self.draw_number_on_piece(12, number)
+        #--- Row 13 ---
+
+        row_5_start_x = 325 - (50 * 0.5 * math.sqrt(3))
+        row5_start_y = 325 - (50 * 1.5)
+        color = self.__choose_radom_color_from_piece_list()
+        self.game_struct.add_image_color_to_piece(13, color)
+        number = self.game_struct.get_piece_dice_number(13)
+        self.__draw_hexagon(row_5_start_x, row5_start_y, 50, color)
+        self.draw_number_on_piece(13, number)
+
+        #--- Row 14 ---
+
+        row_6_start_x = 325 + (50 * 0.5 * math.sqrt(3))
+        row6_start_y = 325 - (50 * 1.5)
+        color = self.__choose_radom_color_from_piece_list()
+        self.game_struct.add_image_color_to_piece(14, color)
+        number = self.game_struct.get_piece_dice_number(14)
+        self.__draw_hexagon(row_6_start_x, row6_start_y, 50, color)
+        self.draw_number_on_piece(14, number)
+
+        #--- Row 15 ---
+
+        row_11_start_x = 325 + (50 * math.sqrt(3))
+        color = self.__choose_radom_color_from_piece_list()
+        self.game_struct.add_image_color_to_piece(15, color)
+        self.__draw_hexagon(row_11_start_x, 325, 50, color)
+        number = self.game_struct.get_piece_dice_number(15)
+        self.draw_number_on_piece(15, number)
+
+        #--- Row 16 ---
+
+        row_15_start_x = 325 + (0.5 * 50 * math.sqrt(3))
+        row15_start_y = 325 + (50 * 1.5)
+        color = self.__choose_radom_color_from_piece_list()
+        self.game_struct.add_image_color_to_piece(16, color)
+        number = self.game_struct.get_piece_dice_number(16)
+        self.__draw_hexagon(row_15_start_x, row15_start_y, 50, color)
+        self.draw_number_on_piece(16, number)
+        
+        #--- Row 17 ---
+
+        row_14_start_x = 325 - (0.5 * 50 * math.sqrt(3))
+        row14_start_y = 325 + (50 * 1.5)
+        color = self.__choose_radom_color_from_piece_list()
+        self.game_struct.add_image_color_to_piece(17, color)
+        number = self.game_struct.get_piece_dice_number(17)
+        self.__draw_hexagon(row_14_start_x, row14_start_y, 50, color)
+        self.draw_number_on_piece(17, number)
+
+        #--- Row 18 ---
+
+        row_9_start_x = 325 - (50 * math.sqrt(3))
+        color = self.__choose_radom_color_from_piece_list()
+        self.game_struct.add_image_color_to_piece(18, color)
+        number = self.game_struct.get_piece_dice_number(18)
+        self.__draw_hexagon(row_9_start_x, 325, 50, color)
+        self.draw_number_on_piece(18, number)
+
+        #--- Row 19 ---
+
+        color = self.__choose_radom_color_from_piece_list()
+        self.game_struct.add_image_color_to_piece(19, color)
+        self.__draw_hexagon(row_10_start_x := 325, 325, 50, color)
+        number = self.game_struct.get_piece_dice_number(19)
         self.draw_number_on_piece(19, number)
+
+        
 
     def __choose_radom_color_from_piece_list(self) -> str:
         return self.pieces.pop(random.randint(0, len(self.pieces)-1))

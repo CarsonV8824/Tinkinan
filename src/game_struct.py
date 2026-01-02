@@ -1,4 +1,5 @@
 import networkx as nx
+from collections import deque
 import random
 
 
@@ -8,7 +9,10 @@ class GameStruct:
         
         self.graph = nx.Graph()
         
-        self.dice_numbers = [2, 3, 3, 4, 4, 5, 5, 6, 6, 8, 8, 9, 9, 10, 10, 11, 11, 12]
+        self.dice_numbers = [5, 2, 6, 3, 8, 10, 9, 12, 11, 4, 8, 10, 9, 4, 5, 6, 3, 11]
+        #self.dice_numbers = deque(self.dice_numbers)
+        #self.dice_numbers.rotate(random.randint(-len(self.dice_numbers), len(self.dice_numbers)))
+        #self.dice_numbers = list(self.dice_numbers)
 
         #---adds all of the places where a person can place a house or road. Use reference photo (Game_Board.png)---
         
@@ -88,33 +92,6 @@ class GameStruct:
 
         #---piece 4---
 
-        self.graph.add_edge("House27", "Piece4")
-        self.graph.add_edge("House28", "Piece4")
-        self.graph.add_edge("House29", "Piece4")
-        self.graph.add_edge("House46", "Piece4")
-        self.graph.add_edge("House47", "Piece4")
-        self.graph.add_edge("House48", "Piece4")
-
-        #---piece 5---
-
-        self.graph.add_edge("House31", "Piece5")
-        self.graph.add_edge("House32", "Piece5")
-        self.graph.add_edge("House47", "Piece5")
-        self.graph.add_edge("House48", "Piece5")
-        self.graph.add_edge("House49", "Piece5")
-        self.graph.add_edge("House54", "Piece5")
-
-        #--piece 6---
-
-        self.graph.add_edge("House32", "Piece6")
-        self.graph.add_edge("House33", "Piece6")
-        self.graph.add_edge("House34", "Piece6")
-        self.graph.add_edge("House35", "Piece6")
-        self.graph.add_edge("House49", "Piece6")
-        self.graph.add_edge("House50", "Piece6")
-
-        #---piece 7---
-
         self.graph.add_edge("House7", "Piece7")
         self.graph.add_edge("House8", "Piece7")
         self.graph.add_edge("House9", "Piece7")
@@ -122,44 +99,8 @@ class GameStruct:
         self.graph.add_edge("House35", "Piece7")
         self.graph.add_edge("House36", "Piece7")
 
-        #---piece 8---
+        #---piece 5---
 
-        self.graph.add_edge("House24", "Piece8")
-        self.graph.add_edge("House25", "Piece8")
-        self.graph.add_edge("House26", "Piece8")
-        self.graph.add_edge("House27", "Piece8")
-        self.graph.add_edge("House45", "Piece8")
-        self.graph.add_edge("House46", "Piece8")
-
-        #---piece 9---
-
-        self.graph.add_edge("House44", "Piece9")
-        self.graph.add_edge("House45", "Piece9")
-        self.graph.add_edge("House46", "Piece9")
-        self.graph.add_edge("House47", "Piece9")
-        self.graph.add_edge("House53", "Piece9")
-        self.graph.add_edge("House54", "Piece9")
-
-        #--piece 10---
-
-        self.graph.add_edge("House49", "Piece10")
-        self.graph.add_edge("House50", "Piece10")
-        self.graph.add_edge("House51", "Piece10")
-        self.graph.add_edge("House52", "Piece10")
-        self.graph.add_edge("House53", "Piece10")
-        self.graph.add_edge("House54", "Piece10")
-
-        #--piece 11---
-
-        self.graph.add_edge("House35", "Piece11")
-        self.graph.add_edge("House36", "Piece11")
-        self.graph.add_edge("House37", "Piece11")
-        self.graph.add_edge("House38", "Piece11")
-        self.graph.add_edge("House50", "Piece11")
-        self.graph.add_edge("House51", "Piece11")
-
-        #---piece 12---
-        
         self.graph.add_edge("House9", "Piece12")
         self.graph.add_edge("House10", "Piece12")
         self.graph.add_edge("House11", "Piece12")
@@ -167,34 +108,7 @@ class GameStruct:
         self.graph.add_edge("House36", "Piece12")
         self.graph.add_edge("House37", "Piece12")
 
-        #---piece 13---
-
-        self.graph.add_edge("House22", "Piece13")
-        self.graph.add_edge("House23", "Piece13")
-        self.graph.add_edge("House24", "Piece13")
-        self.graph.add_edge("House43", "Piece13")
-        self.graph.add_edge("House44", "Piece13")
-        self.graph.add_edge("House45", "Piece13")
-
-        #---piece 14---
-
-        self.graph.add_edge("House41", "Piece14")
-        self.graph.add_edge("House42", "Piece14")
-        self.graph.add_edge("House43", "Piece14")
-        self.graph.add_edge("House44", "Piece14")
-        self.graph.add_edge("House52", "Piece14")
-        self.graph.add_edge("House53", "Piece14")
-
-        #---piece 15---
-
-        self.graph.add_edge("House38", "Piece15")
-        self.graph.add_edge("House39", "Piece15")
-        self.graph.add_edge("House40", "Piece15")
-        self.graph.add_edge("House41", "Piece15")
-        self.graph.add_edge("House51", "Piece15")
-        self.graph.add_edge("House52", "Piece15")
-
-        #---piece 16---
+        #--piece 6---
 
         self.graph.add_edge("House12", "Piece16")
         self.graph.add_edge("House13", "Piece16")
@@ -203,16 +117,16 @@ class GameStruct:
         self.graph.add_edge("House38", "Piece16")
         self.graph.add_edge("House39", "Piece16")
 
-        #---piece 17---
+        #---piece 7---
 
-        self.graph.add_edge("House19", "Piece17")
-        self.graph.add_edge("House20", "Piece17")
-        self.graph.add_edge("House21", "Piece17")
-        self.graph.add_edge("House22", "Piece17")
-        self.graph.add_edge("House42", "Piece17")
-        self.graph.add_edge("House43", "Piece17")
+        self.graph.add_edge("House14", "Piece19")
+        self.graph.add_edge("House15", "Piece19")
+        self.graph.add_edge("House16", "Piece19")
+        self.graph.add_edge("House17", "Piece19")
+        self.graph.add_edge("House39", "Piece19")
+        self.graph.add_edge("House40", "Piece19")
 
-        #---piece 18---
+        #---piece 8---
 
         self.graph.add_edge("House17", "Piece18")
         self.graph.add_edge("House18", "Piece18")
@@ -221,14 +135,107 @@ class GameStruct:
         self.graph.add_edge("House41", "Piece18")
         self.graph.add_edge("House42", "Piece18")
 
+        #---piece 9---
+
+        self.graph.add_edge("House19", "Piece17")
+        self.graph.add_edge("House20", "Piece17")
+        self.graph.add_edge("House21", "Piece17")
+        self.graph.add_edge("House22", "Piece17")
+        self.graph.add_edge("House42", "Piece17")
+        self.graph.add_edge("House43", "Piece17")
+
+        #--piece 10---
+
+        self.graph.add_edge("House22", "Piece13")
+        self.graph.add_edge("House23", "Piece13")
+        self.graph.add_edge("House24", "Piece13")
+        self.graph.add_edge("House43", "Piece13")
+        self.graph.add_edge("House44", "Piece13")
+        self.graph.add_edge("House45", "Piece13")
+
+        #--piece 11---
+
+        self.graph.add_edge("House24", "Piece8")
+        self.graph.add_edge("House25", "Piece8")
+        self.graph.add_edge("House26", "Piece8")
+        self.graph.add_edge("House27", "Piece8")
+        self.graph.add_edge("House45", "Piece8")
+        self.graph.add_edge("House46", "Piece8")
+
+        #---piece 12---
+
+        self.graph.add_edge("House27", "Piece4")
+        self.graph.add_edge("House28", "Piece4")
+        self.graph.add_edge("House29", "Piece4")
+        self.graph.add_edge("House46", "Piece4")
+        self.graph.add_edge("House47", "Piece4")
+        self.graph.add_edge("House48", "Piece4")
+        
+        
+
+        #---piece 13---
+
+        self.graph.add_edge("House31", "Piece5")
+        self.graph.add_edge("House32", "Piece5")
+        self.graph.add_edge("House47", "Piece5")
+        self.graph.add_edge("House48", "Piece5")
+        self.graph.add_edge("House49", "Piece5")
+        self.graph.add_edge("House54", "Piece5")
+
+        #---piece 14---
+
+        self.graph.add_edge("House32", "Piece6")
+        self.graph.add_edge("House33", "Piece6")
+        self.graph.add_edge("House34", "Piece6")
+        self.graph.add_edge("House35", "Piece6")
+        self.graph.add_edge("House49", "Piece6")
+        self.graph.add_edge("House50", "Piece6")
+
+        #---piece 15---
+
+        self.graph.add_edge("House35", "Piece11")
+        self.graph.add_edge("House36", "Piece11")
+        self.graph.add_edge("House37", "Piece11")
+        self.graph.add_edge("House38", "Piece11")
+        self.graph.add_edge("House50", "Piece11")
+        self.graph.add_edge("House51", "Piece11")
+
+        #---piece 16---
+
+        self.graph.add_edge("House38", "Piece15")
+        self.graph.add_edge("House39", "Piece15")
+        self.graph.add_edge("House40", "Piece15")
+        self.graph.add_edge("House41", "Piece15")
+        self.graph.add_edge("House51", "Piece15")
+        self.graph.add_edge("House52", "Piece15")
+        
+
+        #---piece 17---
+
+        self.graph.add_edge("House41", "Piece14")
+        self.graph.add_edge("House42", "Piece14")
+        self.graph.add_edge("House43", "Piece14")
+        self.graph.add_edge("House44", "Piece14")
+        self.graph.add_edge("House52", "Piece14")
+        self.graph.add_edge("House53", "Piece14")
+
+        #---piece 18---
+
+        self.graph.add_edge("House44", "Piece9")
+        self.graph.add_edge("House45", "Piece9")
+        self.graph.add_edge("House46", "Piece9")
+        self.graph.add_edge("House47", "Piece9")
+        self.graph.add_edge("House53", "Piece9")
+        self.graph.add_edge("House54", "Piece9")
+
         #---piece 19---
 
-        self.graph.add_edge("House14", "Piece19")
-        self.graph.add_edge("House15", "Piece19")
-        self.graph.add_edge("House16", "Piece19")
-        self.graph.add_edge("House17", "Piece19")
-        self.graph.add_edge("House39", "Piece19")
-        self.graph.add_edge("House40", "Piece19")
+        self.graph.add_edge("House49", "Piece10")
+        self.graph.add_edge("House50", "Piece10")
+        self.graph.add_edge("House51", "Piece10")
+        self.graph.add_edge("House52", "Piece10")
+        self.graph.add_edge("House53", "Piece10")
+        self.graph.add_edge("House54", "Piece10")
         
     def add_image_color_to_piece(self, piece_number, resource_type):
         node_name = f"Piece{piece_number}"
@@ -240,7 +247,7 @@ class GameStruct:
             self.graph.nodes[node_name]['dice_number'] = dice_number
         else:
             try:
-                choosen_number = self.dice_numbers.pop(random.randint(0, len(self.dice_numbers)-1))
+                choosen_number = self.dice_numbers.pop(0)
             except Exception as e:
                 print(e)
             dice_number = choosen_number
