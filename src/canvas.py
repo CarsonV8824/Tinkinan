@@ -326,8 +326,8 @@ class Canvas:
         hit_piece, corner = self.is_corner_hit(event)
         if hit_piece:
             print(f"Corner hit on piece {hit_piece} at {corner}")
-            with open("logs/corner.txt", "a") as f:
-                f.write(f"Corner hit on piece {hit_piece} at {corner}\n")
+            """with open("logs/corner.txt", "a") as f:
+                f.write(f"Corner hit on piece {hit_piece} at {corner}\n")"""
         else:
             print("No corner hit")
 
