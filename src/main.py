@@ -24,11 +24,20 @@ def main():
     root.geometry("1200x800")
     root.title("Catan in Tkinter")
 
+    first_dice = ttk.Label(root, text="First Dice Roll: ")
+    first_dice.pack()
+
+    second_dice = ttk.Label(root, text="Second Dice Roll: ")
+    second_dice.pack()
+
+    total_of_dies = ttk.Label(root, text="Total of Dice: ")
+    total_of_dies.pack()
+
     game_struct = GameStruct()
     
     board = Canvas(root, game_struct)
 
-    player_count = GameLoop(root, game_struct, board).start_screen()
+    player_count = GameLoop(root, game_struct, board, first_dice, second_dice, total_of_dies).start_screen()
 
     players = []
     
@@ -38,11 +47,15 @@ def main():
         
         players.append(Player(f"Player {i+1}", colors[random.randint(0, len(colors)-1)]))
 
+    first_settlements = GameLoop(root, game_struct, board, first_dice, second_dice, total_of_dies).place_initial_settlements(players)
+
+    game_loop = GameLoop(root, game_struct, board, first_dice, second_dice, total_of_dies)
+
     tab = Tabs(root)
 
     tabs = tab.tabs()
     
-    dice_tab = tab.dice_tab(tabs)
+    dice_tab = tab.dice_tab(tabs, game_loop, players)
 
     player_stats_tab = tab.player_stats_tab(tabs, players)
 

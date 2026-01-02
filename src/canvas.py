@@ -309,12 +309,10 @@ class Canvas:
         number = self.game_struct.get_piece_dice_number(19)
         self.draw_number_on_piece(19, number)
 
-        
-
     def __choose_radom_color_from_piece_list(self) -> str:
         return self.pieces.pop(random.randint(0, len(self.pieces)-1))
     
-    def is_corner_hit(self, event, tolerance=8):
+    def is_corner_hit(self, event, tolerance=10):
 
         cx, cy = self.canvas.canvasx(event.x), self.canvas.canvasy(event.y)
         for idx, flat_points in enumerate(self.hexagons, start=1):

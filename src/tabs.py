@@ -2,6 +2,7 @@ from tkinter import ttk
 from ttkthemes import ThemedTk
 import tkinter as tk
 from player import Player
+from game_loop import GameLoop
 
 class Tabs:
 
@@ -13,7 +14,7 @@ class Tabs:
         tab.pack(expand=True, fill="both")
         return tab
     
-    def dice_tab(self, notebook:ttk.Notebook):
+    def dice_tab(self, notebook:ttk.Notebook, game_loop: GameLoop, players:list):
 
         dice_tab = ttk.Frame(notebook)
         notebook.add(dice_tab, text="dice")
@@ -36,6 +37,9 @@ class Tabs:
         frame.pack(expand=True, fill="both")
 
         #=====================================================================================
+
+        dice_button = ttk.Button(frame, text="Roll Dice", command=lambda: game_loop.game_turn(players=players))
+        dice_button.pack(pady=20)
 
         return dice_tab
     
@@ -61,6 +65,7 @@ class Tabs:
         frame.pack(expand=True, fill="both")
 
         #=====================================================================================
+
         self.player_stat_vars = {}
         for player in players:
             player:Player = player

@@ -2,7 +2,6 @@ import networkx as nx
 from collections import deque
 import random
 
-
 class GameStruct:
 
     def __init__(self):
@@ -259,6 +258,22 @@ class GameStruct:
         node = f"Piece{piece_number}"
         
         return self.graph.nodes[node]['dice_number']
+    
+    def distribute_resources(self, dice_roll, players: list, update_player_stats_tab=None):
+        for piece in list(self.graph.nodes):
+            if piece.startswith("Piece"):
+                piece_data = self.graph.nodes[piece]
+                if piece_data['dice_number'] == dice_roll:
+                    connected_houses = [n for n in self.graph.neighbors(piece) if n.startswith("House")]
+                    for house in connected_houses:
+                        house_data = self.graph.nodes[house]
+                        owner = house_data['Player']
+                        if owner:
+                            resource = piece_data['Resource']
+                            for player in players:
+                                if player.name == owner:
+                                    player.add_resource(resource, 1)
+                                    print(f"{player.name} received 1 {resource} from {piece} due to dice roll {dice_roll}.")
         
     def __str__(self):
         return f"nodes: {len(list(self.graph.nodes))}. number of edges {len(list(self.graph.edges))}"

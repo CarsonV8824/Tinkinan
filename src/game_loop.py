@@ -1,18 +1,23 @@
 from tkinter import ttk  
 from ttkthemes import ThemedTk
 import tkinter as tk
+import random
 from game_struct import GameStruct
 from canvas import Canvas
 
 
+
 class GameLoop:
     
-    def __init__(self, root: tk.Tk, game_struct: GameStruct, board: Canvas):
+    def __init__(self, root: tk.Tk, game_struct: GameStruct, board: Canvas, first_dice:ttk.Label=None, second_dice:ttk.Label=None, total_of_dice:ttk.Label=None):
         
         self.root = root
         self.game_struct = game_struct
         self.board = board
         self.player_count = 3
+        self.first_dice = first_dice
+        self.second_dice = second_dice
+        self.total_of_dice = total_of_dice
 
     def start_screen(self):
         self.root.withdraw()  
@@ -48,3 +53,14 @@ class GameLoop:
     
     def place_initial_settlements(self, players: list):
         pass
+
+    def game_turn(self, **players: list):
+        first_die = random.randint(1, 6)
+        second_die = random.randint(1, 6)
+        self.first_dice.config(text=f"First Dice Roll: {first_die}")
+        self.second_dice.config(text=f"Second Dice Roll: {second_die}")
+        total = first_die + second_die
+        self.total_of_dice.config(text=f"Total of Dice: {total}")
+
+        if total != 7:
+            self.game_struct.distribute_resources(total, players)
