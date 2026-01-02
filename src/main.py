@@ -49,10 +49,6 @@ def main():
         
         players.append(Player(f"Player {i+1}", colors[i]))
 
-    first_settlements = game_loop.place_initial_settlements(players)
-
-    first_roads = game_loop.place_initial_roads(players)
-
     tab = Tabs(root)
 
     tabs = tab.tabs()
