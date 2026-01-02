@@ -51,18 +51,6 @@ class GameLoop:
                 pass
         return 3
     
-    def place_initial_settlements(self, players: list):
-        for player in players:
-            self.game_struct.place_settlement_initial(player, self.board)
-        for player in reversed(players):
-            self.game_struct.place_settlement_initial(player, self.board)
-        return
-    
-    def place_initial_roads(self, players: list):
-        for player in players:
-            self.game_struct.place_road_off_of__init_settlement(player, self.board)
-        return
-    
     def game_turn(self, players: list, update_player_stats_tab=None):
         first_die = random.randint(1, 6)
         second_die = random.randint(1, 6)

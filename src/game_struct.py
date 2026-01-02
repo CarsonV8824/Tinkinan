@@ -255,38 +255,6 @@ class GameStruct:
         node = f"Piece{piece_number}"
         
         return self.graph.nodes[node]['dice_number']
-    
-    def place_settlement_initial(self, player, board):
-        available_houses = [node for node in self.graph.nodes if node.startswith("House") and self.graph.nodes[node]['Player'] is None]
-        if available_houses:
-            chosen_house = random.choice(available_houses)
-            self.graph.nodes[chosen_house]['Player'] = player.name
-            self.graph.nodes[chosen_house]['Type'] = "Settlement"
-            board.draw_settlement_initial(chosen_house, player.color)
-            print(f"{player.name} placed initial settlement at {chosen_house}.")
-
-    def place_road_off_of__init_settlement(self, player, board):
-        player_houses = [node for node in self.graph.nodes if node.startswith("House") and self.graph.nodes[node].get('Player') == player.name and self.graph.nodes[node].get('Type') == "Settlement"]
-        
-        # Place one road for EACH settlement
-        for house in player_houses:
-            possible_roads = []
-            neighbors = self.graph.neighbors(house)
-            for neighbor in neighbors:
-                # Only consider House nodes as valid road endpoints, not Piece nodes
-                if neighbor.startswith("House") and self.graph.nodes[neighbor]['Player'] is None:
-                    # Check if the edge doesn't already have a road
-                    edge_data = self.graph.get_edge_data(house, neighbor)
-                    if edge_data.get('Player') is None:
-                        possible_roads.append((house, neighbor))
-            
-            if possible_roads:
-                chosen_road = random.choice(possible_roads)
-                # Store road ownership on the EDGE, not the node
-                self.graph[chosen_road[0]][chosen_road[1]]['Player'] = player.name
-                board.draw_road_initial(chosen_road[0], chosen_road[1], player.color)
-                print(f"{player.name} placed road from {chosen_road[0]} to {chosen_road[1]}.")
-
 
     def distribute_resources(self, dice_roll, players: list):
         for piece in list(self.graph.nodes):

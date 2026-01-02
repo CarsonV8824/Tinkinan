@@ -311,28 +311,6 @@ class Canvas:
 
     def __choose_radom_color_from_piece_list(self) -> str:
         return self.pieces.pop(random.randint(0, len(self.pieces)-1))
-    
-    def draw_settlement_initial(self, house_node: str, player_color: str) -> None:
-        house_number = int(house_node.replace("House", ""))
-        corner_coords = self.corner_coords[house_number]
-        if corner_coords:
-            x, y = corner_coords
-            size = 10
-            points = [
-                (x, y - size),
-                (x - size, y + size),
-                (x + size, y + size)
-            ]
-            flat_points = [coord for point in points for coord in point]
-            self.canvas.create_polygon(flat_points, outline='black', fill=player_color, width=2)
-
-    def draw_road_initial(self, player_house, neighbor_house, player_color: str) -> None:
-        house_num_1 = int(player_house.replace("House", ""))
-        house_num_2 = int(neighbor_house.replace("House", ""))
-        coord1 = self.corner_coords[house_num_1]
-        coord2 = self.corner_coords[house_num_2]
-        if coord1 and coord2:
-            self.canvas.create_line(coord1[0], coord1[1], coord2[0], coord2[1], fill=player_color, width=6)
 
     def is_corner_hit(self, event, tolerance=10):
 
