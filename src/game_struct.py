@@ -110,8 +110,6 @@ class GameStruct:
 
         #--piece 6---
 
-        
-
         self.graph.add_edge("House12", "Piece16")
         self.graph.add_edge("House13", "Piece16")
         self.graph.add_edge("House14", "Piece16")
