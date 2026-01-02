@@ -52,9 +52,13 @@ class GameLoop:
         return 3
     
     def place_initial_settlements(self, players: list):
-        pass
-
-    def game_turn(self, **players: list):
+        for player in players:
+            self.game_struct.place_settlement_initial(player, self.board)
+        for player in reversed(players):
+            self.game_struct.place_settlement_initial(player, self.board)
+        return
+    
+    def game_turn(self, players: list, update_player_stats_tab=None):
         first_die = random.randint(1, 6)
         second_die = random.randint(1, 6)
         self.first_dice.config(text=f"First Dice Roll: {first_die}")
@@ -64,3 +68,13 @@ class GameLoop:
 
         if total != 7:
             self.game_struct.distribute_resources(total, players)
+        
+        # Update UI after resources are distributed
+        if update_player_stats_tab:
+            update_player_stats_tab()
+        self.board.canvas.update()
+       
+
+        
+
+        

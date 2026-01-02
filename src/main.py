@@ -37,7 +37,9 @@ def main():
     
     board = Canvas(root, game_struct)
 
-    player_count = GameLoop(root, game_struct, board, first_dice, second_dice, total_of_dies).start_screen()
+    game_loop = GameLoop(root, game_struct, board, first_dice, second_dice, total_of_dies)
+
+    player_count = game_loop.start_screen()
 
     players = []
     
@@ -45,11 +47,9 @@ def main():
     
     for i in range(player_count):
         
-        players.append(Player(f"Player {i+1}", colors[random.randint(0, len(colors)-1)]))
+        players.append(Player(f"Player {i+1}", colors[i]))
 
-    first_settlements = GameLoop(root, game_struct, board, first_dice, second_dice, total_of_dies).place_initial_settlements(players)
-
-    game_loop = GameLoop(root, game_struct, board, first_dice, second_dice, total_of_dies)
+    first_settlements = game_loop.place_initial_settlements(players)
 
     tab = Tabs(root)
 
@@ -59,7 +59,7 @@ def main():
 
     player_stats_tab = tab.player_stats_tab(tabs, players)
 
-    tab.update_player_stats(players) #use this to update player stats later
+    tab.update_player_stats(players) 
 
     trade_tab = tab.trade_tab(tabs)
 

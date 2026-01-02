@@ -11,11 +11,11 @@ class Player:
         self.name = name
         self.color = color
         self.resources = {
-            "sheep": 0,
-            "wood": 0,
-            "brick": 0,
-            "wheat": 0,
-            "ore": 0
+            "lime": 0,
+            "green": 0,
+            "brown": 0,
+            "yellow": 0,
+            "gray": 0
         }
         self.settlements = []
         self.cities = []

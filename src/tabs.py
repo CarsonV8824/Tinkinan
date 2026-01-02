@@ -38,7 +38,8 @@ class Tabs:
 
         #=====================================================================================
 
-        dice_button = ttk.Button(frame, text="Roll Dice", command=lambda: game_loop.game_turn(players=players))
+        dice_button = ttk.Button(frame, text="Roll Dice", command=lambda: game_loop.game_turn(players=players, update_player_stats_tab=lambda: self.update_player_stats(players)))
+
         dice_button.pack(pady=20)
 
         return dice_tab
