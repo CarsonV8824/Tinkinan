@@ -273,6 +273,21 @@ class GameStruct:
                                 if p.name == owner:
                                     p.add_resource(resource, 1)
                                     print(f"{p.name} received 1 {resource} from {piece} due to dice roll {dice_roll}.")
+
+    def add_player_to_house(self, house_number, player_name, structure_type):
+        node_name = f"House{house_number}"
+        self.graph.nodes[node_name]['Player'] = player_name
+        self.graph.nodes[node_name]['Type'] = structure_type
+        print(f"Added {structure_type} for player {player_name} at {node_name}")
+
+    def add_player_to_road(self, house_number_1, house_number_2, player_name):
+        node_1 = f"House{house_number_1}"
+        node_2 = f"House{house_number_2}"
+        if self.graph.has_edge(node_1, node_2):
+            self.graph.edges[node_1, node_2]['Player'] = player_name
+            print(f"Added road for player {player_name} between {node_1} and {node_2}")
+        else:
+            print(f"No edge exists between {node_1} and {node_2} to add a road.")
         
     def __str__(self):
         return f"nodes: {len(list(self.graph.nodes))}. number of edges {len(list(self.graph.edges))}"

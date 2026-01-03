@@ -52,7 +52,9 @@ def main():
     tab = Tabs(root)
 
     tabs = tab.tabs()
-    
+
+    game_loop.placing_initial_settlements(players, tabs=tabs)
+
     dice_tab = tab.dice_tab(tabs, game_loop, players)
 
     player_stats_tab = tab.player_stats_tab(tabs, players)

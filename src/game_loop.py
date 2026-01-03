@@ -51,6 +51,28 @@ class GameLoop:
                 pass
         return 3
     
+    """TODO: Make the players choose where to place their initial settlements and roads. 
+        Try to keep canvas methods out of game struct class.
+        hide tabs untill initial placement is done."""
+
+    def placing_initial_settlements(self, players: list, tabs: ttk.Notebook=None):
+        tabs.pack_forget() # Hide tabs during initial placement
+        
+        """for _ in range(2):
+            for player in players:
+                self.board.enable_settlement_placement(player)
+                self.root.wait_variable(self.board.settlement_placed)
+                self.board.disable_settlement_placement()
+                self.board.enable_road_placement(player)
+                self.root.wait_variable(self.board.road_placed)
+                self.board.disable_road_placement()
+                if _ == 1:
+                    self.game_struct.distribute_initial_resources(player, self.board)"""
+        """if tabs:
+            tabs.tab(1, state="normal")
+            tabs.tab(2, state="normal")"""
+        tabs.pack(expand=True, fill="both") # Show tabs after placement is done
+    
     def game_turn(self, players: list, update_player_stats_tab=None):
         first_die = random.randint(1, 6)
         second_die = random.randint(1, 6)
