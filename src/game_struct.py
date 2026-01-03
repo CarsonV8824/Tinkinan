@@ -273,12 +273,30 @@ class GameStruct:
                                 if p.name == owner:
                                     p.add_resource(resource, 1)
                                     print(f"{p.name} received 1 {resource} from {piece} due to dice roll {dice_roll}.")
-
-    def add_player_to_house(self, house_number, player_name, structure_type):
+    
+    def check_house_occupancy(self, house_number:int) -> bool:
         node_name = f"House{house_number}"
-        self.graph.nodes[node_name]['Player'] = player_name
-        self.graph.nodes[node_name]['Type'] = structure_type
-        print(f"Added {structure_type} for player {player_name} at {node_name}")
+        return self.graph.nodes[node_name]['Player'] is not None
+    
+    def check_road_occupancy(self, house_number_1:int, house_number_2:int) -> bool:
+        node_1 = f"House{house_number_1}"
+        node_2 = f"House{house_number_2}"
+        if self.graph.has_edge(node_1, node_2):
+            return self.graph.edges[node_1, node_2]['Player'] is not None
+        else:
+            print(f"No edge exists between {node_1} and {node_2}.")
+            return False
+
+    def add_player_to_house(self, house_number:int, player_name:str, structure_type:str):
+        node_name = f"House{house_number}"
+        if self.graph.nodes[node_name]['Player'] is not None:
+            print(f"House {house_number} is already occupied by {self.graph.nodes[node_name]['Player']}.")
+            
+        else:
+            self.graph.nodes[node_name]['Player'] = player_name
+            self.graph.nodes[node_name]['Type'] = structure_type
+            print(f"Added {structure_type} for player {player_name} at {node_name}")
+
 
     def add_player_to_road(self, house_number_1, house_number_2, player_name):
         node_1 = f"House{house_number_1}"

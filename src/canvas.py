@@ -313,13 +313,43 @@ class Canvas:
         return self.pieces.pop(random.randint(0, len(self.pieces)-1))
 
     def is_corner_hit(self, event, tolerance=10):
-
         cx, cy = self.canvas.canvasx(event.x), self.canvas.canvasy(event.y)
         for idx, flat_points in enumerate(self.hexagons, start=1):
             for x_i, y_i in zip(flat_points[0::2], flat_points[1::2]):
                 dx, dy = cx - x_i, cy - y_i
                 if (dx*dx + dy*dy) ** 0.5 <= tolerance:
                     return idx, (x_i, y_i)  # piece number, corner coords
+        return None, None
+    
+    def is_edge_hit(self, event, tolerance=10):
+        cx, cy = self.canvas.canvasx(event.x), self.canvas.canvasy(event.y)
+        for idx, flat_points in enumerate(self.hexagons, start=1):
+            for i in range(6):
+                x1, y1 = flat_points[2*i], flat_points[2*i + 1]
+                x2, y2 = flat_points[2*((i + 1) % 6)], flat_points[2*((i + 1) % 6) + 1]
+                
+                # Calculate distance from point to line segment
+                A = cx - x1
+                B = cy - y1
+                C = x2 - x1
+                D = y2 - y1
+
+                dot = A * C + B * D
+                len_sq = C * C + D * D
+                param = dot / len_sq if len_sq != 0 else -1
+
+                if param < 0:
+                    xx, yy = x1, y1
+                elif param > 1:
+                    xx, yy = x2, y2
+                else:
+                    xx = x1 + param * C
+                    yy = y1 + param * D
+
+                dx = cx - xx
+                dy = cy - yy
+                if (dx*dx + dy*dy) ** 0.5 <= tolerance:
+                    return idx, ((x1, y1), (x2, y2))  # piece number, edge coords
         return None, None
 
     def on_canvas_click(self, event):
@@ -330,6 +360,58 @@ class Canvas:
                 f.write(f"Corner hit on piece {hit_piece} at {corner}\n")"""
         else:
             print("No corner hit")
+
+    def settlement_init(self, current_player):
+        self.placement_complete = False
+
+        def on_canvas_click(event):
+            if self.placement_complete:
+                return  # Ignore clicks if placement is complete
+
+            hit_piece, corner = self.is_corner_hit(event)
+            if hit_piece:
+                print(f"{current_player.name} clicked on piece {hit_piece} at {corner}")
+                # Here you would add logic to place settlement/road
+
+
+
+                self.placement_complete = True  # Mark placement as complete
+
+            else:
+                print("No corner hit")
+
+        self.canvas.bind("<Button-1>", on_canvas_click)
+
+        # Wait until placement is complete
+        while not self.placement_complete:
+            self.root.update()
+
+    def road_init(self, current_player):
+        self.placement_complete = False
+
+        def on_canvas_click(event):
+            if self.placement_complete:
+                return  # Ignore clicks if placement is complete
+
+            hit_piece, edge_coords = self.is_edge_hit(event)
+            if hit_piece:
+                print(f"{current_player.name} clicked on edge {hit_piece} at {edge_coords}")
+                # Here you would add logic to place settlement/road
+
+                self.placement_complete = True  # Mark placement as complete
+
+            else:
+                print("No edge hit")
+
+        self.canvas.bind("<Button-1>", on_canvas_click)
+
+        # Wait until placement is complete
+        while not self.placement_complete:
+            self.root.update()
+        
+    
+
+    
 
     
     

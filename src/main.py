@@ -11,10 +11,12 @@ from player import Player
 import random
 
 def load_data():
-    
     try:
-        db = Database()
-        return db.get_data()
+        with Database("database/Catan.db") as db:
+            data = db.get_data()
+            if not data:
+                return None
+        return data
     except Exception as e:
         print (e)
 
@@ -24,20 +26,11 @@ def main():
     root.geometry("1200x800")
     root.title("Catan in Tkinter")
 
-    first_dice = ttk.Label(root, text="First Dice Roll: ")
-    first_dice.pack()
-
-    second_dice = ttk.Label(root, text="Second Dice Roll: ")
-    second_dice.pack()
-
-    total_of_dies = ttk.Label(root, text="Total of Dice: ")
-    total_of_dies.pack()
-
     game_struct = GameStruct()
     
     board = Canvas(root, game_struct)
 
-    game_loop = GameLoop(root, game_struct, board, first_dice, second_dice, total_of_dies)
+    game_loop = GameLoop(root, game_struct, board)
 
     player_count = game_loop.start_screen()
 

@@ -9,15 +9,17 @@ from canvas import Canvas
 
 class GameLoop:
     
-    def __init__(self, root: tk.Tk, game_struct: GameStruct, board: Canvas, first_dice:ttk.Label=None, second_dice:ttk.Label=None, total_of_dice:ttk.Label=None):
+    def __init__(self, root: tk.Tk, game_struct: GameStruct, board: Canvas):
         
         self.root = root
         self.game_struct = game_struct
-        self.board = board
+        self.board:Canvas = board
         self.player_count = 3
-        self.first_dice = first_dice
-        self.second_dice = second_dice
-        self.total_of_dice = total_of_dice
+        self.first_dice = None
+        self.second_dice = None
+        self.total_of_dice = None
+
+        self.player_index = 0
 
     def start_screen(self):
         self.root.withdraw()  
@@ -56,30 +58,31 @@ class GameLoop:
         hide tabs untill initial placement is done."""
 
     def placing_initial_settlements(self, players: list, tabs: ttk.Notebook=None):
-        tabs.pack_forget() # Hide tabs during initial placement
         
-        """for _ in range(2):
-            for player in players:
-                self.board.enable_settlement_placement(player)
-                self.root.wait_variable(self.board.settlement_placed)
-                self.board.disable_settlement_placement()
-                self.board.enable_road_placement(player)
-                self.root.wait_variable(self.board.road_placed)
-                self.board.disable_road_placement()
-                if _ == 1:
-                    self.game_struct.distribute_initial_resources(player, self.board)"""
-        """if tabs:
-            tabs.tab(1, state="normal")
-            tabs.tab(2, state="normal")"""
+        tabs.pack_forget() # Hide tabs during initial placementl
+        
+        total_initial_placements = len(players) * 2
+        current_placement = 0
+
+        while current_placement < total_initial_placements:
+            current_player = players[self.player_index]
+
+            self.board.canvas.update()
+            self.board.settlement_init(current_player)
+            self.board.road_init(current_player)
+            current_placement += 1
+            self.player_index = (self.player_index + 1) % len(players)
+            
+
         tabs.pack(expand=True, fill="both") # Show tabs after placement is done
     
-    def game_turn(self, players: list, update_player_stats_tab=None):
+    def game_turn(self, players: list,  first_dice_label:ttk.Label=None, second_dice_label:ttk.Label=None, total_of_dice_label:ttk.Label=None, update_player_stats_tab=None):
         first_die = random.randint(1, 6)
         second_die = random.randint(1, 6)
-        self.first_dice.config(text=f"First Dice Roll: {first_die}")
-        self.second_dice.config(text=f"Second Dice Roll: {second_die}")
+        first_dice_label.config(text=f"First Dice Roll: {first_die}")
+        second_dice_label.config(text=f"Second Dice Roll: {second_die}")
         total = first_die + second_die
-        self.total_of_dice.config(text=f"Total of Dice: {total}")
+        total_of_dice_label.config(text=f"Total of Dice: {total}")
 
         if total != 7:
             self.game_struct.distribute_resources(total, players)

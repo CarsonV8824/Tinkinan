@@ -1,3 +1,4 @@
+from logging import root
 from tkinter import ttk  
 from ttkthemes import ThemedTk
 import tkinter as tk
@@ -38,10 +39,19 @@ class Tabs:
 
         #=====================================================================================
 
-        dice_button = ttk.Button(frame, text="Roll Dice", command=lambda: game_loop.game_turn(players=players, update_player_stats_tab=lambda: self.update_player_stats(players)))
+        dice_button = ttk.Button(frame, text="Roll Dice", command=lambda: game_loop.game_turn(players=players, first_dice_label=first_dice, second_dice_label=second_dice, total_of_dice_label=total_of_dice, update_player_stats_tab=lambda: self.update_player_stats(players)))
 
         dice_button.pack(pady=20)
 
+        first_dice = ttk.Label(frame, text="First Dice Roll: ")
+        first_dice.pack()
+
+        second_dice = ttk.Label(frame, text="Second Dice Roll: ")
+        second_dice.pack()
+
+        total_of_dice = ttk.Label(frame, text="Total of Dice: ")
+        total_of_dice.pack()
+        
         return dice_tab
     
     def player_stats_tab(self, notebook:ttk.Notebook, players:list):
