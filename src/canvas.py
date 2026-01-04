@@ -351,8 +351,11 @@ class Canvas:
     def get_corner_num(self, corner, tolerance=0.01):
         """Find corner number by coordinate with tolerance for floating-point errors"""
         for key, (x, y) in self.corner_coords.items():
-            if abs(x - corner[0]) < tolerance and abs(y - corner[1]) < tolerance:
-                return key
+            try:
+                if abs(x - corner[0]) < tolerance and abs(y - corner[1]) < tolerance:
+                    return key
+            except TypeError as e:
+                print(str(e) + " in get_corner_num")
         return None
     
     def draw_settlement(self, x: float, y: float, color: str) -> None:

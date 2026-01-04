@@ -1,5 +1,5 @@
 import networkx as nx
-from collections import deque
+#from collections import deque
 import random
 
 import player
@@ -257,7 +257,9 @@ class GameStruct:
         return self.graph.nodes[node]['dice_number']
 
     def distribute_resources(self, dice_roll, players: list):
-        for piece in list(self.graph.nodes):
+        
+        pieces:list[str] = list(self.graph.nodes)
+        for piece in pieces:
             if piece.startswith("Piece"):
                 piece_data = self.graph.nodes[piece]
                 # Convert dice_number to int for comparison, skip if empty string

@@ -36,7 +36,7 @@ def main():
 
     players = []
     
-    colors = ["red", "blue", "green", "yellow"]
+    colors = ["red", "blue", "purple", "orange"]
     
     for i in range(player_count):
         
