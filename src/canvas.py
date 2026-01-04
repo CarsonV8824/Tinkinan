@@ -18,10 +18,6 @@ class Canvas:
         self.pieces = []
         self.__get_pieces()
         self.__draw_board()
-        
-        
-        
-        self.canvas.bind("<Button-1>", self.on_canvas_click)
 
         self.coords = ()
 
@@ -351,15 +347,25 @@ class Canvas:
                 if (dx*dx + dy*dy) ** 0.5 <= tolerance:
                     return idx, ((x1, y1), (x2, y2))  # piece number, edge coords
         return None, None
-
-    def on_canvas_click(self, event):
-        hit_piece, corner = self.is_corner_hit(event)
-        if hit_piece:
-            print(f"Corner hit on piece {hit_piece} at {corner}")
-            """with open("logs/corner.txt", "a") as f:
-                f.write(f"Corner hit on piece {hit_piece} at {corner}\n")"""
-        else:
-            print("No corner hit")
+    
+    def get_corner_num(self, corner, tolerance=0.01):
+        """Find corner number by coordinate with tolerance for floating-point errors"""
+        for key, (x, y) in self.corner_coords.items():
+            if abs(x - corner[0]) < tolerance and abs(y - corner[1]) < tolerance:
+                return key
+        return None
+    
+    def draw_settlement(self, x: float, y: float, color: str) -> None:
+        size = 10
+        points = [
+            (x - size, y),
+            (x, y - size),
+            (x + size, y),
+            (x + size, y + size),
+            (x - size, y + size)
+        ]
+        flat_points = [coord for point in points for coord in point]
+        self.canvas.create_polygon(flat_points, outline='black', fill=color, width=2)
 
     def settlement_init(self, current_player):
         self.placement_complete = False
@@ -369,13 +375,24 @@ class Canvas:
                 return  # Ignore clicks if placement is complete
 
             hit_piece, corner = self.is_corner_hit(event)
+
+            corner_num = self.get_corner_num(corner)
             if hit_piece:
-                print(f"{current_player.name} clicked on piece {hit_piece} at {corner}")
                 # Here you would add logic to place settlement/road
+                
+                check = self.game_struct.check_house_occupancy_empty(corner_num)
 
-
-
-                self.placement_complete = True  # Mark placement as complete
+                if check:
+                    x_cord = corner[0]
+                    y_cord = corner[1]
+                    self.draw_settlement(x_cord, y_cord, current_player.color)
+                    self.game_struct.add_player_to_house(corner_num, current_player.name, "House")
+                    print(f"{current_player.name} clicked on piece {hit_piece} at {corner}")
+                    self.placement_complete = True  # Mark placement as complete
+                
+                elif not check:
+                    print(f"Corner {corner_num} is already occupied.")
+                    # return
 
             else:
                 print("No corner hit")
@@ -395,6 +412,7 @@ class Canvas:
 
             hit_piece, edge_coords = self.is_edge_hit(event)
             if hit_piece:
+
                 print(f"{current_player.name} clicked on edge {hit_piece} at {edge_coords}")
                 # Here you would add logic to place settlement/road
 

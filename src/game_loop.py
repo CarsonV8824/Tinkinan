@@ -69,7 +69,7 @@ class GameLoop:
 
             self.board.canvas.update()
             self.board.settlement_init(current_player)
-            self.board.road_init(current_player)
+            #self.board.road_init(current_player)
             current_placement += 1
             self.player_index = (self.player_index + 1) % len(players)
             

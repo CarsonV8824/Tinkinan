@@ -274,9 +274,9 @@ class GameStruct:
                                     p.add_resource(resource, 1)
                                     print(f"{p.name} received 1 {resource} from {piece} due to dice roll {dice_roll}.")
     
-    def check_house_occupancy(self, house_number:int) -> bool:
+    def check_house_occupancy_empty(self, house_number:int) -> bool:
         node_name = f"House{house_number}"
-        return self.graph.nodes[node_name]['Player'] is not None
+        return self.graph.nodes[node_name]['Player'] == None
     
     def check_road_occupancy(self, house_number_1:int, house_number_2:int) -> bool:
         node_1 = f"House{house_number_1}"
