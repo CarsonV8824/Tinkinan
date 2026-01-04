@@ -294,6 +294,73 @@ class GameStruct:
         else:
             print(f"No edge exists between {node_1} and {node_2}.")
             return False
+        
+    def is_valid_road_placement(self, house_number_1: int, house_number_2: int, player_name: str) -> bool:
+        """
+        Returns True if the player can legally place a road between these two houses.
+        A road is valid if:
+        1. The road is unoccupied
+        2. At least one endpoint has a settlement or connected road owned by the player
+        """
+        # First check if the road is empty
+        if not self.check_road_occupancy(house_number_1, house_number_2):
+            return False
+        
+        # Check if player owns a settlement at either endpoint
+        if self.check_house_owner(house_number_1, player_name) or self.check_house_owner(house_number_2, player_name):
+            return True
+        
+        # Check if player has a road connected to either endpoint
+        node_1 = f"House{house_number_1}"
+        node_2 = f"House{house_number_2}"
+        
+        # Check all neighbors of house_number_1 for player's roads
+        for neighbor in self.graph.neighbors(node_1):
+            if neighbor.startswith("House"):
+                if self.graph.has_edge(node_1, neighbor):
+                    if self.graph.edges[node_1, neighbor].get('Player') == player_name:
+                        return True
+        
+        # Check all neighbors of house_number_2 for player's roads
+        for neighbor in self.graph.neighbors(node_2):
+            if neighbor.startswith("House"):
+                if self.graph.has_edge(node_2, neighbor):
+                    if self.graph.edges[node_2, neighbor].get('Player') == player_name:
+                        return True
+        
+        return False
+    
+    def is_valid_house_placement(self, house_number: int, player_name: str) -> bool:
+        """
+        Returns True if the player can legally place a settlement at this house.
+        A house placement is valid if:
+        1. The house is unoccupied
+        2. At least one adjacent road is owned by the player (or it's the initial placement phase)
+        3. No settlement exists on any adjacent house (distance rule)
+        """
+        # First check if the house is empty
+        if not self.check_house_occupancy_empty(house_number):
+            return False
+        
+        node_name = f"House{house_number}"
+        
+        # Check all adjacent houses - they must be unoccupied (settlement distance rule)
+        for neighbor in self.graph.neighbors(node_name):
+            if neighbor.startswith("House"):
+                if self.graph.nodes[neighbor]['Player'] is not None:
+                    print(f"House {house_number} is too close to an existing settlement at {neighbor}.")
+                    return False
+        
+        # Check if player owns at least one adjacent road
+        for neighbor in self.graph.neighbors(node_name):
+            if neighbor.startswith("House"):
+                if self.graph.has_edge(node_name, neighbor):
+                    if self.graph.edges[node_name, neighbor].get('Player') == player_name:
+                        return True
+        
+        # If no adjacent road found, return False (settlement must connect to a road)
+        print(f"No adjacent road owned by {player_name} at house {house_number}.")
+        return False
 
     def add_player_to_house(self, house_number:int, player_name:str, structure_type:str):
         node_name = f"House{house_number}"
