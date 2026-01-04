@@ -276,15 +276,21 @@ class GameStruct:
                                     p.add_resource(resource, 1)
                                     print(f"{p.name} received 1 {resource} from {piece} due to dice roll {dice_roll}.")
     
-    def check_house_occupancy_empty(self, house_number:int) -> bool:
+    def check_house_owner(self, house_number: int, player_name: str) -> bool:
+        """Returns True if the specified player owns a settlement at this house"""
         node_name = f"House{house_number}"
-        return self.graph.nodes[node_name]['Player'] == None
+        return self.graph.nodes[node_name]['Player'] == player_name
+    
+    def check_house_occupancy_empty(self, house_number:int) -> bool:
+        """Returns True if the house is unoccupied"""
+        node_name = f"House{house_number}"
+        return self.graph.nodes[node_name]['Player'] is None
     
     def check_road_occupancy(self, house_number_1:int, house_number_2:int) -> bool:
         node_1 = f"House{house_number_1}"
         node_2 = f"House{house_number_2}"
         if self.graph.has_edge(node_1, node_2):
-            return self.graph.edges[node_1, node_2]['Player'] is not None
+            return self.graph.edges[node_1, node_2]['Player'] is None
         else:
             print(f"No edge exists between {node_1} and {node_2}.")
             return False

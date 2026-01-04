@@ -345,7 +345,7 @@ class Canvas:
                 dx = cx - xx
                 dy = cy - yy
                 if (dx*dx + dy*dy) ** 0.5 <= tolerance:
-                    return idx, ((x1, y1), (x2, y2))  # piece number, edge coords
+                    return idx, ((x1, y1), (x2, y2))   # piece number, edge coords of what houses inbetween
         return None, None
     
     def get_corner_num(self, corner, tolerance=0.01):
@@ -357,6 +357,9 @@ class Canvas:
             except TypeError as e:
                 print(str(e) + " in get_corner_num")
         return None
+    
+    def draw_road(self, x1: float, y1: float, x2: float, y2: float, color: str) -> None:
+        self.canvas.create_line(x1, y1, x2, y2, fill=color, width=6)
     
     def draw_settlement(self, x: float, y: float, color: str) -> None:
         size = 10
@@ -384,7 +387,6 @@ class Canvas:
                 # Here you would add logic to place settlement/road
                 
                 check = self.game_struct.check_house_occupancy_empty(corner_num)
-
                 if check:
                     x_cord = corner[0]
                     y_cord = corner[1]
@@ -411,22 +413,40 @@ class Canvas:
 
         def on_canvas_click(event):
             if self.placement_complete:
-                return  # Ignore clicks if placement is complete
+                return
 
             hit_piece, edge_coords = self.is_edge_hit(event)
-            if hit_piece:
-
-                print(f"{current_player.name} clicked on edge {hit_piece} at {edge_coords}")
-                # Here you would add logic to place settlement/road
-
-                self.placement_complete = True  # Mark placement as complete
-
-            else:
+            
+            if edge_coords is None:
                 print("No edge hit")
+                return
+            
+            house1_num, house2_num = edge_coords
+            house1_corner_num = self.get_corner_num(house1_num)
+            house2_corner_num = self.get_corner_num(house2_num)
+            
+            if hit_piece:
+                print(f"{current_player.name} clicked on edge {hit_piece} at {edge_coords}")
+                road_check = self.game_struct.check_road_occupancy(house1_corner_num, house2_corner_num)
+                
+                # Check if player owns a settlement at either endpoint
+                has_settlement_endpoint = (
+                    self.game_struct.check_house_owner(house1_corner_num, current_player.name) or
+                    self.game_struct.check_house_owner(house2_corner_num, current_player.name)
+                )
+                
+                if road_check and has_settlement_endpoint:
+                    x1, y1 = house1_num
+                    x2, y2 = house2_num
+                    self.draw_road(x1, y1, x2, y2, current_player.color)
+                    self.game_struct.add_player_to_road(house1_corner_num, house2_corner_num, current_player.name)
+                    self.placement_complete = True
+                else:
+                    if not has_settlement_endpoint:
+                        print(f"You must have a settlement at one end of this road.")
 
         self.canvas.bind("<Button-1>", on_canvas_click)
 
-        # Wait until placement is complete
         while not self.placement_complete:
             self.root.update()
         
