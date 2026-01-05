@@ -76,7 +76,9 @@ class GameLoop:
 
         tabs.pack(expand=True, fill="both") # Show tabs after placement is done
     
-    def game_turn(self, players: list,  first_dice_label:ttk.Label=None, second_dice_label:ttk.Label=None, total_of_dice_label:ttk.Label=None, update_player_stats_tab=None):
+    def game_turn(self, player_info:ttk.Label, players: list,  first_dice_label:ttk.Label=None, second_dice_label:ttk.Label=None, total_of_dice_label:ttk.Label=None, update_player_stats_tab=None):
+        
+        self.board.canvas.update()
         first_die = random.randint(1, 6)
         second_die = random.randint(1, 6)
         first_dice_label.config(text=f"First Dice Roll: {first_die}")
@@ -91,6 +93,12 @@ class GameLoop:
         if update_player_stats_tab:
             update_player_stats_tab()
         self.board.canvas.update()
+
+        self.player_index = (self.player_index + 1) % len(players)
+        
+        player_info.config(text=f"{players[self.player_index].name}'s Turn")
+
+        
        
 
         
