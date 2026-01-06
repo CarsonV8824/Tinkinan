@@ -1,3 +1,3 @@
-# Catan in Tkinter
+# Tinkinan
 
 still in progress
