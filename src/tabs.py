@@ -89,12 +89,12 @@ class Tabs:
             color_var = tk.StringVar(self.root, value=f"Color: {player.color}")
             ttk.Label(player_frame, textvariable=color_var).pack(anchor="w")
 
-            resources_label = ttk.Label(player_frame, text="Resources:")
-            resources_label.pack(anchor="w")
+            stats_label = ttk.Label(player_frame, text="Stats:")
+            stats_label.pack(anchor="w")
 
             resource_vars = {}
             for resource, amount in player.resources.items():
-                res_var = tk.StringVar(self.root, value=f"  {resource.capitalize()}: {amount}")
+                res_var = tk.StringVar(self.root, value=f"  {resource}: {amount}")
                 resource_vars[resource] = res_var
                 ttk.Label(player_frame, textvariable=res_var).pack(anchor="w")
 
@@ -112,7 +112,7 @@ class Tabs:
             for resource, amount in player.resources.items():
                 res_var = vars_map["resources"].get(resource)
                 if res_var:
-                    res_var.set(f"  {resource.capitalize()}: {amount}")
+                    res_var.set(f"  {resource}: {amount}")
 
     def trade_tab(self, notebook:ttk.Notebook):
 

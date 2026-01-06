@@ -15,7 +15,8 @@ class Player:
             "green": 0,
             "brown": 0,
             "yellow": 0,
-            "gray": 0
+            "gray": 0,
+            "victory_points":0,
         }
         self.settlements = []
         self.cities = []
