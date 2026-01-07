@@ -9,6 +9,7 @@ class Tabs:
 
     def __init__(self, root:ThemedTk):
         self.root = root
+        self.biuld_option = None
 
     def tabs(self):
         tab = ttk.Notebook(self.root)
@@ -140,7 +141,7 @@ class Tabs:
 
         return trade_tab
 
-    def biuld_tab(self, notebook:ttk.Notebook):
+    def build_tab(self, notebook:ttk.Notebook):
         
         biuld_tab = ttk.Frame(notebook)
         notebook.add(biuld_tab, text="biuld")
@@ -164,13 +165,23 @@ class Tabs:
 
         #=====================================================================================
 
-        combo = ttk.Combobox(frame, values=["road", "settlement", "city"], state="readonly")
+        road = ttk.Label(frame, text="Press r to build a road")
+        road.pack(padx=10, pady=10)
+
+        settlement = ttk.Label(frame, text="Press s to build a settlement")
+        settlement.pack(padx=10, pady=10)
+
+        city = ttk.Label(frame, text="Press c to build a city")
+        city.pack(padx=10, pady=10)
+
+        """combo = ttk.Combobox(frame, values=["road", "settlement", "city"], state="readonly")
         combo.current(0)  
         combo.pack(padx=10, pady=10)
 
         def on_select(event):
             print("Selected:", combo.get())
-        combo.bind("<<ComboboxSelected>>", on_select)
+            self.biuld_option = combo.get()
+        combo.bind("<<ComboboxSelected>>", on_select)"""
         
         return biuld_tab
 

@@ -21,6 +21,14 @@ class Canvas:
 
         self.coords = ()
 
+        self.current_player = None #to track current player for placement
+
+        self.settlement_on = False
+
+        self.road_on = False
+        
+        self.city_on = False
+
         #look at Game_Board.png to see how the corner coords are mapped to piece numbers
         self.corner_coords = {
             1: (238.39745962155615, 125.0),
@@ -449,6 +457,40 @@ class Canvas:
 
         while not self.placement_complete:
             self.root.update()
+
+    def get_player(self, player):
+        self.current_player = player
+        print(f"Current player set to {player.name}")
+
+    def settlement_mode(self, event):
+        self.canvas.bind("<s>", lambda e: (setattr(self, 'settlement_on', True), 
+                        setattr(self, 'road_on', False), 
+                        setattr(self, 'city_on', False)))
+
+    def city_mode(self, event):
+        self.canvas.bind("<c>", lambda e: (setattr(self, 'city_on', True),
+                        setattr(self, 'settlement_on', False), 
+                        setattr(self, 'road_on', False)))
+        
+    def road_mode(self, event):
+        self.canvas.bind("<r>", lambda e: (setattr(self, 'road_on', True),
+                        setattr(self, 'settlement_on', False), 
+                        setattr(self, 'city_on', False)))
+
+    def on_canvas_click_game_loop(self, event): #make this method make the player able to buy settlements, roads, and cities
+        
+        print(self.current_player.name + " clicked the canvas")
+        
+        hit_piece, corner = self.is_corner_hit(event)
+        hit_piece_edge, edge_coords = self.is_edge_hit(event)
+        if hit_piece:
+            print(f"Clicked on piece {hit_piece} at {corner}!")
+        elif hit_piece_edge:
+            print(f"Clicked on edge {hit_piece_edge} at {edge_coords}!")
+        else:
+            print("No corner hit")
+
+    
         
     
 

@@ -75,9 +75,16 @@ class GameLoop:
             
 
         tabs.pack(expand=True, fill="both") # Show tabs after placement is done
+
+        self.board.canvas.bind("<Button-1>", self.board.on_canvas_click_game_loop)  # Re-bind the main game click handler
+
+        self.board.city_mode() #bind city mode after initial placement
+
+        self.board.road_mode() #bind road mode after initial placement
+
+        self.board.settlement_mode() #bind settlement mode after initial placement
     
     def game_turn(self, player_info:ttk.Label, players: list,  first_dice_label:ttk.Label=None, second_dice_label:ttk.Label=None, total_of_dice_label:ttk.Label=None, update_player_stats_tab=None):
-        
         self.board.canvas.update()
         first_die = random.randint(1, 6)
         second_die = random.randint(1, 6)
@@ -97,6 +104,10 @@ class GameLoop:
         self.player_index = (self.player_index + 1) % len(players)
         
         player_info.config(text=f"{players[self.player_index].name}'s Turn")
+
+        self.board.get_player(players[self.player_index])
+
+        self.board.canvas.update()
 
         
        
