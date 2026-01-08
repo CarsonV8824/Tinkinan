@@ -62,7 +62,7 @@ class GameStruct:
         for i in range(1, 20):
 
             
-            self.graph.add_node(f"Piece{i}", Resource=None, dice_number=None)
+            self.graph.add_node(f"Piece{i}", Resource=None, dice_number=None, Robber=False)
         
         #---piece 1---
 
@@ -241,6 +241,7 @@ class GameStruct:
         if resource_type == "tan" or resource_type == "desert":
             dice_number = ""
             self.graph.nodes[node_name]['dice_number'] = dice_number
+            self.graph.nodes[node_name]['Robber'] = True
         else:
             try:
                 choosen_number = self.dice_numbers.pop(0)
@@ -266,6 +267,7 @@ class GameStruct:
                 dice_number = piece_data['dice_number']
                 if dice_number and int(dice_number) == dice_roll:
                     connected_houses = [n for n in self.graph.neighbors(piece) if n.startswith("House")]
+                    connected_cities = [c for c in self.graph.neighbors(piece) if c.startswith("City")]
                     for house in connected_houses:
                         house_data = self.graph.nodes[house]
                         owner = house_data['Player']
@@ -275,11 +277,24 @@ class GameStruct:
                                 if p.name == owner:
                                     p.add_resource(resource, 1)
                                     print(f"{p.name} received 1 {resource} from {piece} due to dice roll {dice_roll}.")
+                    for city in connected_cities:
+                        city_data = self.graph.nodes[city]
+                        owner = city_data['Player']
+                        if owner:
+                            resource = piece_data['Resource']
+                            for p in players:
+                                if p.name == owner:
+                                    p.add_resource(resource, 2)
+                                    print(f"{p.name} received 2 {resource} from {piece} due to dice roll {dice_roll}.")
     
     def check_house_owner(self, house_number: int, player_name: str) -> bool:
         """Returns True if the specified player owns a settlement at this house"""
-        node_name = f"House{house_number}"
-        return self.graph.nodes[node_name]['Player'] == player_name
+        try:
+            node_name = f"House{house_number}"
+            return self.graph.nodes[node_name]['Player'] == player_name 
+        except KeyError:
+            node_name = f"City{house_number}"
+            return self.graph.nodes[node_name]['Player'] == player_name 
     
     def check_house_occupancy_empty(self, house_number:int) -> bool:
         """Returns True if the house is unoccupied"""
@@ -361,6 +376,25 @@ class GameStruct:
         # If no adjacent road found, return False (settlement must connect to a road)
         print(f"No adjacent road owned by {player_name} at house {house_number}.")
         return False
+    
+    def is_valid_city_placement(self, house_number:int, player_name:str) -> bool:
+        """
+        Returns True if the player can legally upgrade a settlement to a city at this house.
+        A city placement is valid if:
+        1. The player owns a settlement at this house
+        """
+        return self.check_house_owner(house_number, player_name)
+
+    def change_house_to_city(self, house_number:int, player_name:str):
+        node_name = f"House{house_number}"
+        if self.graph.nodes[node_name]['Player'] == player_name:
+            # Change the node to represent a city
+            self.graph.nodes[node_name]['Type'] = "City"
+            mapping = {node_name: f"City{house_number}"}
+            self.graph = nx.relabel_nodes(self.graph, mapping)
+            print(f"Upgraded settlement to city for player {player_name} at {node_name}")
+        else:
+            print(f"Cannot upgrade to city: {player_name} does not own settlement at {node_name}")
 
     def add_player_to_house(self, house_number:int, player_name:str, structure_type:str):
         node_name = f"House{house_number}"

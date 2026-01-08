@@ -2,6 +2,7 @@ from game_struct import GameStruct
 from tkinter import ttk  
 from ttkthemes import ThemedTk
 import tkinter as tk
+from tkinter import messagebox
 import math
 import random
 from PIL import Image, ImageTk
@@ -381,6 +382,18 @@ class Canvas:
         flat_points = [coord for point in points for coord in point]
         self.canvas.create_polygon(flat_points, outline='black', fill=color, width=2)
 
+    def draw_city(self, x: float, y: float, color: str) -> None:
+        size = 12
+        points = [
+            (x - size, y + size),
+            (x - size, y - size),
+            (x + size, y - size),
+            (x + size, y + size),
+            (x, y + 2*size)
+        ]
+        flat_points = [coord for point in points for coord in point]
+        self.canvas.create_polygon(flat_points, outline='black', fill=color, width=2)
+
     def settlement_init(self, current_player):
         self.placement_complete = False
 
@@ -462,33 +475,85 @@ class Canvas:
         self.current_player = player
         print(f"Current player set to {player.name}")
 
-    def settlement_mode(self, event):
-        self.canvas.bind("<s>", lambda e: (setattr(self, 'settlement_on', True), 
+    def settlement_mode(self):
+        self.root.bind("<s>", lambda e: (setattr(self, 'settlement_on', True), 
                         setattr(self, 'road_on', False), 
-                        setattr(self, 'city_on', False)))
+                        setattr(self, 'city_on', False),
+                        print("Settlement mode activated")))
 
-    def city_mode(self, event):
-        self.canvas.bind("<c>", lambda e: (setattr(self, 'city_on', True),
+    def city_mode(self):
+        self.root.bind("<c>", lambda e: (setattr(self, 'city_on', True),
                         setattr(self, 'settlement_on', False), 
-                        setattr(self, 'road_on', False)))
+                        setattr(self, 'road_on', False),
+                        print("City mode activated")))
         
-    def road_mode(self, event):
-        self.canvas.bind("<r>", lambda e: (setattr(self, 'road_on', True),
+    def road_mode(self):
+        self.root.bind("<r>", lambda e: (setattr(self, 'road_on', True),
                         setattr(self, 'settlement_on', False), 
-                        setattr(self, 'city_on', False)))
+                        setattr(self, 'city_on', False),
+                        print("Road mode activated")))
 
     def on_canvas_click_game_loop(self, event): #make this method make the player able to buy settlements, roads, and cities
         
         print(self.current_player.name + " clicked the canvas")
         
-        hit_piece, corner = self.is_corner_hit(event)
+        hit_piece_corner, corner = self.is_corner_hit(event)
         hit_piece_edge, edge_coords = self.is_edge_hit(event)
-        if hit_piece:
-            print(f"Clicked on piece {hit_piece} at {corner}!")
+        
+        if hit_piece_corner:
+            if self.settlement_on:
+                
+                check = self.game_struct.is_valid_house_placement(self.get_corner_num(corner), self.current_player.name)
+                if check and self.current_player.resources["lime"] >=1 and self.current_player.resources["brown"] >=1 and self.current_player.resources["green"] >=1 and self.current_player.resources["yellow"] >=1:
+                    self.current_player.remove_resource("lime", 1)
+                    self.current_player.remove_resource("brown", 1)
+                    self.current_player.remove_resource("green", 1)
+                    self.current_player.remove_resource("yellow", 1)
+                    self.current_player.add_victory_point(1)
+                    x_cord = corner[0]
+                    y_cord = corner[1]
+                    self.draw_settlement(x_cord, y_cord, self.current_player.color)
+                    self.game_struct.add_player_to_house(self.get_corner_num(corner), self.current_player.name, "House")
+                    print(f"{self.current_player.name} clicked on piece {hit_piece_corner} at {corner}")
+                elif not check:
+                    print(f"Corner {self.get_corner_num(corner)} is already occupied.")
+                
+                print(f"Clicked on piece {hit_piece_corner} at {corner} for settlement!")
+            elif self.city_on:
+                check = self.game_struct.is_valid_city_placement(self.get_corner_num(corner), self.current_player.name)
+                if check and self.current_player.resources["gray"] >=3 and self.current_player.resources["yellow"] >=2:
+                    self.current_player.remove_resource("gray", 3)
+                    self.current_player.remove_resource("yellow", 2)
+                    self.current_player.add_victory_point(2)
+                    x_cord = corner[0]
+                    y_cord = corner[1]
+                    
+                    self.draw_city(x_cord, y_cord, self.current_player.color)
+                    self.game_struct.change_house_to_city(self.get_corner_num(corner), self.current_player.name)
+                    print(f"{self.current_player.name} clicked on piece {hit_piece_corner} at {corner} for city!")
+        
         elif hit_piece_edge:
-            print(f"Clicked on edge {hit_piece_edge} at {edge_coords}!")
+            if self.road_on:
+                house1_num, house2_num = edge_coords
+                house1_num = self.get_corner_num(house1_num)
+                house2_num = self.get_corner_num(house2_num)
+                check = self.game_struct.is_valid_road_placement(house1_num, house2_num, self.current_player.name)
+                if check and self.current_player.resources["brown"] >=1 and self.current_player.resources["green"] >=1:
+                    self.current_player.remove_resource("brown", 1)
+                    self.current_player.remove_resource("green", 1)
+                    house1_num, house2_num = edge_coords
+                    house1_corner_num = self.get_corner_num(house1_num)
+                    house2_corner_num = self.get_corner_num(house2_num)
+                    x1, y1 = house1_num
+                    x2, y2 = house2_num
+                    self.draw_road(x1, y1, x2, y2, self.current_player.color)
+                    self.game_struct.add_player_to_road(house1_corner_num, house2_corner_num, self.current_player.name)
+                    print(f"{self.current_player.name} clicked on edge {hit_piece_edge} at {edge_coords}")
+                elif not check:
+                    print(f"Edge between corners {house1_num} and {house2_num} is already occupied or invalid.")
+
         else:
-            print("No corner hit")
+            print("No corner hit or edge hit")
 
     
         
