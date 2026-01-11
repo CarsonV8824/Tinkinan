@@ -65,7 +65,7 @@ def main():
 
     tab.update_player_stats(players) 
 
-    trade_tab = tab.trade_tab(tabs)
+    trade_tab = tab.trade_tab(tabs, players)
 
     build_tab = tab.build_tab(tabs)
 

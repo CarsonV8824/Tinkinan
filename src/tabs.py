@@ -10,6 +10,15 @@ class Tabs:
     def __init__(self, root:ThemedTk):
         self.root = root
         self.biuld_option = None
+        
+        self.first_trade_player_text = None
+        self.second_trade_player_text = None
+        
+        self.first_trade_player = None
+        self.second_trade_player = None
+        
+        self.first_player_items = None
+        self.second_player_items = None
 
     def tabs(self):
         tab = ttk.Notebook(self.root)
@@ -115,7 +124,7 @@ class Tabs:
                 if res_var:
                     res_var.set(f"  {resource}: {amount}")
 
-    def trade_tab(self, notebook:ttk.Notebook):
+    def trade_tab(self, notebook:ttk.Notebook, players:list):
 
         trade_tab = ttk.Frame(notebook)
         notebook.add(trade_tab, text="trade")
@@ -138,6 +147,72 @@ class Tabs:
         frame.pack(expand=True, fill="both")
 
         #=====================================================================================
+
+        first_trade_player = ttk.Combobox(frame, values=[player.name for player in players], state="readonly")
+        first_trade_player.pack(padx=10, pady=10)
+
+        second_trade_player = ttk.Combobox(frame, values=[player.name for player in players], state="readonly")
+        second_trade_player.pack(padx=10, pady=10)
+
+        first_player = first_trade_player.get()
+        second_player = second_trade_player.get()
+
+        def on_select_first(event):
+            print("Selected:", first_trade_player.get())
+            self.first_trade_player = first_trade_player.get()
+            
+            try:
+                self.first_player_items.destroy()
+                self.first_trade_player_text.destroy()
+            except Exception:
+                pass
+            
+            self.first_trade_player_text = ttk.Label(frame, text=f"{self.first_trade_player}'s Resources:")
+            self.first_trade_player_text.pack(padx=10, pady=10)
+            self.first_player_items = ttk.Treeview(frame, selectmode="extended", show="tree")
+            self.first_player_items.pack(padx=10, pady=10)
+            try:
+                self.first_player_items.delete(0, tk.END)
+            except Exception:
+                pass
+            for resource, amount in next(player for player in players if player.name == self.first_trade_player).resources.items():
+                for _ in range(amount):
+                    if resource != "victory_points":
+                        
+                        try:
+                            self.first_player_items.insert('', 'end', text=resource)
+                        except Exception as e:
+                            print(e)
+            
+            item_count = len(self.first_player_items.get_children())
+            self.first_player_items.config(height=item_count if item_count > 0 else 1)
+        first_trade_player.bind("<<ComboboxSelected>>", on_select_first)
+
+        def on_select_second(event):
+            print("Selected:", second_trade_player.get())
+            self.second_trade_player = second_trade_player.get()
+            try:
+                self.second_player_items.destroy()
+                self.second_trade_player_text.destroy()
+            except Exception:
+                pass
+            self.second_trade_player_text = ttk.Label(frame, text=f"{self.second_trade_player}'s Resources:")
+            self.second_trade_player_text.pack(padx=10, pady=10)
+            self.second_player_items = ttk.Treeview(frame, selectmode="extended", show="tree")
+            self.second_player_items.pack(padx=10, pady=10)
+            try:
+                self.second_player_items.delete(0, tk.END)
+            except Exception:
+                pass
+            for resource, amount in next(player for player in players if player.name == self.second_trade_player).resources.items():
+                for _ in range(amount):
+                    if resource != "victory_points":
+                        try:
+                            self.second_player_items.insert('', 'end', text=resource)
+                        except Exception as e:
+                            print(e)
+            self.second_player_items.config(height=len(self.second_player_items.get_children()) if len(self.second_player_items.get_children()) > 0 else 1)
+        second_trade_player.bind("<<ComboboxSelected>>", on_select_second)
 
         return trade_tab
 
