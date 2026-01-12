@@ -1,6 +1,7 @@
 from tkinter import ttk  
 from ttkthemes import ThemedTk
 import tkinter as tk
+
 from tabs import Tabs
 from canvas import Canvas
 from game_struct import GameStruct
@@ -29,7 +30,7 @@ def add_data(GameStruct, PlayerData):
 
 def main():
     
-    root = ThemedTk(theme="breeze")
+    root = ThemedTk(theme="yaru")
     root.geometry("1200x800")
     root.title("Catan in Tkinter")
 
@@ -66,6 +67,8 @@ def main():
     tab.update_player_stats(players) 
 
     trade_tab = tab.trade_tab(tabs, players)
+
+    development_tab = None
 
     build_tab = tab.build_tab(tabs)
 

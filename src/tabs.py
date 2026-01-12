@@ -17,8 +17,8 @@ class Tabs:
         self.first_trade_player = None
         self.second_trade_player = None
         
-        self.first_player_items = None
-        self.second_player_items = None
+        self.first_player_items:ttk.Treeview = None
+        self.second_player_items:ttk.Treeview = None
 
     def tabs(self):
         tab = ttk.Notebook(self.root)
@@ -212,7 +212,65 @@ class Tabs:
                         except Exception as e:
                             print(e)
             self.second_player_items.config(height=len(self.second_player_items.get_children()) if len(self.second_player_items.get_children()) > 0 else 1)
+        
         second_trade_player.bind("<<ComboboxSelected>>", on_select_second)
+
+        def get_trade_selections():
+            if not self.first_trade_player or not self.second_trade_player:
+                return
+
+            first_selected = list(self.first_player_items.selection())  
+            second_selected = list(self.second_player_items.selection()) 
+            
+            first_items = []
+            second_items = []
+            
+            # Get details from selections
+            for item_id in first_selected:
+                item_data = self.first_player_items.item(item_id)
+                first_items.append(item_data['text'])
+            
+            for item_id in second_selected:
+                item_data = self.second_player_items.item(item_id)
+                second_items.append(item_data['text'])
+            
+            # Update player resources
+            for player in players:
+                if player.name == self.first_trade_player:
+                    for resource in first_items:
+                        player.remove_resource(resource, 1)
+                    for resource in second_items:
+                        player.add_resource(resource, 1)
+                elif player.name == self.second_trade_player:
+                    for resource in second_items:
+                        player.remove_resource(resource, 1)
+                    for resource in first_items:
+                        player.add_resource(resource, 1)
+            
+            # Delete items AFTER updating all player resources
+            for item_id in first_selected:
+                self.first_player_items.delete(item_id)
+            
+            for item_id in second_selected:
+                self.second_player_items.delete(item_id)
+            
+            # Add new items for trades received
+            for resource in second_items:
+                self.first_player_items.insert('', 'end', text=resource)
+            
+            for resource in first_items:
+                self.second_player_items.insert('', 'end', text=resource)
+            
+            # Update heights
+            self.first_player_items.config(height=len(self.first_player_items.get_children()) or 1)
+            self.second_player_items.config(height=len(self.second_player_items.get_children()) or 1)
+
+        trade_confirm_button = ttk.Button(
+            frame, 
+            text="Confirm Trade", 
+            command=lambda: get_trade_selections()
+        )
+        trade_confirm_button.pack(pady=10)
 
         return trade_tab
 

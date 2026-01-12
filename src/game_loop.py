@@ -85,6 +85,11 @@ class GameLoop:
         self.board.settlement_mode() #bind settlement mode after initial placement
     
     def game_turn(self, player_info:ttk.Label, players: list,  first_dice_label:ttk.Label=None, second_dice_label:ttk.Label=None, total_of_dice_label:ttk.Label=None, update_player_stats_tab=None):
+        for player in players:
+            if player.get_resource_count("victory_points") >= 10:
+                player_info.config(text=f"{player.name} Wins!")
+                return
+        
         self.board.canvas.update()
         first_die = random.randint(1, 6)
         second_die = random.randint(1, 6)
