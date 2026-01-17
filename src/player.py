@@ -15,7 +15,8 @@ class Player:
             "green": 0,
             "brown": 0,
             "yellow": 0,
-            "gray": 0
+            "gray": 0,
+            "victory_points":2,
         }
         self.settlements = []
         self.cities = []
@@ -51,6 +52,9 @@ class Player:
 
     def add_road(self, road):
         self.roads.append(road)
+
+    def add_victory_point(self, points: int):
+        self.resources["victory_points"] += points
 
         
     

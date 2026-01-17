@@ -75,8 +75,23 @@ class GameLoop:
             
 
         tabs.pack(expand=True, fill="both") # Show tabs after placement is done
+
+        self.board.canvas.bind("<Button-1>", self.board.on_canvas_click_game_loop)  # Re-bind the main game click handler
+
+        self.board.city_mode() #bind city mode after initial placement
+
+        self.board.road_mode() #bind road mode after initial placement
+
+        self.board.settlement_mode() #bind settlement mode after initial placement
+
+    def place_robber(self, players: list):
+        pass
     
     def game_turn(self, player_info:ttk.Label, players: list,  first_dice_label:ttk.Label=None, second_dice_label:ttk.Label=None, total_of_dice_label:ttk.Label=None, update_player_stats_tab=None):
+        for player in players:
+            if player.get_resource_count("victory_points") >= 10:
+                player_info.config(text=f"{player.name} Wins!")
+                return
         
         self.board.canvas.update()
         first_die = random.randint(1, 6)
@@ -88,6 +103,8 @@ class GameLoop:
 
         if total != 7:
             self.game_struct.distribute_resources(total, players)
+        elif total == 7:
+            self.place_robber(players)
         
         # Update UI after resources are distributed
         if update_player_stats_tab:
@@ -97,6 +114,10 @@ class GameLoop:
         self.player_index = (self.player_index + 1) % len(players)
         
         player_info.config(text=f"{players[self.player_index].name}'s Turn")
+
+        self.board.get_player(players[self.player_index])
+
+        self.board.canvas.update()
 
         
        

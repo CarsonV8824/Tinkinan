@@ -4,7 +4,7 @@ import pickle
 
 class Database:
 
-    def __init__(self, file="database/Catan.db"):
+    def __init__(self, file="database/Tinkinan.db"):
         self.connection = sqlite3.connect(file)
         self.cursor = self.connection.cursor()
         self.__make_table()
@@ -12,24 +12,24 @@ class Database:
     def __make_table(self):
         self.cursor.execute(
         """CREATE TABLE IF NOT EXISTS Catan (
-        Canvas BLOB,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         GameStruct BLOB,
         PlayerData BLOB
         );""")
         self.connection.commit()
 
-    def add_data(self, Canvas, GameStruct, PlayerData):
+    def add_data(self, GameStruct, PlayerData):
         self.cursor.execute("""
-        INSERT INTO Catan (Canvas, GameStruct, PlayerData)
-        Values (?, ?, ?)
+        INSERT INTO Catan (GameStruct, PlayerData)
+        Values (?, ?)
     
-        """, (pickle.dumps(Canvas), pickle.dumps(GameStruct), pickle.dumps(PlayerData)))
+        """, (pickle.dumps(GameStruct), pickle.dumps(PlayerData)))
         self.connection.commit()
 
     def get_data(self):
         self.cursor.execute("""SELECT * FROM Catan""")
         data = self.cursor.fetchall()
-        return [ (pickle.loads(row[0]), pickle.loads(row[1]), pickle.loads(row[2])) for row in data ]
+        return [ (row[0], pickle.loads(row[1]), pickle.loads(row[2])) for row in data ]
     
     def clear_data(self):
         self.cursor.execute("""DELETE FROM Catan""")

@@ -1,6 +1,7 @@
 import pytest
 from src.game_struct import GameStruct
 from src.player import Player
+import networkx as nx
 
 def test_add_player_to_house():
     game_struct = GameStruct()
