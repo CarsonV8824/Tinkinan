@@ -1,3 +1,5 @@
 # Tinkinan
 
-still in progress
+## Image of Game
+
+![alt text](image.png)

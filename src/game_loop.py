@@ -83,6 +83,9 @@ class GameLoop:
         self.board.road_mode() #bind road mode after initial placement
 
         self.board.settlement_mode() #bind settlement mode after initial placement
+
+    def place_robber(self, players: list):
+        pass
     
     def game_turn(self, player_info:ttk.Label, players: list,  first_dice_label:ttk.Label=None, second_dice_label:ttk.Label=None, total_of_dice_label:ttk.Label=None, update_player_stats_tab=None):
         for player in players:
@@ -100,6 +103,8 @@ class GameLoop:
 
         if total != 7:
             self.game_struct.distribute_resources(total, players)
+        elif total == 7:
+            self.place_robber(players)
         
         # Update UI after resources are distributed
         if update_player_stats_tab:

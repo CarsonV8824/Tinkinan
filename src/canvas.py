@@ -555,7 +555,10 @@ class Canvas:
         else:
             print("No corner hit or edge hit")
 
-    
+    def place_robber(self, player, players):
+        pass
+        
+        
         
     
 

@@ -61,7 +61,6 @@ class GameStruct:
 
         for i in range(1, 20):
 
-            
             self.graph.add_node(f"Piece{i}", Resource=None, dice_number=None, Robber=False)
         
         #---piece 1---

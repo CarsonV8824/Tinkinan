@@ -30,7 +30,7 @@ def add_data(GameStruct, PlayerData):
 
 def main():
     
-    root = ThemedTk(theme="yaru")
+    root = ThemedTk(theme="breeze")
     root.geometry("1200x800")
     root.title("Catan in Tkinter")
 
