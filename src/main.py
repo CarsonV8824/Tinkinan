@@ -34,6 +34,8 @@ def main():
     root.geometry("1200x800")
     root.title("Catan in Tkinter")
 
+    root.iconbitmap("my_icon.ico")
+
     game_struct = GameStruct()
     
     board = Canvas(root, game_struct)

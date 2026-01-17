@@ -264,7 +264,7 @@ class GameStruct:
                 piece_data = self.graph.nodes[piece]
                 # Convert dice_number to int for comparison, skip if empty string
                 dice_number = piece_data['dice_number']
-                if dice_number and int(dice_number) == dice_roll:
+                if dice_number and piece_data['Robber'] != True and int(dice_number) == dice_roll:
                     connected_houses = [n for n in self.graph.neighbors(piece) if n.startswith("House")]
                     connected_cities = [c for c in self.graph.neighbors(piece) if c.startswith("City")]
                     for house in connected_houses:
@@ -414,6 +414,25 @@ class GameStruct:
             print(f"Added road for player {player_name} between {node_1} and {node_2}")
         else:
             print(f"No edge exists between {node_1} and {node_2} to add a road.")
+
+    def clear_robber_off_board(self):
+        pieces:list[str] = list(self.graph.nodes)
+        for piece in pieces:
+            if piece.startswith("Piece"):
+                piece_data = self.graph.nodes[piece]
+                if piece_data['Robber']:
+                    piece_data['Robber'] = False
+                    print(f"Robber removed from {piece}")
+
+    def place_robber_on_piece(self, piece_number:int):
+        self.clear_robber_off_board()
+        node_name = f"Piece{piece_number}"
+        self.graph.nodes[node_name]['Robber'] = True
+        print(f"Robber placed on {node_name}")
+
+    def get_piece_color(self, piece_number:int) -> str:
+        node_name = f"Piece{piece_number}"
+        return self.graph.nodes[node_name]['Resource']
         
     def __str__(self):
         return f"nodes: {len(list(self.graph.nodes))}. number of edges {len(list(self.graph.edges))}"
