@@ -405,7 +405,6 @@ class GameStruct:
             self.graph.nodes[node_name]['Type'] = structure_type
             print(f"Added {structure_type} for player {player_name} at {node_name}")
 
-
     def add_player_to_road(self, house_number_1, house_number_2, player_name):
         node_1 = f"House{house_number_1}"
         node_2 = f"House{house_number_2}"
@@ -453,7 +452,17 @@ class GameStruct:
                 if piece_data['Robber']:
                     return int(piece.replace("Piece", ""))
         return -1  # Indicates robber not found
-        
+
+    def check_adjacent_road_owner(self, house_number:int, player_name:str) -> bool:
+        """Returns True if the specified player owns a road adjacent to this house"""
+        node_name = f"House{house_number}"
+        for neighbor in self.graph.neighbors(node_name):
+            if neighbor.startswith("House"):
+                if self.graph.has_edge(node_name, neighbor):
+                    if self.graph.edges[node_name, neighbor].get('Player') == player_name:
+                        return True
+        return False
+
     def __str__(self):
         return f"nodes: {len(list(self.graph.nodes))}. number of edges {len(list(self.graph.edges))}"
 

@@ -2,10 +2,8 @@ from game_struct import GameStruct
 from tkinter import ttk  
 from ttkthemes import ThemedTk
 import tkinter as tk
-from tkinter import messagebox
 import math
 import random
-from PIL import Image, ImageTk
 
 class Canvas:
 
@@ -724,11 +722,14 @@ class Canvas:
                     
                     player_selection = tk.Toplevel(self.root)
                     player_selection.title("Steal Resource")
+                    player_selection.geometry("300x200")
+                    player_selection.iconbitmap("src/hexagon.ico")
                     selection = tk.Label(player_selection, text="Select a player to steal from:")
                     selection.pack(anchor="center", padx=10, pady=10)
                     for player in affected_players:
+                        
                         btn = ttk.Button(player_selection, text=player, 
-                                         command=lambda p=player: self.steal_resource_and_close(current_player, players, p, player_selection, button))
+                                        command=lambda p=player: self.steal_resource_and_close(current_player, players, p, player_selection, button))
                         btn.pack(anchor="center", padx=5, pady=5)
                 else:
                     self.canvas.unbind("<Button-1>")
@@ -737,6 +738,9 @@ class Canvas:
                     self.placement_complete = True  
                     button.config(state="normal")  
         self.canvas.bind("<Button-1>", on_canvas_click)
+
+        while not self.placement_complete:
+            self.root.update()
 
     def steal_resource_and_close(self, current_player, players, target_name, window: tk.Toplevel, button:ttk.Button) -> None:
         player_to_steal_from = next((p for p in players if p.name == target_name), None)
@@ -757,3 +761,61 @@ class Canvas:
         self.canvas.unbind("<Button-1>")
         self.canvas.bind("<Button-1>", self.on_canvas_click_game_loop)
         button.config(state="normal")
+
+    def place_two_roads(self, current_player):
+        roads_placed = 0
+        self.placement_complete = False
+
+        def on_canvas_click(event):
+            nonlocal roads_placed
+            
+            if self.placement_complete:
+                return
+
+            hit_piece, edge_coords = self.is_edge_hit(event)
+            
+            if edge_coords is None:
+                print("No edge hit")
+                return
+            
+            house1_num, house2_num = edge_coords
+            house1_corner_num = self.get_corner_num(house1_num)
+            house2_corner_num = self.get_corner_num(house2_num)
+            
+            if hit_piece:
+                print(f"{current_player.name} clicked on edge {hit_piece} at {edge_coords}")
+                road_check = self.game_struct.check_road_occupancy(house1_corner_num, house2_corner_num)
+                
+                # Check if player owns a settlement at either endpoint OR has an adjacent road
+                has_connection = (
+                    self.game_struct.check_house_owner(house1_corner_num, current_player.name) or
+                    self.game_struct.check_house_owner(house2_corner_num, current_player.name) or
+                    self.game_struct.check_adjacent_road_owner(house1_corner_num, current_player.name) or
+                    self.game_struct.check_adjacent_road_owner(house2_corner_num, current_player.name)
+                )
+                
+                if road_check and has_connection:
+                    x1, y1 = house1_num
+                    x2, y2 = house2_num
+                    self.draw_road(x1, y1, x2, y2, current_player.color)
+                    self.game_struct.add_player_to_road(house1_corner_num, house2_corner_num, current_player.name)
+                    roads_placed += 1
+                    print(f"Road {roads_placed} of 2 placed")
+                    
+                    if roads_placed >= 2:
+                        self.placement_complete = True
+                else:
+                    if not has_connection:
+                        print(f"You must have a settlement or road connected to place this road.")
+
+        self.canvas.bind("<Button-1>", on_canvas_click)
+
+        while not self.placement_complete:
+            self.root.update()
+        
+        # Rebind to regular game loop click handler
+        self.canvas.unbind("<Button-1>")
+        self.canvas.bind("<Button-1>", self.on_canvas_click_game_loop)
+        print("Two roads placed successfully!")
+
+            

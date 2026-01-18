@@ -1,6 +1,5 @@
 import sqlite3
 import json
-import pickle
 
 class Database:
 
@@ -13,23 +12,30 @@ class Database:
         self.cursor.execute(
         """CREATE TABLE IF NOT EXISTS Catan (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        GameStruct BLOB,
-        PlayerData BLOB
+        node_list TEXT,
+        edge_list TEXT,
+        PlayerData TEXT
         );""")
         self.connection.commit()
 
-    def add_data(self, GameStruct, PlayerData):
+    def add_data(self, node_list, edge_list, PlayerData):
+        """Adds game data to the database in a JSON string format."""
+        
+        
+        
         self.cursor.execute("""
-        INSERT INTO Catan (GameStruct, PlayerData)
-        Values (?, ?)
+        INSERT INTO Catan (node_list, edge_list, PlayerData)
+        Values (?, ?, ?)
     
-        """, (pickle.dumps(GameStruct), pickle.dumps(PlayerData)))
+        """, (json.dumps(node_list), json.dumps(edge_list), json.dumps(PlayerData)))
         self.connection.commit()
 
     def get_data(self):
+        """Retrieves all game data from the database and returns it as a list of tuples."""
+        
         self.cursor.execute("""SELECT * FROM Catan""")
         data = self.cursor.fetchall()
-        return [ (row[0], pickle.loads(row[1]), pickle.loads(row[2])) for row in data ]
+        return [ (row[0], json.loads(row[1]), json.loads(row[2])) for row in data ]
     
     def clear_data(self):
         self.cursor.execute("""DELETE FROM Catan""")

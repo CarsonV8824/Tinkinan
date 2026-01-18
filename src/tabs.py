@@ -5,11 +5,17 @@ import tkinter as tk
 from player import Player
 from game_loop import GameLoop
 
+import random
+
+from typing import Callable
+
 class Tabs:
 
     def __init__(self, root:ThemedTk):
         self.root = root
         self.biuld_option = None
+
+        self.dice_button:ttk.Button = None
         
         self.first_trade_player_text = None
         self.second_trade_player_text = None
@@ -49,9 +55,9 @@ class Tabs:
 
         #=====================================================================================
 
-        dice_button = ttk.Button(frame, text="Roll Dice", command=lambda: game_loop.game_turn(dice_button, player_turn_info, players=players, first_dice_label=first_dice, second_dice_label=second_dice, total_of_dice_label=total_of_dice, update_player_stats_tab=lambda: self.update_player_stats(players)))
+        self.dice_button = ttk.Button(frame, text="Roll Dice", command=lambda: game_loop.game_turn(self.dice_button, player_turn_info, players=players, first_dice_label=first_dice, second_dice_label=second_dice, total_of_dice_label=total_of_dice, update_player_stats_tab=lambda: self.update_player_stats(players)))
 
-        dice_button.pack(pady=20)
+        self.dice_button.pack(pady=20)
 
         player_turn_info = ttk.Label(frame, text=f"{players[game_loop.player_index].name}'s Turn")
         player_turn_info.pack(pady=10)
@@ -317,7 +323,123 @@ class Tabs:
         combo.bind("<<ComboboxSelected>>", on_select)"""
         
         return biuld_tab
+    
+    def development_tab(self, notebook:ttk.Notebook, players:list, game_loop:GameLoop):
+        
+        development_tab = ttk.Frame(notebook)
+        notebook.add(development_tab, text="development")
+        
+        #===Scrollbar======================================================================================
 
+        canvas = tk.Canvas(development_tab)
+        scrollbar = ttk.Scrollbar(development_tab, orient="vertical", command=canvas.yview)
+        scrollable_frame = ttk.Frame(canvas)
+        
+        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        frame = ttk.Frame(scrollable_frame)
+        frame.pack(expand=True, fill="both")
+
+        #=====================================================================================
+
+        draw_card_label = ttk.Label(frame, text="Draw Development Card")
+        draw_card_label.pack(padx=10, pady=10)
+
+        draw_card_button = ttk.Button(frame, text="Draw Card", command=lambda: self.choose_development_card(players, game_loop.player_index, lambda players, button: game_loop.place_robber(players, button), lambda players, button: game_loop.place_two_roads(players, button)))
+        draw_card_button.pack(padx=10, pady=10)
+
+        self.card_result_label = ttk.Label(frame, text="Card Result: ")
+        self.card_result_label.pack(padx=10, pady=10)
+
+        return development_tab
+    
+    def choose_development_card(self, players, current_player_index:int, robber_func:Callable=None, road_func:Callable=None):
+        if players[current_player_index].resources["lime"] < 1 or players[current_player_index].resources["gray"] < 1 or players[current_player_index].resources["yellow"] < 1:
+            self.card_result_label.config(text="Not enough resources to buy a development card.")
+            return
+        
+        probablities = {}
+        probablities["Knight"] = range(1,15)
+        probablities["Victory Point"] = range(15,19)
+        probablities["Road Building"] = range(19,22)
+        probablities["Year of Plenty"] = range(22,24)
+        probablities["Monopoly"] = range(24,26)
+        
+        roll = random.randint(1,25) #test
+        chosen_card = None
+        for card, rng in probablities.items():
+            if roll in rng:
+                chosen_card = card
+                break
+        self.card_result_label.config(text=f"Card Result: {chosen_card}")
+        match chosen_card:
+            case "Knight":
+                if robber_func:
+                    robber_func(players, self.dice_button)
+                    players[current_player_index].add_resource("knight_cards", 1)
+                    self.update_player_stats(players)
+            case "Victory Point":
+                players[current_player_index].add_victory_point(1)
+                self.update_player_stats(players)
+            case "Road Building":
+                if road_func:
+                    road_func(players, self.dice_button)
+                    self.update_player_stats(players)
+            case "Year of Plenty":
+                year_of_plenty_top = tk.Toplevel(self.root)
+                year_of_plenty_top.title("Year of Plenty")
+                year_of_plenty_top.geometry("300x200")
+                ttk.Label(year_of_plenty_top, text="You may choose 2 resources of your choice").pack(pady=10)
+                year_of_plenty_top.iconbitmap("src/hexagon.ico")
+                
+                resources = ["lime", "green", "brown", "yellow", "gray"]
+                count_holder = [0]  # Use list to avoid closure issues
+                
+                def add_resource(resource):
+                    count_holder[0] += 1
+                    players[current_player_index].add_resource(resource, 1)
+                    if count_holder[0] >= 2:
+                        count_holder[0] = 0
+                        year_of_plenty_top.destroy()
+                        self.update_player_stats(players)
+                
+                for r in resources:
+                    btn = ttk.Button(year_of_plenty_top, text=f"Add {r}", 
+                                    command=lambda res=r: add_resource(res))
+                    btn.pack(pady=5)
+            case "Monopoly":
+                monolopy_top = tk.Toplevel(self.root)
+                monolopy_top.title("Monopoly")
+                monolopy_top.geometry("300x200")
+                ttk.Label(monolopy_top, text="Choose a resource to monopolize:").pack(pady=10)
+                monolopy_top.iconbitmap("src/hexagon.ico")
+                
+                def monopolize_resource(resource):
+                    for i, player in enumerate(players):
+                        if i != current_player_index:
+                            amount = player.get_resource_count(resource)
+                            if amount > 0:
+                                player.remove_resource(resource, amount)
+                                players[current_player_index].add_resource(resource, amount)
+                    monolopy_top.destroy()
+                    self.update_player_stats(players)
+                resources = ["lime", "green", "brown", "yellow", "gray"]
+                for r in resources:
+                    btn = ttk.Button(monolopy_top, text=f"Choose {r}", 
+                                    command=lambda res=r: monopolize_resource(res))
+                    btn.pack(pady=5)
+                
+                
+                self.update_player_stats(players)
+
+        print(f"Chosen Card: {chosen_card}")
+        self.update_player_stats(players)
     def rules_tab(self, notebook:ttk.Notebook):
         
         rules_tab = ttk.Frame(notebook)
@@ -346,7 +468,7 @@ class Tabs:
             rules_toplevel = tk.Toplevel(rules_tab)
             rules_toplevel.title("Game Rules")
             rules_toplevel.geometry("600x400")
-            
+            rules_toplevel.iconbitmap("src/hexagon.ico")
             
             frame = ttk.Frame(rules_toplevel)
             frame.pack(expand=True, fill="both", padx=10, pady=10)
