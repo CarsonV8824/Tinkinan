@@ -143,17 +143,11 @@ class Canvas:
         
         # Draw the robber as a black circle at the center
         radius = 15
-        self.canvas.create_oval(center_x - radius, center_y - radius, center_x + radius, center_y + radius, fill='black')
+        self.canvas.create_oval(center_x - radius, center_y - radius, center_x + radius, center_y + radius, fill='black', tag='robber')
 
     def undraw_robber_on_piece(self, piece_number: int) -> None:
-        # Redraw the hexagon to cover the robber
-        hexagon_points = self.hexagons[piece_number - 1]
-        fill_color = self.game_struct.get_piece_color(piece_number)
-        self.canvas.create_polygon(hexagon_points, outline='black', fill=fill_color, width=2)
-        
-        # Redraw the number on the piece
-        number = self.game_struct.get_piece_dice_number(piece_number)
-        self.draw_number_on_piece(piece_number, number)
+        # Remove the robber from the canvas
+        self.canvas.delete('robber')
 
     def draw_number_on_piece(self, piece_number: int, number: int | str) -> None:
         # Find the center of the hexagon for the given piece number
@@ -439,6 +433,24 @@ class Canvas:
     def __choose_radom_color_from_piece_list(self) -> str:
         return self.pieces.pop(random.randint(0, len(self.pieces)-1))
 
+    def __point_in_polygon(self, x: float, y: float, poly: list) -> bool:
+        n = len(poly) // 2
+        inside = False
+
+        p1x, p1y = poly[0], poly[1]
+        for i in range(n + 1):
+            p2x, p2y = poly[2 * (i % n)], poly[2 * (i % n) + 1]
+            if y > min(p1y, p2y):
+                if y <= max(p1y, p2y):
+                    if x <= max(p1x, p2x):
+                        if p1y != p2y:
+                            xinters = (y - p1y) * (p2x - p1x) / (p2y - p1y) + p1x
+                        if p1x == p2x or x <= xinters:
+                            inside = not inside
+            p1x, p1y = p2x, p2y
+
+        return inside
+
     def is_corner_hit(self, event, tolerance=10):
         cx, cy = self.canvas.canvasx(event.x), self.canvas.canvasy(event.y)
         for idx, flat_points in enumerate(self.hexagons, start=1):
@@ -479,6 +491,13 @@ class Canvas:
                     return idx, ((x1, y1), (x2, y2))   # piece number, edge coords of what houses inbetween
         return None, None
     
+    def is_piece_hit(self, event):
+        cx, cy = self.canvas.canvasx(event.x), self.canvas.canvasy(event.y)
+        for idx, flat_points in enumerate(self.hexagons, start=1):
+            if self.__point_in_polygon(cx, cy, flat_points):
+                return idx  # piece number
+        return None
+
     def get_corner_num(self, corner, tolerance=0.01):
         """Find corner number by coordinate with tolerance for floating-point errors"""
         for key, (x, y) in self.corner_coords.items():
@@ -677,27 +696,64 @@ class Canvas:
         else:
             print("No corner hit or edge hit")
 
-    def place_robber(self, current_player, players: list):
-        self.game_struct.clear_robber_off_board()
+    def place_robber(self, current_player, players: list, button:ttk.Button) -> None:
+        # Remove robber from current position
+        button.config(state="disabled") # Disable the button during placement
+        
+        current_robber_piece = self.game_struct.get_robber_piece()
+        if current_robber_piece:
+            self.undraw_robber_on_piece(current_robber_piece)
+        
         self.placement_complete = False
 
+        def on_canvas_click(event):
+            if self.placement_complete:
+                return
 
-    
+            hit_piece = self.is_piece_hit(event)  # Fix: remove tuple assignment
 
+            if hit_piece:
+                
+                self.game_struct.place_robber_on_piece(hit_piece)
+                self.draw_robber_on_piece(hit_piece)
+                
+                affected_players = self.game_struct.get_players_adjacent_to_piece(hit_piece)
+                
+                if affected_players:
+                    
+                    
+                    player_selection = tk.Toplevel(self.root)
+                    player_selection.title("Steal Resource")
+                    selection = tk.Label(player_selection, text="Select a player to steal from:")
+                    selection.pack(anchor="center", padx=10, pady=10)
+                    for player in affected_players:
+                        btn = ttk.Button(player_selection, text=player, 
+                                         command=lambda p=player: self.steal_resource_and_close(current_player, players, p, player_selection, button))
+                        btn.pack(anchor="center", padx=5, pady=5)
+                else:
+                    self.canvas.unbind("<Button-1>")
+                    self.canvas.bind("<Button-1>", self.on_canvas_click_game_loop)
+                    print("No players to steal from.")
+                    self.placement_complete = True  
+                    button.config(state="normal")  
+        self.canvas.bind("<Button-1>", on_canvas_click)
 
+    def steal_resource_and_close(self, current_player, players, target_name, window: tk.Toplevel, button:ttk.Button) -> None:
+        player_to_steal_from = next((p for p in players if p.name == target_name), None)
         
+        if player_to_steal_from:
+            try:
+                stolen_resource = player_to_steal_from.remove_random_resource()
+            except ValueError:
+                stolen_resource = None
+            if stolen_resource:
+                current_player.add_resource(stolen_resource, 1)
+                print(f"{current_player.name} stole {stolen_resource} from {player_to_steal_from.name}")
+            else:
+                print(f"{player_to_steal_from.name} has no resources to steal.")
         
-        
-    
-
-    
-
-    
-    
-    
-
-        
-    
-
-
-    
+        window.destroy()
+        self.placement_complete = True
+        self.canvas.unbind("<Button-1>")
+        self.canvas.bind("<Button-1>", self.on_canvas_click_game_loop)
+        button.config(state="normal")

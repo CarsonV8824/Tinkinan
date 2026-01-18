@@ -27,6 +27,7 @@ class GameLoop:
         self.first_screen = tk.Toplevel(self.root)
         self.first_screen.geometry("400x300")
         self.first_screen.title("Welcome to Catan")
+        self.first_screen.iconbitmap("src/hexagon.ico")
         
         label = ttk.Label(self.first_screen, text="Welcome to Catan!", font=("Arial", 16))
         label.pack(pady=20)
@@ -84,10 +85,10 @@ class GameLoop:
 
         self.board.settlement_mode() #bind settlement mode after initial placement
 
-    def place_robber(self, players: list):
-        self.board.place_robber(players[self.player_index], players)
+    def place_robber(self, players: list, button:ttk.Button):
+        self.board.place_robber(players[self.player_index], players, button,)
     
-    def game_turn(self, player_info:ttk.Label, players: list,  first_dice_label:ttk.Label=None, second_dice_label:ttk.Label=None, total_of_dice_label:ttk.Label=None, update_player_stats_tab=None):
+    def game_turn(self, button:ttk.Button,player_info:ttk.Label, players: list,  first_dice_label:ttk.Label=None, second_dice_label:ttk.Label=None, total_of_dice_label:ttk.Label=None, update_player_stats_tab=None):
         for player in players:
             if player.get_resource_count("victory_points") >= 10:
                 player_info.config(text=f"{player.name} Wins!")
@@ -104,7 +105,7 @@ class GameLoop:
         if total != 7:
             self.game_struct.distribute_resources(total, players)
         elif total == 7:
-            self.place_robber(players)
+            self.place_robber(players, button)
         
         # Update UI after resources are distributed
         if update_player_stats_tab:
