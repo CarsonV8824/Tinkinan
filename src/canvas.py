@@ -88,6 +88,28 @@ class Canvas:
             54: (281.69872981077805, 300.0)
         }
 
+        self.piece_coords = {
+            1: ((325 - 50 * math.sqrt(3), 325 - 150)),
+            2: ((325, 325 - 150)),
+            3: ((325 + 50 * math.sqrt(3), 325 - 150)),
+            4: ((325 + 50 * 1.5 * math.sqrt(3), 325 - 50 * 1.5)),
+            5: ((325 + 2 * 50 * math.sqrt(3), 325)),
+            6: ((325 + 1.5 * 50 * math.sqrt(3), 325 + 50 * 1.5)),
+            7: ((325 + 50 * math.sqrt(3), 325 + 150)),
+            8: ((325, 325 + 150)),
+            9: ((325 - 50 * math.sqrt(3), 325 + 150)),
+            10: ((325 - 1.5 * 50 * math.sqrt(3), 325 + 50 * 1.5)),
+            11: ((325 - 2 * 50 * math.sqrt(3), 325)),
+            12: ((325 - 1.5 * 50 * math.sqrt(3), 325 - 50 * 1.5)),
+            13: ((325 - 0.5 * 50 * math.sqrt(3), 325 - 50 * 1.5)),
+            14: ((325 + 0.5 * 50 * math.sqrt(3), 325 - 50 * 1.5)),
+            15: ((325 + 50 * math.sqrt(3), 325)),
+            16: ((325 + 0.5 * 50 * math.sqrt(3), 325 + 50 * 1.5)),
+            17: ((325 - 0.5 * 50 * math.sqrt(3), 325 + 50 * 1.5)),
+            18: ((325 - 50 * math.sqrt(3), 325)),
+            19: ((325, 325))
+        }
+
     def __get_pieces(self) -> None:
         self.pieces_ref = {"sheep":"lime", "wood":"green", "brick":"brown", "wheat":"yellow", "ore":"gray", "desert":"tan"}
         
@@ -111,6 +133,22 @@ class Canvas:
         self.canvas.create_polygon(flat_points, outline='black', fill=fill_color, width=2)
         self.hexagons.append(flat_points)
 
+    def draw_robber_on_piece(self, piece_number: int) -> None:
+        # Find the center of the hexagon for the given piece number
+        hexagon_points = self.hexagons[piece_number - 1]
+        x_coords = hexagon_points[0::2]
+        y_coords = hexagon_points[1::2]
+        center_x = sum(x_coords) / len(x_coords)
+        center_y = sum(y_coords) / len(y_coords)
+        
+        # Draw the robber as a black circle at the center
+        radius = 15
+        self.canvas.create_oval(center_x - radius, center_y - radius, center_x + radius, center_y + radius, fill='black', tag='robber')
+
+    def undraw_robber_on_piece(self, piece_number: int) -> None:
+        # Remove the robber from the canvas
+        self.canvas.delete('robber')
+
     def draw_number_on_piece(self, piece_number: int, number: int | str) -> None:
         # Find the center of the hexagon for the given piece number
         hexagon_points = self.hexagons[piece_number - 1]
@@ -129,12 +167,19 @@ class Canvas:
         row_1_start_x = 325 - (50 * math.sqrt(3))
         row1_start_y = 325 - 150
         color = self.__choose_radom_color_from_piece_list()
+        
+            
+        
         self.game_struct.add_image_color_to_piece(1, color)
 
         number = self.game_struct.get_piece_dice_number(1)
 
         self.__draw_hexagon(row_1_start_x, row1_start_y, 50, color)
         self.draw_number_on_piece(1, number)
+
+        if color == "tan":
+            self.game_struct.place_robber_on_piece(1)
+            self.draw_robber_on_piece(1)
 
         #--- Row 2 ---
 
@@ -147,6 +192,10 @@ class Canvas:
         self.__draw_hexagon(row_2_start_x, row2_start_y, 50, color)
         self.draw_number_on_piece(2, number)
 
+        if color == "tan":
+            self.game_struct.place_robber_on_piece(2)
+            self.draw_robber_on_piece(2)
+
         #--- Row 3 ---
 
         row_3_start_x = 325 + (50 * math.sqrt(3))
@@ -158,6 +207,10 @@ class Canvas:
         self.__draw_hexagon(row_3_start_x, row3_start_y, 50, color)
         self.draw_number_on_piece(3, number)
 
+        if color == "tan":
+            self.game_struct.place_robber_on_piece(3)
+            self.draw_robber_on_piece(3)
+
         #--- Row 4 ---
 
         row_7_start_x = 325 + (50 * 1.5 * math.sqrt(3))
@@ -168,6 +221,10 @@ class Canvas:
         self.__draw_hexagon(row_7_start_x, row7_start_y, 50, color)
         self.draw_number_on_piece(4, number)
 
+        if color == "tan":
+            self.game_struct.place_robber_on_piece(4)
+            self.draw_robber_on_piece(4)
+
         #-- Row 5 ---
 
         row_12_start_x = 325 + (2 * 50 * math.sqrt(3))
@@ -176,6 +233,10 @@ class Canvas:
         self.__draw_hexagon(row_12_start_x, 325, 50, color)
         number = self.game_struct.get_piece_dice_number(5)
         self.draw_number_on_piece(5, number)
+
+        if color == "tan":
+            self.game_struct.place_robber_on_piece(5)
+            self.draw_robber_on_piece(5)
 
         #-- Row 6 ---
 
@@ -187,6 +248,10 @@ class Canvas:
         self.__draw_hexagon(row_16_start_x, row16_start_y, 50, color)
         self.draw_number_on_piece(6, number)
 
+        if color == "tan":
+            self.game_struct.place_robber_on_piece(6)
+            self.draw_robber_on_piece(6)
+
         #-- Row 7 ---
 
         row_19_start_x = 325 + (50 * math.sqrt(3))
@@ -196,6 +261,10 @@ class Canvas:
         number = self.game_struct.get_piece_dice_number(7)
         self.__draw_hexagon(row_19_start_x, row19_start_y, 50, color)
         self.draw_number_on_piece(7, number)
+
+        if color == "tan":
+            self.game_struct.place_robber_on_piece(7)
+            self.draw_robber_on_piece(7)
         
         #--- Row 8 ---
 
@@ -206,6 +275,10 @@ class Canvas:
         number = self.game_struct.get_piece_dice_number(8)
         self.__draw_hexagon(row_18_start_x, row18_start_y, 50, color)
         self.draw_number_on_piece(8, number)
+
+        if color == "tan":
+            self.game_struct.place_robber_on_piece(8)
+            self.draw_robber_on_piece(8)
         
         #--- Row 9 ---
 
@@ -216,6 +289,10 @@ class Canvas:
         number = self.game_struct.get_piece_dice_number(9)
         self.__draw_hexagon(row_17_start_x, row17_start_y, 50, color)
         self.draw_number_on_piece(9, number)
+
+        if color == "tan":
+            self.game_struct.place_robber_on_piece(9)
+            self.draw_robber_on_piece(9)
         
         #--- Row 10 ---
 
@@ -226,10 +303,12 @@ class Canvas:
         self.__draw_hexagon(row_13_start_x, row13_start_y, 50, color)
         number = self.game_struct.get_piece_dice_number(10)
         self.draw_number_on_piece(10, number)
+
+        if color == "tan":
+            self.game_struct.place_robber_on_piece(10)
+            self.draw_robber_on_piece(10)
         
         #--- Row 11 ---
-
-        
 
         row_8_start_x = 325 - (2 * 50 * math.sqrt(3))
         color = self.__choose_radom_color_from_piece_list()
@@ -237,6 +316,10 @@ class Canvas:
         number = self.game_struct.get_piece_dice_number(11)
         self.__draw_hexagon(row_8_start_x, 325, 50, color)
         self.draw_number_on_piece(11, number)
+
+        if color == "tan":
+            self.game_struct.place_robber_on_piece(11)
+            self.draw_robber_on_piece(11)
         
         #--- Row 12 ---
 
@@ -248,6 +331,11 @@ class Canvas:
         number = self.game_struct.get_piece_dice_number(12)
         self.__draw_hexagon(row_4_start_x, row4_start_y, 50, color)
         self.draw_number_on_piece(12, number)
+
+        if color == "tan":
+            self.game_struct.place_robber_on_piece(12)
+            self.draw_robber_on_piece(12)
+
         #--- Row 13 ---
 
         row_5_start_x = 325 - (50 * 0.5 * math.sqrt(3))
@@ -257,6 +345,10 @@ class Canvas:
         number = self.game_struct.get_piece_dice_number(13)
         self.__draw_hexagon(row_5_start_x, row5_start_y, 50, color)
         self.draw_number_on_piece(13, number)
+
+        if color == "tan":
+            self.game_struct.place_robber_on_piece(13)
+            self.draw_robber_on_piece(13)
 
         #--- Row 14 ---
 
@@ -268,6 +360,10 @@ class Canvas:
         self.__draw_hexagon(row_6_start_x, row6_start_y, 50, color)
         self.draw_number_on_piece(14, number)
 
+        if color == "tan":
+            self.game_struct.place_robber_on_piece(14)
+            self.draw_robber_on_piece(14)
+
         #--- Row 15 ---
 
         row_11_start_x = 325 + (50 * math.sqrt(3))
@@ -276,6 +372,10 @@ class Canvas:
         self.__draw_hexagon(row_11_start_x, 325, 50, color)
         number = self.game_struct.get_piece_dice_number(15)
         self.draw_number_on_piece(15, number)
+
+        if color == "tan":
+            self.game_struct.place_robber_on_piece(15)
+            self.draw_robber_on_piece(15)
 
         #--- Row 16 ---
 
@@ -286,6 +386,10 @@ class Canvas:
         number = self.game_struct.get_piece_dice_number(16)
         self.__draw_hexagon(row_15_start_x, row15_start_y, 50, color)
         self.draw_number_on_piece(16, number)
+
+        if color == "tan":
+            self.game_struct.place_robber_on_piece(16)
+            self.draw_robber_on_piece(16)
         
         #--- Row 17 ---
 
@@ -297,6 +401,10 @@ class Canvas:
         self.__draw_hexagon(row_14_start_x, row14_start_y, 50, color)
         self.draw_number_on_piece(17, number)
 
+        if color == "tan":
+            self.game_struct.place_robber_on_piece(17)
+            self.draw_robber_on_piece(17)
+
         #--- Row 18 ---
 
         row_9_start_x = 325 - (50 * math.sqrt(3))
@@ -306,6 +414,10 @@ class Canvas:
         self.__draw_hexagon(row_9_start_x, 325, 50, color)
         self.draw_number_on_piece(18, number)
 
+        if color == "tan":
+            self.game_struct.place_robber_on_piece(18)
+            self.draw_robber_on_piece(18)
+
         #--- Row 19 ---
 
         color = self.__choose_radom_color_from_piece_list()
@@ -314,8 +426,30 @@ class Canvas:
         number = self.game_struct.get_piece_dice_number(19)
         self.draw_number_on_piece(19, number)
 
+        if color == "tan":
+            self.game_struct.place_robber_on_piece(19)
+            self.draw_robber_on_piece(19)
+
     def __choose_radom_color_from_piece_list(self) -> str:
         return self.pieces.pop(random.randint(0, len(self.pieces)-1))
+
+    def __point_in_polygon(self, x: float, y: float, poly: list) -> bool:
+        n = len(poly) // 2
+        inside = False
+
+        p1x, p1y = poly[0], poly[1]
+        for i in range(n + 1):
+            p2x, p2y = poly[2 * (i % n)], poly[2 * (i % n) + 1]
+            if y > min(p1y, p2y):
+                if y <= max(p1y, p2y):
+                    if x <= max(p1x, p2x):
+                        if p1y != p2y:
+                            xinters = (y - p1y) * (p2x - p1x) / (p2y - p1y) + p1x
+                        if p1x == p2x or x <= xinters:
+                            inside = not inside
+            p1x, p1y = p2x, p2y
+
+        return inside
 
     def is_corner_hit(self, event, tolerance=10):
         cx, cy = self.canvas.canvasx(event.x), self.canvas.canvasy(event.y)
@@ -357,6 +491,13 @@ class Canvas:
                     return idx, ((x1, y1), (x2, y2))   # piece number, edge coords of what houses inbetween
         return None, None
     
+    def is_piece_hit(self, event):
+        cx, cy = self.canvas.canvasx(event.x), self.canvas.canvasy(event.y)
+        for idx, flat_points in enumerate(self.hexagons, start=1):
+            if self.__point_in_polygon(cx, cy, flat_points):
+                return idx  # piece number
+        return None
+
     def get_corner_num(self, corner, tolerance=0.01):
         """Find corner number by coordinate with tolerance for floating-point errors"""
         for key, (x, y) in self.corner_coords.items():
@@ -555,21 +696,64 @@ class Canvas:
         else:
             print("No corner hit or edge hit")
 
-    def place_robber(self, player, players):
-        pass
+    def place_robber(self, current_player, players: list, button:ttk.Button) -> None:
+        # Remove robber from current position
+        button.config(state="disabled") # Disable the button during placement
         
+        current_robber_piece = self.game_struct.get_robber_piece()
+        if current_robber_piece:
+            self.undraw_robber_on_piece(current_robber_piece)
         
+        self.placement_complete = False
+
+        def on_canvas_click(event):
+            if self.placement_complete:
+                return
+
+            hit_piece = self.is_piece_hit(event)  # Fix: remove tuple assignment
+
+            if hit_piece:
+                
+                self.game_struct.place_robber_on_piece(hit_piece)
+                self.draw_robber_on_piece(hit_piece)
+                
+                affected_players = self.game_struct.get_players_adjacent_to_piece(hit_piece)
+                
+                if affected_players:
+                    
+                    
+                    player_selection = tk.Toplevel(self.root)
+                    player_selection.title("Steal Resource")
+                    selection = tk.Label(player_selection, text="Select a player to steal from:")
+                    selection.pack(anchor="center", padx=10, pady=10)
+                    for player in affected_players:
+                        btn = ttk.Button(player_selection, text=player, 
+                                         command=lambda p=player: self.steal_resource_and_close(current_player, players, p, player_selection, button))
+                        btn.pack(anchor="center", padx=5, pady=5)
+                else:
+                    self.canvas.unbind("<Button-1>")
+                    self.canvas.bind("<Button-1>", self.on_canvas_click_game_loop)
+                    print("No players to steal from.")
+                    self.placement_complete = True  
+                    button.config(state="normal")  
+        self.canvas.bind("<Button-1>", on_canvas_click)
+
+    def steal_resource_and_close(self, current_player, players, target_name, window: tk.Toplevel, button:ttk.Button) -> None:
+        player_to_steal_from = next((p for p in players if p.name == target_name), None)
         
-    
-
-    
-
-    
-    
-    
-
+        if player_to_steal_from:
+            try:
+                stolen_resource = player_to_steal_from.remove_random_resource()
+            except ValueError:
+                stolen_resource = None
+            if stolen_resource:
+                current_player.add_resource(stolen_resource, 1)
+                print(f"{current_player.name} stole {stolen_resource} from {player_to_steal_from.name}")
+            else:
+                print(f"{player_to_steal_from.name} has no resources to steal.")
         
-    
-
-
-    
+        window.destroy()
+        self.placement_complete = True
+        self.canvas.unbind("<Button-1>")
+        self.canvas.bind("<Button-1>", self.on_canvas_click_game_loop)
+        button.config(state="normal")

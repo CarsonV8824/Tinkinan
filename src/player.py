@@ -4,6 +4,7 @@ import tkinter as tk
 from canvas import Canvas
 from db import Database
 from game_loop import GameLoop
+import random
 
 class Player:
 
@@ -55,6 +56,15 @@ class Player:
 
     def add_victory_point(self, points: int):
         self.resources["victory_points"] += points
+
+    def remove_random_resource(self) -> str:
+        available_resources = [res for res, count in self.resources.items() if res != "victory_points" and count > 0]
+        if not available_resources:
+            raise ValueError("No resources available to remove.")
+        
+        chosen_resource = random.choice(available_resources)
+        self.remove_resource(chosen_resource, 1)
+        return chosen_resource
 
         
     
