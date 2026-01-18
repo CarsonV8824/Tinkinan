@@ -9,6 +9,7 @@ from db import Database
 from game_struct import GameStruct
 from game_loop import GameLoop
 from player import Player
+import networkx as nx
 import random
 
 def load_data():
@@ -21,10 +22,25 @@ def load_data():
     except Exception as e:
         print (e)
 
-def add_data(GameStruct, PlayerData):
+def add_data(game_struct:GameStruct, PlayerData:list[Player]):
     try:
         with Database("database/Tinkinan.db") as db:
-            db.add_data(GameStruct, PlayerData)
+            node_list = list(game_struct.graph.nodes(data=True))
+            edge_list = list(game_struct.graph.edges(data=True))
+            
+            player_data = []
+            for player in PlayerData:
+                pdata = {
+                    "name": player.name,
+                    "color": player.color,
+                    "resources": player.resources,
+                    "settlements": player.settlements,
+                    "cities": player.cities,
+                    "roads": player.roads
+                }
+                player_data.append(pdata)
+                
+            db.add_data(node_list, edge_list, player_data)
     except Exception as e:
         print (e)
 
@@ -70,10 +86,10 @@ def main():
 
     trade_tab = tab.trade_tab(tabs, players)
 
-    development_tab = None
-
     build_tab = tab.build_tab(tabs)
 
+    development_tab = tab.development_tab(tabs, players, game_loop)
+    
     rules_tab = tab.rules_tab(tabs)
     
     running = root.mainloop()

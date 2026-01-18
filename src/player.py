@@ -18,6 +18,9 @@ class Player:
             "yellow": 0,
             "gray": 0,
             "victory_points":2,
+            "knight_cards":0,
+            "longest_route":False,
+            "largest_army":False
         }
         self.settlements = []
         self.cities = []
