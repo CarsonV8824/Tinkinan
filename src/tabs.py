@@ -189,7 +189,7 @@ class Tabs:
                 pass
             for resource, amount in next(player for player in players if player.name == self.first_trade_player).resources.items():
                 for _ in range(amount):
-                    if resource != "victory_points":
+                    if resource != "victory_points" and resource != "knight_cards":
                         
                         try:
                             self.first_player_items.insert('', 'end', text=resource)
@@ -218,7 +218,7 @@ class Tabs:
                 pass
             for resource, amount in next(player for player in players if player.name == self.second_trade_player).resources.items():
                 for _ in range(amount):
-                    if resource != "victory_points":
+                    if resource != "victory_points" and resource != "knight_cards":
                         try:
                             self.second_player_items.insert('', 'end', text=resource)
                         except Exception as e:

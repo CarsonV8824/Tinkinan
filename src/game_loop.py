@@ -203,10 +203,14 @@ class GameLoop:
                     return
                 
                 # Remove resources from player
-                for resource in res:
-                    amount = counts[resource].get()
-                    if amount > 0:
-                        p.remove_resource(resource, amount)
+                try:
+                    for resource in res:
+                            amount = counts[resource].get()
+                            if amount > 0:
+                                p.remove_resource(resource, amount)
+                except Exception as e:
+                    ttk.Label(window, text=f"Error: {str(e)}", foreground="red").pack()
+                    return
                 
                 # Update UI and close window
                 if update_player_stats_tab:
