@@ -383,9 +383,9 @@ class Tabs:
         return buy_tab
     
     def choose_development_card(self, players, current_player_index:int, robber_func:Callable=None, road_func:Callable=None):
-        """if players[current_player_index].resources["lime"] < 1 or players[current_player_index].resources["gray"] < 1 or players[current_player_index].resources["yellow"] < 1:
+        if players[current_player_index].resources["lime"] < 1 or players[current_player_index].resources["gray"] < 1 or players[current_player_index].resources["yellow"] < 1:
             self.card_result_label.config(text="Not enough resources to buy a development card.")
-            return"""
+            return
         
         probablities = {}
         probablities["Knight"] = range(1,15)
