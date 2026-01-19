@@ -392,9 +392,9 @@ class Tabs:
         probablities["Victory Point"] = range(15,19)
         probablities["Road Building"] = range(19,22)
         probablities["Year of Plenty"] = range(22,24)
-        probablities["Monopoly"] = range(24,25)
+        probablities["Monopoly"] = range(24,26)
         
-        roll = random.randint(24,25) #test
+        roll = random.randint(1,25) #test
         chosen_card = None
         for card, rng in probablities.items():
             if roll in rng:
