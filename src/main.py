@@ -34,9 +34,6 @@ def add_data(game_struct:GameStruct, PlayerData:list[Player]):
                     "name": player.name,
                     "color": player.color,
                     "resources": player.resources,
-                    "settlements": player.settlements,
-                    "cities": player.cities,
-                    "roads": player.roads
                 }
                 player_data.append(pdata)
                 
@@ -44,9 +41,13 @@ def add_data(game_struct:GameStruct, PlayerData:list[Player]):
     except Exception as e:
         print (e)
 
+def rgb(r:int, g:int, b:int):
+    return f'#{r:02x}{g:02x}{b:02x}'
+
 def main():
     
     root = ThemedTk(theme="breeze")
+    
     root.geometry("1200x800")
     root.title("Catan in Tkinter")
 
