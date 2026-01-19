@@ -35,7 +35,7 @@ class Database:
         
         self.cursor.execute("""SELECT * FROM Catan""")
         data = self.cursor.fetchall()
-        return data
+        return [ (row[0], json.loads(row[1]), json.loads(row[2]), json.loads(row[3])) for row in data ]
     
     def clear_data(self):
         self.cursor.execute("""DELETE FROM Catan""")

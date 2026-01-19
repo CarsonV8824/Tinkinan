@@ -36,7 +36,7 @@ Development Card: 1 ore + 1 wool + 1 grain
 
 === THE ROBBER ===
 - Activated when a 7 is rolled
-- Players with 8+ cards must discard half at random (rounded down and slight change to rules)
+- Players with 8+ cards must discard half (rounded down)
 - Active player moves robber to a new tile
 - Robber blocks resource production on that tile
 - Active player steals 1 random resource card from a player with a settlement/city on that tile

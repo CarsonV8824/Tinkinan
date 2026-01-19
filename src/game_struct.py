@@ -463,6 +463,35 @@ class GameStruct:
                         return True
         return False
 
+    def get_player_with_longest_route(self) -> tuple[str, int] | None:
+        
+        max_length = 0
+        longest_player = None
+        players = set()
+        
+        # Gather all players who have roads on the board
+        edges = list(self.graph.edges(data=True))
+        for edge in edges:
+            player = edge[2].get('Player')
+            if player:
+                players.add(player)
+        
+        # For each player, find the longest path of their roads
+        for player in players:
+            player_edges = [(u, v) for u, v, data in edges if data.get('Player') == player]
+            player_graph = nx.Graph()
+            player_graph.add_edges_from(player_edges)
+            
+            # Find the longest path in the player's road graph
+            for node in player_graph.nodes():
+                lengths = nx.single_source_dijkstra_path_length(player_graph, node)
+                longest_from_node = max(lengths.values(), default=0)
+                if longest_from_node > max_length:
+                    max_length = longest_from_node
+                    longest_player = player
+        
+        return longest_player, max_length
+
     def __str__(self):
         return f"nodes: {len(list(self.graph.nodes))}. number of edges {len(list(self.graph.edges))}"
 

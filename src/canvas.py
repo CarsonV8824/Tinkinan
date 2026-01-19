@@ -28,6 +28,8 @@ class Canvas:
         
         self.city_on = False
 
+        self.robber_placement_active = False
+
         #look at Game_Board.png to see how the corner coords are mapped to piece numbers
         self.corner_coords = {
             1: (238.39745962155615, 125.0),
@@ -694,74 +696,6 @@ class Canvas:
         else:
             print("No corner hit or edge hit")
 
-    def place_robber(self, current_player, players: list, button:ttk.Button) -> None:
-        # Remove robber from current position
-        button.config(state="disabled") # Disable the button during placement
-        
-        current_robber_piece = self.game_struct.get_robber_piece()
-        if current_robber_piece:
-            self.undraw_robber_on_piece(current_robber_piece)
-        
-        self.placement_complete = False
-
-        def on_canvas_click(event):
-            if self.placement_complete:
-                return
-
-            hit_piece = self.is_piece_hit(event)  # Fix: remove tuple assignment
-
-            if hit_piece:
-                
-                self.game_struct.place_robber_on_piece(hit_piece)
-                self.draw_robber_on_piece(hit_piece)
-                
-                affected_players = self.game_struct.get_players_adjacent_to_piece(hit_piece)
-                
-                if affected_players:
-                    
-                    
-                    player_selection = tk.Toplevel(self.root)
-                    player_selection.title("Steal Resource")
-                    player_selection.geometry("300x200")
-                    player_selection.iconbitmap("src/hexagon.ico")
-                    selection = tk.Label(player_selection, text="Select a player to steal from:")
-                    selection.pack(anchor="center", padx=10, pady=10)
-                    for player in affected_players:
-                        
-                        btn = ttk.Button(player_selection, text=player, 
-                                        command=lambda p=player: self.steal_resource_and_close(current_player, players, p, player_selection, button))
-                        btn.pack(anchor="center", padx=5, pady=5)
-                else:
-                    self.canvas.unbind("<Button-1>")
-                    self.canvas.bind("<Button-1>", self.on_canvas_click_game_loop)
-                    print("No players to steal from.")
-                    self.placement_complete = True  
-                    button.config(state="normal")  
-        self.canvas.bind("<Button-1>", on_canvas_click)
-
-        while not self.placement_complete:
-            self.root.update()
-
-    def steal_resource_and_close(self, current_player, players, target_name, window: tk.Toplevel, button:ttk.Button) -> None:
-        player_to_steal_from = next((p for p in players if p.name == target_name), None)
-        
-        if player_to_steal_from:
-            try:
-                stolen_resource = player_to_steal_from.remove_random_resource()
-            except ValueError:
-                stolen_resource = None
-            if stolen_resource:
-                current_player.add_resource(stolen_resource, 1)
-                print(f"{current_player.name} stole {stolen_resource} from {player_to_steal_from.name}")
-            else:
-                print(f"{player_to_steal_from.name} has no resources to steal.")
-        
-        window.destroy()
-        self.placement_complete = True
-        self.canvas.unbind("<Button-1>")
-        self.canvas.bind("<Button-1>", self.on_canvas_click_game_loop)
-        button.config(state="normal")
-
     def place_two_roads(self, current_player):
         roads_placed = 0
         self.placement_complete = False
@@ -818,4 +752,72 @@ class Canvas:
         self.canvas.bind("<Button-1>", self.on_canvas_click_game_loop)
         print("Two roads placed successfully!")
 
-            
+    def place_robber(self, current_player, players: list, button:ttk.Button) -> None:
+        button.config(state="disabled")
+        
+        current_robber_piece = self.game_struct.get_robber_piece()
+        if current_robber_piece:
+            self.undraw_robber_on_piece(current_robber_piece)
+        
+        self.placement_complete = False
+        self.robber_placement_active = True
+
+        def on_canvas_click(event):
+            # Early exit if placement already complete
+            if self.placement_complete or not self.robber_placement_active:
+                return
+
+            hit_piece = self.is_piece_hit(event)
+
+            if hit_piece:
+                # IMMEDIATELY disable to prevent re-entry
+                self.robber_placement_active = False
+                
+                self.game_struct.place_robber_on_piece(hit_piece)
+                self.draw_robber_on_piece(hit_piece)
+                
+                affected_players = self.game_struct.get_players_adjacent_to_piece(hit_piece)
+                
+                if affected_players:
+                    player_selection = tk.Toplevel(self.root)
+                    player_selection.title("Steal Resource")
+                    player_selection.geometry("300x200")
+                    player_selection.iconbitmap("src/hexagon.ico")
+                    player_selection.protocol("WM_DELETE_WINDOW", lambda: None)
+                    selection = tk.Label(player_selection, text="Select a player to steal from:")
+                    selection.pack(anchor="center", padx=10, pady=10)
+                    for player in affected_players:
+                        btn = ttk.Button(player_selection, text=player, 
+                                        command=lambda p=player: self.steal_resource_and_close(current_player, players, p, player_selection))
+                        btn.pack(anchor="center", padx=5, pady=5)
+                else:
+                    print("No players to steal from.")
+                    self.placement_complete = True
+        
+        self.canvas.bind("<Button-1>", on_canvas_click)
+
+        while not self.placement_complete:
+            self.root.update()
+        
+        # Clean up
+        self.robber_placement_active = False
+        self.canvas.unbind("<Button-1>")
+        self.canvas.bind("<Button-1>", self.on_canvas_click_game_loop)
+        button.config(state="normal")
+
+    def steal_resource_and_close(self, current_player, players, target_name, window: tk.Toplevel) -> None:
+        player_to_steal_from = next((p for p in players if p.name == target_name), None)
+        
+        if player_to_steal_from:
+            try:
+                stolen_resource = player_to_steal_from.remove_random_resource()
+            except ValueError:
+                stolen_resource = None
+            if stolen_resource:
+                current_player.add_resource(stolen_resource, 1)
+                print(f"{current_player.name} stole {stolen_resource} from {player_to_steal_from.name}")
+            else:
+                print(f"{player_to_steal_from.name} has no resources to steal.")
+        
+        window.destroy()
+        self.placement_complete = True  # Signal loop to exit

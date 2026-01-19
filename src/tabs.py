@@ -383,18 +383,18 @@ class Tabs:
         return buy_tab
     
     def choose_development_card(self, players, current_player_index:int, robber_func:Callable=None, road_func:Callable=None):
-        if players[current_player_index].resources["lime"] < 1 or players[current_player_index].resources["gray"] < 1 or players[current_player_index].resources["yellow"] < 1:
+        """if players[current_player_index].resources["lime"] < 1 or players[current_player_index].resources["gray"] < 1 or players[current_player_index].resources["yellow"] < 1:
             self.card_result_label.config(text="Not enough resources to buy a development card.")
-            return
+            return"""
         
         probablities = {}
         probablities["Knight"] = range(1,15)
         probablities["Victory Point"] = range(15,19)
         probablities["Road Building"] = range(19,22)
         probablities["Year of Plenty"] = range(22,24)
-        probablities["Monopoly"] = range(24,26)
+        probablities["Monopoly"] = range(24,25)
         
-        roll = random.randint(1,25) #test
+        roll = random.randint(24,25) #test
         chosen_card = None
         for card, rng in probablities.items():
             if roll in rng:
@@ -518,28 +518,55 @@ class Tabs:
 
         return rules_tab
     
-    def past_games_tab(self, notebook:ttk.Notebook, past_data:list):
+    def past_games_tab(self, notebook:ttk.Notebook, past_data:list[tuple]):
         past_games_tab = ttk.Frame(notebook)
         notebook.add(past_games_tab, text="past games")
         
         #===Scrollbar======================================================================================
 
         canvas = tk.Canvas(past_games_tab)
-        scrollbar = ttk.Scrollbar(past_games_tab, orient="vertical", command=canvas.yview)
+        scrollbar_y = ttk.Scrollbar(past_games_tab, orient="vertical", command=canvas.yview)
+        scrollbar_x = ttk.Scrollbar(past_games_tab, orient="horizontal", command=canvas.xview)
         scrollable_frame = ttk.Frame(canvas)
         
         scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+        canvas.configure(xscrollcommand=scrollbar_x.set)
         
         canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
+        canvas.configure(yscrollcommand=scrollbar_y.set)
 
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
+        scrollbar_x.pack(side="bottom", fill="x")  
+        scrollbar_y.pack(side="right", fill="y")    
+        canvas.pack(side="left", fill="both", expand=True)  
         
         frame = ttk.Frame(scrollable_frame)
         frame.pack(expand=True, fill="both")
 
         #=====================================================================================
+
+        try:
+            for last_game_data in past_data:
+                last_game = last_game_data
+                game_num,node_list, edge_list, player_data = last_game
+
+                last_game_frame = ttk.LabelFrame(frame, text="Last Game Data", padding=10)
+                last_game_frame.pack(fill="x", padx=10, pady=5)
+
+                ttk.Label(last_game_frame, text=f"Game Number: {game_num}").pack(anchor="w")
+                
+                ttk.Label(last_game_frame, text="Players:").pack(anchor="w")
+
+                for pdata in player_data:
+                    
+                    player_info = f"  Name: {pdata['name']}, Color: {pdata['color']}, Resources: {pdata['resources']}"
+                    ttk.Label(last_game_frame, text=player_info).pack(anchor="w")
+
+                most_points = max(player_data, key=lambda p: p['resources'].get('victory_points', 0))
+                ttk.Label(last_game_frame, text=f"Winner: {most_points['name']} with {most_points['resources'].get('victory_points', 0)} Victory Points").pack(anchor="w")
+            
+        except Exception as e:
+            print(e)
+            
         return past_games_tab
 
 

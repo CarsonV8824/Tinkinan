@@ -94,16 +94,39 @@ class GameLoop:
         button.config(state="normal")
     
     def game_turn(self, button:ttk.Button,player_info:ttk.Label, players: list,  first_dice_label:ttk.Label=None, second_dice_label:ttk.Label=None, total_of_dice_label:ttk.Label=None, update_player_stats_tab=None):
-        
+    
         drestory_all = lambda: [widget.destroy() for widget in self.root.winfo_children() if isinstance(widget, tk.Toplevel)]
         drestory_all()
 
-        for player in players:
-            if player.get_resource_count("victory_points") >= 10:
-                player_info.config(text=f"{player.name} Wins!")
-                self.root.after(3000, self.root.destroy)
-                return
-        
+        longest_name, longest_len = self.game_struct.get_player_with_longest_route()
+        longest_player = next((p for p in players if p.name == longest_name), None)
+        if longest_player and longest_len >= 5:
+            current_holder = next((p for p in players if p.resources.get("has_longest_route")), None)
+            if current_holder != longest_player:
+                if current_holder:
+                    current_holder.resources["longest_route"] = False
+                    current_holder.remove_victory_point(2)
+                    if update_player_stats_tab:
+                        update_player_stats_tab()
+                longest_player.resources["longest_route"] = True
+                longest_player.add_victory_point(2)
+                if update_player_stats_tab:
+                    update_player_stats_tab()
+
+        biggest_army_player = max(players, key=lambda p: p.resources["knight_cards"])
+        if biggest_army_player.resources["knight_cards"] >= 3:
+            current_holder = next((p for p in players if p.resources.get("largest_army")), None)
+            if current_holder != biggest_army_player:
+                if current_holder:
+                    current_holder.resources["largest_army"] = False
+                    current_holder.remove_victory_point(2)
+                    if update_player_stats_tab:
+                        update_player_stats_tab()
+                biggest_army_player.resources["largest_army"] = True
+                biggest_army_player.add_victory_point(2)
+                if update_player_stats_tab:
+                    update_player_stats_tab()
+
         self.board.canvas.update()
         first_die = random.randint(1, 6)
         second_die = random.randint(1, 6)
@@ -115,15 +138,19 @@ class GameLoop:
         if total != 7:
             self.game_struct.distribute_resources(total, players)
         elif total == 7:
+            # Check which players need to discard
+            players_to_discard = []
             for player in players:
-                total_resources = sum([count for resource, count in player.resources.items() if resource != "victory_points"])
+                total_resources = sum([count for resource, count in player.resources.items() if resource != "victory_points" and resource != "knight_cards"])
                 if total_resources > 7:
-                    to_discard = total_resources // 2
-                    discarded = 0
-                    while discarded < to_discard:
-                        resource_to_discard = random.choice([res for res in player.resources if res != "victory_points" and player.resources[res] > 0])
-                        player.remove_resource(resource_to_discard, 1)
-                        discarded += 1
+                    players_to_discard.append(player)
+            
+            # If players need to discard, show discard UI
+            if players_to_discard:
+                button.config(state="disabled")
+                self.show_discard_ui(players_to_discard, update_player_stats_tab)
+                button.config(state="normal")
+            
             self.place_robber(players, button)
             
         # Update UI after resources are distributed
@@ -139,9 +166,54 @@ class GameLoop:
 
         self.board.canvas.update()
 
-        
-       
+    def show_discard_ui(self, players_to_discard: list, update_player_stats_tab=None):
+        """Display UI for players to manually discard half their resources."""
+        for player in players_to_discard:
+            total_resources = sum([count for resource, count in player.resources.items() if resource != "victory_points" and resource != "knight_cards"])
+            to_discard = total_resources // 2
+            
+            discard_window = tk.Toplevel(self.root)
+            discard_window.title(f"Discard Resources - {player.name}")
+            discard_window.geometry("400x400")
+            discard_window.iconbitmap("src/hexagon.ico")
+            discard_window.resizable(False, False)
 
-        
-
-        
+            discard_window.protocol("WM_DELETE_WINDOW", lambda: None)
+            
+            ttk.Label(discard_window, text=f"{player.name}, you must discard {to_discard} resources", font=("Arial", 12)).pack(pady=10)
+            
+            resources = ["lime", "green", "brown", "yellow", "gray"]
+            discard_counts = {res: tk.IntVar(value=0) for res in resources}
+            
+            # Display spinboxes for each resource
+            for resource in resources:
+                available = player.resources.get(resource, 0)
+                frame = ttk.Frame(discard_window)
+                frame.pack(pady=5)
+                
+                ttk.Label(frame, text=f"{resource.capitalize()} (have {available}):").pack(side="left", padx=5)
+                spinbox = ttk.Spinbox(frame, from_=0, to=available, textvariable=discard_counts[resource], width=5)
+                spinbox.pack(side="left", padx=5)
+            
+            # Capture variables with default parameters
+            def confirm_discard(p=player, res=resources, to_d=to_discard, counts=discard_counts, window=discard_window):
+                total_selected = sum([counts[r].get() for r in res])
+                if total_selected != to_d:
+                    ttk.Label(window, text=f"Error: You must discard exactly {to_d} resources", foreground="red").pack()
+                    return
+                
+                # Remove resources from player
+                for resource in res:
+                    amount = counts[resource].get()
+                    if amount > 0:
+                        p.remove_resource(resource, amount)
+                
+                # Update UI and close window
+                if update_player_stats_tab:
+                    update_player_stats_tab()
+                window.destroy()
+            
+            ttk.Button(discard_window, text="Confirm Discard", command=confirm_discard).pack(pady=10)
+            
+            # Wait for this player to discard before moving to next
+            self.root.wait_window(discard_window)
