@@ -84,13 +84,13 @@ def main():
 
     tab.update_player_stats(players) 
 
-    trade_tab = tab.trade_tab(tabs, players)
+    trade_tab = tab.trade_tab(tabs, players, game_loop, game_struct)
 
-    build_tab = tab.build_tab(tabs)
-
-    development_tab = tab.development_tab(tabs, players, game_loop)
+    buy_tab = tab.buy_tab(tabs, players, game_loop)
     
     rules_tab = tab.rules_tab(tabs)
+
+    past_games_tab = tab.past_games_tab(tabs, load_data())
     
     running = root.mainloop()
 

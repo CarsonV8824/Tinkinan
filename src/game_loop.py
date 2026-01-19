@@ -94,6 +94,10 @@ class GameLoop:
         button.config(state="normal")
     
     def game_turn(self, button:ttk.Button,player_info:ttk.Label, players: list,  first_dice_label:ttk.Label=None, second_dice_label:ttk.Label=None, total_of_dice_label:ttk.Label=None, update_player_stats_tab=None):
+        
+        drestory_all = lambda: [widget.destroy() for widget in self.root.winfo_children() if isinstance(widget, tk.Toplevel)]
+        drestory_all()
+
         for player in players:
             if player.get_resource_count("victory_points") >= 10:
                 player_info.config(text=f"{player.name} Wins!")
@@ -120,7 +124,6 @@ class GameLoop:
                         resource_to_discard = random.choice([res for res in player.resources if res != "victory_points" and player.resources[res] > 0])
                         player.remove_resource(resource_to_discard, 1)
                         discarded += 1
-            update_player_stats_tab()
             self.place_robber(players, button)
             
         # Update UI after resources are distributed

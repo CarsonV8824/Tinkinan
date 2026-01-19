@@ -4,6 +4,7 @@ from ttkthemes import ThemedTk
 import tkinter as tk
 from player import Player
 from game_loop import GameLoop
+from game_struct import GameStruct
 
 import random
 
@@ -14,6 +15,8 @@ class Tabs:
     def __init__(self, root:ThemedTk):
         self.root = root
         self.biuld_option = None
+
+        self.trade_in_resources_top:tk.Toplevel = None
 
         self.dice_button:ttk.Button = None
         
@@ -130,7 +133,7 @@ class Tabs:
                 if res_var:
                     res_var.set(f"  {resource}: {amount}")
 
-    def trade_tab(self, notebook:ttk.Notebook, players:list):
+    def trade_tab(self, notebook:ttk.Notebook, players:list, game_loop:GameLoop, game_struct:GameStruct=None):
 
         trade_tab = ttk.Frame(notebook)
         notebook.add(trade_tab, text="trade")
@@ -154,10 +157,13 @@ class Tabs:
 
         #=====================================================================================
 
-        first_trade_player = ttk.Combobox(frame, values=[player.name for player in players], state="readonly")
+        player_player_frame = ttk.Frame(frame, border=2, padding=10, relief="groove")
+        player_player_frame.pack(padx=10, pady=10)
+
+        first_trade_player = ttk.Combobox(player_player_frame, values=[player.name for player in players], state="readonly")
         first_trade_player.pack(padx=10, pady=10)
 
-        second_trade_player = ttk.Combobox(frame, values=[player.name for player in players], state="readonly")
+        second_trade_player = ttk.Combobox(player_player_frame, values=[player.name for player in players], state="readonly")
         second_trade_player.pack(padx=10, pady=10)
 
         first_player = first_trade_player.get()
@@ -173,9 +179,9 @@ class Tabs:
             except Exception:
                 pass
             
-            self.first_trade_player_text = ttk.Label(frame, text=f"{self.first_trade_player}'s Resources:")
+            self.first_trade_player_text = ttk.Label(player_player_frame, text=f"{self.first_trade_player}'s Resources:")
             self.first_trade_player_text.pack(padx=10, pady=10)
-            self.first_player_items = ttk.Treeview(frame, selectmode="extended", show="tree")
+            self.first_player_items = ttk.Treeview(player_player_frame, selectmode="extended", show="tree")
             self.first_player_items.pack(padx=10, pady=10)
             try:
                 self.first_player_items.delete(0, tk.END)
@@ -202,9 +208,9 @@ class Tabs:
                 self.second_trade_player_text.destroy()
             except Exception:
                 pass
-            self.second_trade_player_text = ttk.Label(frame, text=f"{self.second_trade_player}'s Resources:")
+            self.second_trade_player_text = ttk.Label(player_player_frame, text=f"{self.second_trade_player}'s Resources:")
             self.second_trade_player_text.pack(padx=10, pady=10)
-            self.second_player_items = ttk.Treeview(frame, selectmode="extended", show="tree")
+            self.second_player_items = ttk.Treeview(player_player_frame, selectmode="extended", show="tree")
             self.second_player_items.pack(padx=10, pady=10)
             try:
                 self.second_player_items.delete(0, tk.END)
@@ -272,67 +278,75 @@ class Tabs:
             self.second_player_items.config(height=len(self.second_player_items.get_children()) or 1)
 
         trade_confirm_button = ttk.Button(
-            frame, 
+            player_player_frame, 
             text="Confirm Trade", 
             command=lambda: get_trade_selections()
         )
         trade_confirm_button.pack(pady=10)
 
+        #===Trade in cards part==================================================================================================
+
+        trade_in_frame = ttk.Frame(frame, padding=10, border=2, relief="groove")
+        trade_in_frame.pack(padx=10, pady=10)
+
+        trade_in_label = ttk.Label(trade_in_frame, text="Trade in 4 of the same resource for 1 of your choice")
+        trade_in_label.pack(pady=5)
+
+        trade_in_button = ttk.Button(trade_in_frame, text="Trade In Resources", command=lambda: self.trade_in_resources(players, game_loop, game_struct))
+        trade_in_button.pack(pady=5)
+
         return trade_tab
 
-    def build_tab(self, notebook:ttk.Notebook):
-        
-        biuld_tab = ttk.Frame(notebook)
-        notebook.add(biuld_tab, text="biuld")
-        
-        #===Scrollbar======================================================================================
-
-        canvas = tk.Canvas(biuld_tab)
-        scrollbar = ttk.Scrollbar(biuld_tab, orient="vertical", command=canvas.yview)
-        scrollable_frame = ttk.Frame(canvas)
-        
-        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
-        
-        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
-        canvas.configure(yscrollcommand=scrollbar.set)
-
-        canvas.pack(side="left", fill="both", expand=True)
-        scrollbar.pack(side="right", fill="y")
-        
-        frame = ttk.Frame(scrollable_frame)
-        frame.pack(expand=True, fill="both")
-
-        #=====================================================================================
-
-        road = ttk.Label(frame, text="Press r to build a road")
-        road.pack(padx=10, pady=10)
-
-        settlement = ttk.Label(frame, text="Press s to build a settlement")
-        settlement.pack(padx=10, pady=10)
-
-        city = ttk.Label(frame, text="Press c to build a city")
-        city.pack(padx=10, pady=10)
-
-        """combo = ttk.Combobox(frame, values=["road", "settlement", "city"], state="readonly")
-        combo.current(0)  
-        combo.pack(padx=10, pady=10)
-
-        def on_select(event):
-            print("Selected:", combo.get())
-            self.biuld_option = combo.get()
-        combo.bind("<<ComboboxSelected>>", on_select)"""
-        
-        return biuld_tab
+    def trade_in_resources(self, players:list[Player], game_loop:GameLoop, game_struct:GameStruct=None):
+            self.trade_in_resources_top = tk.Toplevel(self.root)
+            self.trade_in_resources_top.title("Trade In Resources")
+            self.trade_in_resources_top.geometry("300x300")
+            self.trade_in_resources_top.iconbitmap("src/hexagon.ico")
     
-    def development_tab(self, notebook:ttk.Notebook, players:list, game_loop:GameLoop):
+            trade_in_text = ttk.Label(self.trade_in_resources_top, text=f"Select 4 resources to trade in")
+            trade_in_text.pack(pady=10)
+
+            trade_in_text.config(text=f"Select 4 resources to trade in {players[game_loop.player_index].name}")
+            
+            choose_texture_box_from_you = ttk.Label(self.trade_in_resources_top, text="Choose resource to give:")
+            choose_texture_box_from_you.pack(pady=10)
+
+            choose_resource_box_from_you = ttk.Combobox(self.trade_in_resources_top, values=["lime", "green", "brown", "yellow", "gray"], state="readonly")
+            choose_resource_box_from_you.pack(pady=10)
+
+            choose_texture_box_from_bank = ttk.Label(self.trade_in_resources_top, text="Choose resource to receive:")
+            choose_texture_box_from_bank.pack(pady=10)
+
+            choose_resource_box_from_bank = ttk.Combobox(self.trade_in_resources_top, values=["lime", "green", "brown", "yellow", "gray"], state="readonly")
+            choose_resource_box_from_bank.pack(pady=10)
+
+            def confirm_trade_in():
+                chosen_resource_you = choose_resource_box_from_you.get()
+                chosen_resource_bank = choose_resource_box_from_bank.get()
+                if not chosen_resource_you or not chosen_resource_bank:
+                    return
+                
+                if players[game_loop.player_index].get_resource_count(chosen_resource_you) < 4:
+                    trade_in_text.config(text=f"Not enough {chosen_resource_you} to trade in.")
+                    return
+                
+                players[game_loop.player_index].remove_resource(chosen_resource_you, 4)
+                players[game_loop.player_index].add_resource(chosen_resource_bank, 1)
+
+                self.trade_in_resources_top.destroy()
+                self.update_player_stats(players)
+            confirm_trade_in_button = ttk.Button(self.trade_in_resources_top, text="Confirm Trade In", command=confirm_trade_in)
+            confirm_trade_in_button.pack(pady=10)
+    
+    def buy_tab(self, notebook:ttk.Notebook, players:list, game_loop:GameLoop):
         
-        development_tab = ttk.Frame(notebook)
-        notebook.add(development_tab, text="development")
+        buy_tab = ttk.Frame(notebook)
+        notebook.add(buy_tab, text="buy")
         
         #===Scrollbar======================================================================================
 
-        canvas = tk.Canvas(development_tab)
-        scrollbar = ttk.Scrollbar(development_tab, orient="vertical", command=canvas.yview)
+        canvas = tk.Canvas(buy_tab)
+        scrollbar = ttk.Scrollbar(buy_tab, orient="vertical", command=canvas.yview)
         scrollable_frame = ttk.Frame(canvas)
         
         scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
@@ -343,10 +357,19 @@ class Tabs:
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
         
-        frame = ttk.Frame(scrollable_frame)
+        frame = ttk.Frame(scrollable_frame, border=2, padding=10, relief="groove")
         frame.pack(expand=True, fill="both")
 
         #=====================================================================================
+
+        road_label = ttk.Label(frame, text="Press r to build road")
+        road_label.pack(padx=10, pady=10)
+
+        settlement_label = ttk.Label(frame, text="Press s to build settlement")
+        settlement_label.pack(padx=10, pady=10)
+
+        city_label = ttk.Label(frame, text="Press c to build city")
+        city_label.pack(padx=10, pady=10)
 
         draw_card_label = ttk.Label(frame, text="Draw Development Card")
         draw_card_label.pack(padx=10, pady=10)
@@ -357,7 +380,7 @@ class Tabs:
         self.card_result_label = ttk.Label(frame, text="Card Result: ")
         self.card_result_label.pack(padx=10, pady=10)
 
-        return development_tab
+        return buy_tab
     
     def choose_development_card(self, players, current_player_index:int, robber_func:Callable=None, road_func:Callable=None):
         if players[current_player_index].resources["lime"] < 1 or players[current_player_index].resources["gray"] < 1 or players[current_player_index].resources["yellow"] < 1:
@@ -440,6 +463,7 @@ class Tabs:
 
         print(f"Chosen Card: {chosen_card}")
         self.update_player_stats(players)
+    
     def rules_tab(self, notebook:ttk.Notebook):
         
         rules_tab = ttk.Frame(notebook)
@@ -493,4 +517,29 @@ class Tabs:
         rule_button.pack(pady=10)
 
         return rules_tab
+    
+    def past_games_tab(self, notebook:ttk.Notebook, past_data:list):
+        past_games_tab = ttk.Frame(notebook)
+        notebook.add(past_games_tab, text="past games")
+        
+        #===Scrollbar======================================================================================
+
+        canvas = tk.Canvas(past_games_tab)
+        scrollbar = ttk.Scrollbar(past_games_tab, orient="vertical", command=canvas.yview)
+        scrollable_frame = ttk.Frame(canvas)
+        
+        scrollable_frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+        
+        canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        canvas.pack(side="left", fill="both", expand=True)
+        scrollbar.pack(side="right", fill="y")
+        
+        frame = ttk.Frame(scrollable_frame)
+        frame.pack(expand=True, fill="both")
+
+        #=====================================================================================
+        return past_games_tab
+
 
