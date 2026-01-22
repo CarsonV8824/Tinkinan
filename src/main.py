@@ -9,10 +9,11 @@ from db import Database
 from game_struct import GameStruct
 from game_loop import GameLoop
 from player import Player
+from first_screen import FirstScreen
 import networkx as nx
 import random
 
-def load_data():
+def load_data() -> list|None:
     try:
         with Database("database/Tinkinan.db") as db:
             data = db.get_data()
@@ -21,6 +22,7 @@ def load_data():
         return data
     except Exception as e:
         print (e)
+        return None
 
 def add_data(game_struct:GameStruct, PlayerData:list[Player], player_count:int, player_turn:int):
     try:
@@ -53,52 +55,110 @@ def main():
 
     root.iconbitmap("src/hexagon.ico")
 
-    game_struct = GameStruct()
-    
-    board = Canvas(root, game_struct)
+    first_screen = FirstScreen(root, load_data())
+    player_count = first_screen.start_screen()
 
-    game_loop = GameLoop(root, game_struct, board)
-
-    player_count = game_loop.start_screen()
-
-    players = []
-    
-    colors = ["red", "blue", "purple", "orange"]
-    
-    for i in range(player_count):
+    if player_count == -1:
+        # Load saved game
+        saved_data = load_data()
         
-        players.append(Player(f"Player {i+1}", colors[i]))
+        
+            
+        game_struct = GameStruct()
+        first_entry = saved_data[0]
+        node_list = first_entry[1]
+        edge_list = first_entry[2]
+        PlayerData = first_entry[3]
+        player_count = first_entry[4]
+        player_turn = first_entry[5]
+        game_struct.graph.add_nodes_from(node_list)
+        game_struct.graph.add_edges_from(edge_list)
 
-    tab = Tabs(root)
+        board = Canvas(root, game_struct)
 
-    tabs = tab.tabs()
+        game_loop = GameLoop(root, game_struct, board)
 
-    game_loop.placing_initial_settlements(players, tabs=tabs)
+        players = []
+        for pdata in PlayerData:
+            player = Player(pdata["name"], pdata["color"])
+            player.resources = pdata["resources"]
+            players.append(player)
+            tab = Tabs(root)
 
-    first_player_index  = 0
+        tabs = tab.tabs()
 
-    board.get_player(players[first_player_index]) #set first player for placement
+        game_loop.player_index = player_turn
 
-    dice_tab = tab.dice_tab(tabs, game_loop, players)
+        board.get_player(players[game_loop.player_index])
 
-    player_stats_tab = tab.player_stats_tab(tabs, players)
+        dice_tab = tab.dice_tab(tabs, game_loop, players)
 
-    tab.update_player_stats(players) 
+        player_stats_tab = tab.player_stats_tab(tabs, players)
 
-    trade_tab = tab.trade_tab(tabs, players, game_loop, game_struct)
+        tab.update_player_stats(players) 
+        trade_tab = tab.trade_tab(tabs, players, game_loop, game_struct)
 
-    buy_tab = tab.buy_tab(tabs, players, game_loop)
-    
-    rules_tab = tab.rules_tab(tabs)
+        buy_tab = tab.buy_tab(tabs, players, game_loop)
+            
+        rules_tab = tab.rules_tab(tabs)
 
-    past_games_tab = tab.past_games_tab(tabs, load_data())
-    
-    running = root.mainloop()
+        past_games_tab = tab.past_games_tab(tabs, load_data())
+            
+        running = root.mainloop()
 
-    if not running: #this will run when the window is closed
-        print("Exiting Game")
+        if not running: #this will run when the window is closed
+            print("Exiting Game")
 
-        add_data(game_struct, players, player_count, game_loop.player_index)
+            add_data(game_struct, players, player_count, game_loop.player_index)
+            
+        return
+
+    else:
+
+        game_struct = GameStruct()
+        
+        board = Canvas(root, game_struct)
+
+        game_loop = GameLoop(root, game_struct, board)
+
+        players = []
+        
+        colors = ["red", "blue", "purple", "orange"]
+        
+        for i in range(player_count):
+            
+            players.append(Player(f"Player {i+1}", colors[i]))
+
+        tab = Tabs(root)
+
+        tabs = tab.tabs()
+
+        game_loop.placing_initial_settlements(players, tabs=tabs)
+
+        first_player_index  = 0
+
+        board.get_player(players[first_player_index]) #set first player for placement
+
+        dice_tab = tab.dice_tab(tabs, game_loop, players)
+
+        player_stats_tab = tab.player_stats_tab(tabs, players)
+
+        tab.update_player_stats(players) 
+
+        trade_tab = tab.trade_tab(tabs, players, game_loop, game_struct)
+
+        buy_tab = tab.buy_tab(tabs, players, game_loop)
+        
+        rules_tab = tab.rules_tab(tabs)
+
+        past_games_tab = tab.past_games_tab(tabs, load_data())
+        
+        running = root.mainloop()
+
+        if not running: #this will run when the window is closed
+            print("Exiting Game")
+
+            add_data(game_struct, players, player_count, game_loop.player_index)
 
 if __name__ == "__main__":
     main()

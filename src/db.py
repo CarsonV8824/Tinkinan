@@ -33,9 +33,9 @@ class Database:
         self.connection.commit()
 
     def get_data(self):
-        """Retrieves all game data from the database and returns it as a list of tuples."""
+        """Retrieves the most recent game data from the database and returns it as a list of tuples."""
         
-        self.cursor.execute("""SELECT * FROM Catan""")
+        self.cursor.execute("""SELECT * FROM Catan WHERE id = (SELECT MAX(id) FROM Catan)""")
         data = self.cursor.fetchall()
         return [ (row[0], json.loads(row[1]), json.loads(row[2]), json.loads(row[3]), row[4], row[5]) for row in data ]
 
