@@ -22,7 +22,7 @@ def load_data():
     except Exception as e:
         print (e)
 
-def add_data(game_struct:GameStruct, PlayerData:list[Player]):
+def add_data(game_struct:GameStruct, PlayerData:list[Player], player_count:int, player_turn:int):
     try:
         with Database("database/Tinkinan.db") as db:
             node_list = list(game_struct.graph.nodes(data=True))
@@ -36,10 +36,10 @@ def add_data(game_struct:GameStruct, PlayerData:list[Player]):
                     "resources": player.resources,
                 }
                 player_data.append(pdata)
-                
-            db.add_data(node_list, edge_list, player_data)
+
+            db.add_data(node_list, edge_list, player_data, player_count, player_turn)
     except Exception as e:
-        print (e)
+        raise e
 
 def rgb(r:int, g:int, b:int):
     return f'#{r:02x}{g:02x}{b:02x}'
@@ -97,8 +97,8 @@ def main():
 
     if not running: #this will run when the window is closed
         print("Exiting Game")
-        
-        add_data(game_struct, players)
+
+        add_data(game_struct, players, player_count, game_loop.player_index)
 
 if __name__ == "__main__":
     main()
