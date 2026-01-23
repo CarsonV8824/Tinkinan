@@ -166,9 +166,12 @@ class Canvas:
 
         row_1_start_x = 325 - (50 * math.sqrt(3))
         row1_start_y = 325 - 150
-        color = self.__choose_radom_color_from_piece_list()
         
-            
+        if self.game_struct.get_piece_resource(1) is not None:
+            color = self.game_struct.get_piece_resource(1)
+        
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         
         self.game_struct.add_image_color_to_piece(1, color)
 
@@ -177,258 +180,290 @@ class Canvas:
         self.__draw_hexagon(row_1_start_x, row1_start_y, 50, color)
         self.draw_number_on_piece(1, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(1)
-            self.draw_robber_on_piece(1)
+        
 
         #--- Row 2 ---
 
         row_2_start_x = 325
         row2_start_y = 325 - 150
-        color = self.__choose_radom_color_from_piece_list()
+
+        if self.game_struct.get_piece_resource(2) is not None:
+            color = self.game_struct.get_piece_resource(2)
+        
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(2, color)
 
         number = self.game_struct.get_piece_dice_number(2)
         self.__draw_hexagon(row_2_start_x, row2_start_y, 50, color)
         self.draw_number_on_piece(2, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(2)
-            self.draw_robber_on_piece(2)
-
+        
         #--- Row 3 ---
 
         row_3_start_x = 325 + (50 * math.sqrt(3))
         row3_start_y = 325 - (150)
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(3) is not None:
+            color = self.game_struct.get_piece_resource(3)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(3, color)
 
         number = self.game_struct.get_piece_dice_number(3)
         self.__draw_hexagon(row_3_start_x, row3_start_y, 50, color)
         self.draw_number_on_piece(3, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(3)
-            self.draw_robber_on_piece(3)
+        
 
         #--- Row 4 ---
 
         row_7_start_x = 325 + (50 * 1.5 * math.sqrt(3))
         row7_start_y = 325 - (50 * 1.5)
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(4) is not None:
+            color = self.game_struct.get_piece_resource(4)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(4, color)
         number = self.game_struct.get_piece_dice_number(4)
         self.__draw_hexagon(row_7_start_x, row7_start_y, 50, color)
         self.draw_number_on_piece(4, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(4)
-            self.draw_robber_on_piece(4)
+        
 
         #-- Row 5 ---
 
         row_12_start_x = 325 + (2 * 50 * math.sqrt(3))
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(5) is not None:
+            color = self.game_struct.get_piece_resource(5)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(5, color)
         self.__draw_hexagon(row_12_start_x, 325, 50, color)
         number = self.game_struct.get_piece_dice_number(5)
         self.draw_number_on_piece(5, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(5)
-            self.draw_robber_on_piece(5)
+        
 
         #-- Row 6 ---
 
         row_16_start_x = 325 + (1.5 * 50 * math.sqrt(3))
         row16_start_y = 325 + (50 * 1.5)
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(6) is not None:
+            color = self.game_struct.get_piece_resource(6)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(6, color)
         number = self.game_struct.get_piece_dice_number(6)
         self.__draw_hexagon(row_16_start_x, row16_start_y, 50, color)
         self.draw_number_on_piece(6, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(6)
-            self.draw_robber_on_piece(6)
+        
 
         #-- Row 7 ---
 
         row_19_start_x = 325 + (50 * math.sqrt(3))
         row19_start_y = 325 + 150
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(7) is not None:
+            color = self.game_struct.get_piece_resource(7)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(7, color)
         number = self.game_struct.get_piece_dice_number(7)
         self.__draw_hexagon(row_19_start_x, row19_start_y, 50, color)
         self.draw_number_on_piece(7, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(7)
-            self.draw_robber_on_piece(7)
+        
         
         #--- Row 8 ---
 
         row_18_start_x = 325
         row18_start_y = 325 + 150
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(8) is not None:
+            color = self.game_struct.get_piece_resource(8)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(8, color)
         number = self.game_struct.get_piece_dice_number(8)
         self.__draw_hexagon(row_18_start_x, row18_start_y, 50, color)
         self.draw_number_on_piece(8, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(8)
-            self.draw_robber_on_piece(8)
+        
         
         #--- Row 9 ---
 
         row_17_start_x = 325 - (50 * math.sqrt(3))
         row17_start_y = 325 + 150
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(9) is not None:
+            color = self.game_struct.get_piece_resource(9)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(9, color)
         number = self.game_struct.get_piece_dice_number(9)
         self.__draw_hexagon(row_17_start_x, row17_start_y, 50, color)
         self.draw_number_on_piece(9, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(9)
-            self.draw_robber_on_piece(9)
+        
         
         #--- Row 10 ---
 
         row_13_start_x = 325 - (1.5 * 50 * math.sqrt(3))
         row13_start_y = 325 + (50 * 1.5)
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(10) is not None:
+            color = self.game_struct.get_piece_resource(10)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(10, color)
         self.__draw_hexagon(row_13_start_x, row13_start_y, 50, color)
         number = self.game_struct.get_piece_dice_number(10)
         self.draw_number_on_piece(10, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(10)
-            self.draw_robber_on_piece(10)
+        
         
         #--- Row 11 ---
 
         row_8_start_x = 325 - (2 * 50 * math.sqrt(3))
-        color = self.__choose_radom_color_from_piece_list()
+        
+        if self.game_struct.get_piece_resource(11) is not None:
+            color = self.game_struct.get_piece_resource(11)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(11, color)
         number = self.game_struct.get_piece_dice_number(11)
         self.__draw_hexagon(row_8_start_x, 325, 50, color)
         self.draw_number_on_piece(11, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(11)
-            self.draw_robber_on_piece(11)
+        
         
         #--- Row 12 ---
 
         row_4_start_x = 325 - (1.5 * 50 * math.sqrt(3))
         row4_start_y = 325 - (50 * 1.5)
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(12) is not None:
+            color = self.game_struct.get_piece_resource(12)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(12, color)
 
         number = self.game_struct.get_piece_dice_number(12)
         self.__draw_hexagon(row_4_start_x, row4_start_y, 50, color)
         self.draw_number_on_piece(12, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(12)
-            self.draw_robber_on_piece(12)
+        
 
         #--- Row 13 ---
 
         row_5_start_x = 325 - (50 * 0.5 * math.sqrt(3))
         row5_start_y = 325 - (50 * 1.5)
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(13) is not None:
+            color = self.game_struct.get_piece_resource(13)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(13, color)
         number = self.game_struct.get_piece_dice_number(13)
         self.__draw_hexagon(row_5_start_x, row5_start_y, 50, color)
         self.draw_number_on_piece(13, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(13)
-            self.draw_robber_on_piece(13)
+        
 
         #--- Row 14 ---
 
         row_6_start_x = 325 + (50 * 0.5 * math.sqrt(3))
         row6_start_y = 325 - (50 * 1.5)
-        color = self.__choose_radom_color_from_piece_list()
+        
+        if self.game_struct.get_piece_resource(14) is not None:
+            color = self.game_struct.get_piece_resource(14)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(14, color)
         number = self.game_struct.get_piece_dice_number(14)
         self.__draw_hexagon(row_6_start_x, row6_start_y, 50, color)
         self.draw_number_on_piece(14, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(14)
-            self.draw_robber_on_piece(14)
+        
 
         #--- Row 15 ---
 
         row_11_start_x = 325 + (50 * math.sqrt(3))
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(15) is not None:
+            color = self.game_struct.get_piece_resource(15)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(15, color)
         self.__draw_hexagon(row_11_start_x, 325, 50, color)
         number = self.game_struct.get_piece_dice_number(15)
         self.draw_number_on_piece(15, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(15)
-            self.draw_robber_on_piece(15)
+        
 
         #--- Row 16 ---
 
         row_15_start_x = 325 + (0.5 * 50 * math.sqrt(3))
         row15_start_y = 325 + (50 * 1.5)
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(16) is not None:
+            color = self.game_struct.get_piece_resource(16)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(16, color)
         number = self.game_struct.get_piece_dice_number(16)
         self.__draw_hexagon(row_15_start_x, row15_start_y, 50, color)
         self.draw_number_on_piece(16, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(16)
-            self.draw_robber_on_piece(16)
+        
         
         #--- Row 17 ---
 
         row_14_start_x = 325 - (0.5 * 50 * math.sqrt(3))
         row14_start_y = 325 + (50 * 1.5)
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(17) is not None:
+            color = self.game_struct.get_piece_resource(17)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(17, color)
         number = self.game_struct.get_piece_dice_number(17)
         self.__draw_hexagon(row_14_start_x, row14_start_y, 50, color)
         self.draw_number_on_piece(17, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(17)
-            self.draw_robber_on_piece(17)
+        
 
         #--- Row 18 ---
 
         row_9_start_x = 325 - (50 * math.sqrt(3))
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(18) is not None:
+            color = self.game_struct.get_piece_resource(18)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
+
         self.game_struct.add_image_color_to_piece(18, color)
         number = self.game_struct.get_piece_dice_number(18)
         self.__draw_hexagon(row_9_start_x, 325, 50, color)
         self.draw_number_on_piece(18, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(18)
-            self.draw_robber_on_piece(18)
 
         #--- Row 19 ---
 
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(19) is not None:
+            color = self.game_struct.get_piece_resource(19)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(19, color)
         self.__draw_hexagon(row_10_start_x := 325, 325, 50, color)
         number = self.game_struct.get_piece_dice_number(19)
         self.draw_number_on_piece(19, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(19)
-            self.draw_robber_on_piece(19)
+
+        # --- Draw Robber if already placed ---
+        if not self.game_struct.is_robber_on_board():
+            for i in range(1, 20):
+                if self.game_struct.get_piece_resource(i) == "tan":
+                    self.game_struct.place_robber_on_piece(i)
+                    self.draw_robber_on_piece(i)
+                    break
+        else:
+            # Redraw existing robber
+            robber_piece = self.game_struct.get_robber_piece()
+            self.draw_robber_on_piece(robber_piece)
+
+        
 
     def __choose_radom_color_from_piece_list(self) -> str:
         return self.pieces.pop(random.randint(0, len(self.pieces)-1))
@@ -821,3 +856,59 @@ class Canvas:
         
         window.destroy()
         self.placement_complete = True  # Signal loop to exit
+
+    def draw_board_with_loaded_data(self, players: list) -> None:
+        
+        # Draw existing settlements and cities
+        for node in self.game_struct.graph.nodes:
+            if node.startswith("House"):
+                node_data = self.game_struct.graph.nodes[node]
+                owner = node_data.get('Player')
+                structure_type = node_data.get('Type')
+                
+                if owner and structure_type:
+                    # Extract house number from "House123" format
+                    house_num = int(node.replace("House", ""))
+                    x, y = self.corner_coords[house_num]
+                    
+                    # Get player color
+                    color = next((p.color for p in players if p.name == owner), "black")
+                    
+                    if structure_type == "House":
+                        self.draw_settlement(x, y, color)
+                    elif structure_type == "City":
+                        self.draw_city(x, y, color)
+            
+            elif node.startswith("City"):
+                # Cities are renamed nodes from House nodes
+                node_data = self.game_struct.graph.nodes[node]
+                owner = node_data.get('Player')
+                
+                if owner:
+                    # Extract house number from "City123" format
+                    house_num = int(node.replace("City", ""))
+                    x, y = self.corner_coords[house_num]
+                    
+                    # Get player color
+                    color = next((p.color for p in players if p.name == owner), "black")
+                    self.draw_city(x, y, color)
+        
+        # Draw existing roads
+        for edge in self.game_struct.graph.edges(data=True):
+            u, v, data = edge
+            owner = data.get('Player')
+            
+            # Only draw roads between House nodes (not Piece nodes)
+            if owner and u.startswith("House") and v.startswith("House"):
+                # Extract house numbers
+                house1_num = int(u.replace("House", ""))
+                house2_num = int(v.replace("House", ""))
+                
+                x1, y1 = self.corner_coords[house1_num]
+                x2, y2 = self.corner_coords[house2_num]
+                
+                # Get player color
+                color = next((p.color for p in players if p.name == owner), "black")
+                self.draw_road(x1, y1, x2, y2, color)
+
+        

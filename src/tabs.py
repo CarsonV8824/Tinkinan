@@ -518,9 +518,9 @@ class Tabs:
 
         return rules_tab
     
-    def past_games_tab(self, notebook:ttk.Notebook, past_data:list[tuple]):
+    def additional_info_tab(self, notebook:ttk.Notebook, past_data:list[tuple]):
         past_games_tab = ttk.Frame(notebook)
-        notebook.add(past_games_tab, text="past games")
+        notebook.add(past_games_tab, text="additional info")
         
         #===Scrollbar======================================================================================
 
@@ -544,28 +544,7 @@ class Tabs:
 
         #=====================================================================================
 
-        try:
-            for last_game_data in past_data:
-                last_game = last_game_data
-                game_num,node_list, edge_list, player_data = last_game
-
-                last_game_frame = ttk.LabelFrame(frame, text="Last Game Data", padding=10)
-                last_game_frame.pack(fill="x", padx=10, pady=5)
-
-                ttk.Label(last_game_frame, text=f"Game Number: {game_num}").pack(anchor="w")
-                
-                ttk.Label(last_game_frame, text="Players:").pack(anchor="w")
-
-                for pdata in player_data:
-                    
-                    player_info = f"  Name: {pdata['name']}, Color: {pdata['color']}, Resources: {pdata['resources']}"
-                    ttk.Label(last_game_frame, text=player_info).pack(anchor="w")
-
-                most_points = max(player_data, key=lambda p: p['resources'].get('victory_points', 0))
-                ttk.Label(last_game_frame, text=f"Winner: {most_points['name']} with {most_points['resources'].get('victory_points', 0)} Victory Points").pack(anchor="w")
-            
-        except Exception as e:
-            print(e)
+        
             
         return past_games_tab
 
