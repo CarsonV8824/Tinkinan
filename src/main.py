@@ -51,7 +51,7 @@ def main():
     root = ThemedTk(theme="breeze")
     
     root.geometry("1200x800")
-    root.title("Catan in Tkinter")
+    root.title("Tinkinan")
 
     root.iconbitmap("src/hexagon.ico")
 

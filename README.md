@@ -15,7 +15,8 @@ A Python-based implementation of the board game Catan (Settlers of Catan) with a
 - 💰 **Resource Discarding**: Automatic resource discard UI when a 7 is rolled (players with 8+ cards must discard half)
 - 📈 **Player Statistics Tab**: Track resources, development cards, victory points, and special achievements
 - 🏆 **Victory Points**: Track player progress toward the 10-point victory goal
-- 💾 **Game Persistence**: Save and load past game data from database
+- 💾 **Game Persistence**: Save and load past game data with full game state restoration
+- 🎯 **Robust State Management**: Graph-based game state for accurate piece placement and resource tracking
 
 ## 📸 Demo
 
