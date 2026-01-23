@@ -518,9 +518,9 @@ class Tabs:
 
         return rules_tab
     
-    def past_games_tab(self, notebook:ttk.Notebook, past_data:list[tuple]):
+    def additional_info_tab(self, notebook:ttk.Notebook, past_data:list[tuple]):
         past_games_tab = ttk.Frame(notebook)
-        notebook.add(past_games_tab, text="past games")
+        notebook.add(past_games_tab, text="additional info")
         
         #===Scrollbar======================================================================================
 

@@ -106,7 +106,7 @@ def main():
             
         rules_tab = tab.rules_tab(tabs)
 
-        past_games_tab = tab.past_games_tab(tabs, load_data())
+        additional_info_tab = tab.additional_info_tab(tabs, load_data())
             
         running = root.mainloop()
 
@@ -155,7 +155,7 @@ def main():
         
         rules_tab = tab.rules_tab(tabs)
 
-        past_games_tab = tab.past_games_tab(tabs, load_data())
+        additional_info_tab = tab.additional_info_tab(tabs, load_data())
         
         running = root.mainloop()
 
