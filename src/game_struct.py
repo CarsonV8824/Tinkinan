@@ -240,7 +240,6 @@ class GameStruct:
         if resource_type == "tan" or resource_type == "desert":
             dice_number = ""
             self.graph.nodes[node_name]['dice_number'] = dice_number
-            self.graph.nodes[node_name]['Robber'] = True
         else:
             try:
                 choosen_number = self.dice_numbers.pop(0)
@@ -449,15 +448,25 @@ class GameStruct:
                 players.add(owner)
         return list(players)
     
-    def get_robber_piece(self) -> int:
+    def get_robber_piece(self) -> int | None:
         pieces:list[str] = list(self.graph.nodes)
         for piece in pieces:
             if piece.startswith("Piece"):
                 piece_data = self.graph.nodes[piece]
-                if piece_data['Robber']:
+                if piece_data['Robber'] == True:
                     return int(piece.replace("Piece", ""))
-        return -1  # Indicates robber not found
+        return None  # Indicates robber not found
 
+    def is_robber_on_board(self) -> bool:
+        pieces:list[str] = list(self.graph.nodes)
+        for piece in pieces:
+            if piece.startswith("Piece"):
+                piece_data = self.graph.nodes[piece]
+                if piece_data['Robber'] == True:
+                    return True
+                
+        return False
+        
     def check_adjacent_road_owner(self, house_number:int, player_name:str) -> bool:
         """Returns True if the specified player owns a road adjacent to this house"""
         node_name = f"House{house_number}"

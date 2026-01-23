@@ -180,9 +180,7 @@ class Canvas:
         self.__draw_hexagon(row_1_start_x, row1_start_y, 50, color)
         self.draw_number_on_piece(1, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(1)
-            self.draw_robber_on_piece(1)
+        
 
         #--- Row 2 ---
 
@@ -200,10 +198,7 @@ class Canvas:
         self.__draw_hexagon(row_2_start_x, row2_start_y, 50, color)
         self.draw_number_on_piece(2, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(2)
-            self.draw_robber_on_piece(2)
-
+        
         #--- Row 3 ---
 
         row_3_start_x = 325 + (50 * math.sqrt(3))
@@ -218,9 +213,7 @@ class Canvas:
         self.__draw_hexagon(row_3_start_x, row3_start_y, 50, color)
         self.draw_number_on_piece(3, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(3)
-            self.draw_robber_on_piece(3)
+        
 
         #--- Row 4 ---
 
@@ -235,9 +228,7 @@ class Canvas:
         self.__draw_hexagon(row_7_start_x, row7_start_y, 50, color)
         self.draw_number_on_piece(4, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(4)
-            self.draw_robber_on_piece(4)
+        
 
         #-- Row 5 ---
 
@@ -251,9 +242,7 @@ class Canvas:
         number = self.game_struct.get_piece_dice_number(5)
         self.draw_number_on_piece(5, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(5)
-            self.draw_robber_on_piece(5)
+        
 
         #-- Row 6 ---
 
@@ -268,9 +257,7 @@ class Canvas:
         self.__draw_hexagon(row_16_start_x, row16_start_y, 50, color)
         self.draw_number_on_piece(6, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(6)
-            self.draw_robber_on_piece(6)
+        
 
         #-- Row 7 ---
 
@@ -285,9 +272,7 @@ class Canvas:
         self.__draw_hexagon(row_19_start_x, row19_start_y, 50, color)
         self.draw_number_on_piece(7, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(7)
-            self.draw_robber_on_piece(7)
+        
         
         #--- Row 8 ---
 
@@ -302,9 +287,7 @@ class Canvas:
         self.__draw_hexagon(row_18_start_x, row18_start_y, 50, color)
         self.draw_number_on_piece(8, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(8)
-            self.draw_robber_on_piece(8)
+        
         
         #--- Row 9 ---
 
@@ -319,9 +302,7 @@ class Canvas:
         self.__draw_hexagon(row_17_start_x, row17_start_y, 50, color)
         self.draw_number_on_piece(9, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(9)
-            self.draw_robber_on_piece(9)
+        
         
         #--- Row 10 ---
 
@@ -336,9 +317,7 @@ class Canvas:
         number = self.game_struct.get_piece_dice_number(10)
         self.draw_number_on_piece(10, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(10)
-            self.draw_robber_on_piece(10)
+        
         
         #--- Row 11 ---
 
@@ -353,9 +332,7 @@ class Canvas:
         self.__draw_hexagon(row_8_start_x, 325, 50, color)
         self.draw_number_on_piece(11, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(11)
-            self.draw_robber_on_piece(11)
+        
         
         #--- Row 12 ---
 
@@ -371,9 +348,7 @@ class Canvas:
         self.__draw_hexagon(row_4_start_x, row4_start_y, 50, color)
         self.draw_number_on_piece(12, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(12)
-            self.draw_robber_on_piece(12)
+        
 
         #--- Row 13 ---
 
@@ -388,9 +363,7 @@ class Canvas:
         self.__draw_hexagon(row_5_start_x, row5_start_y, 50, color)
         self.draw_number_on_piece(13, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(13)
-            self.draw_robber_on_piece(13)
+        
 
         #--- Row 14 ---
 
@@ -406,9 +379,7 @@ class Canvas:
         self.__draw_hexagon(row_6_start_x, row6_start_y, 50, color)
         self.draw_number_on_piece(14, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(14)
-            self.draw_robber_on_piece(14)
+        
 
         #--- Row 15 ---
 
@@ -422,9 +393,7 @@ class Canvas:
         number = self.game_struct.get_piece_dice_number(15)
         self.draw_number_on_piece(15, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(15)
-            self.draw_robber_on_piece(15)
+        
 
         #--- Row 16 ---
 
@@ -439,9 +408,7 @@ class Canvas:
         self.__draw_hexagon(row_15_start_x, row15_start_y, 50, color)
         self.draw_number_on_piece(16, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(16)
-            self.draw_robber_on_piece(16)
+        
         
         #--- Row 17 ---
 
@@ -456,9 +423,7 @@ class Canvas:
         self.__draw_hexagon(row_14_start_x, row14_start_y, 50, color)
         self.draw_number_on_piece(17, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(17)
-            self.draw_robber_on_piece(17)
+        
 
         #--- Row 18 ---
 
@@ -473,9 +438,6 @@ class Canvas:
         self.__draw_hexagon(row_9_start_x, 325, 50, color)
         self.draw_number_on_piece(18, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(18)
-            self.draw_robber_on_piece(18)
 
         #--- Row 19 ---
 
@@ -488,9 +450,20 @@ class Canvas:
         number = self.game_struct.get_piece_dice_number(19)
         self.draw_number_on_piece(19, number)
 
-        if color == "tan":
-            self.game_struct.place_robber_on_piece(19)
-            self.draw_robber_on_piece(19)
+
+        # --- Draw Robber if already placed ---
+        if not self.game_struct.is_robber_on_board():
+            for i in range(1, 20):
+                if self.game_struct.get_piece_resource(i) == "tan":
+                    self.game_struct.place_robber_on_piece(i)
+                    self.draw_robber_on_piece(i)
+                    break
+        else:
+            # Redraw existing robber
+            robber_piece = self.game_struct.get_robber_piece()
+            self.draw_robber_on_piece(robber_piece)
+
+        
 
     def __choose_radom_color_from_piece_list(self) -> str:
         return self.pieces.pop(random.randint(0, len(self.pieces)-1))
@@ -885,12 +858,6 @@ class Canvas:
         self.placement_complete = True  # Signal loop to exit
 
     def draw_board_with_loaded_data(self, players: list) -> None:
-    
-        # Draw existing robber
-        robber_piece = self.game_struct.get_robber_piece()
-        if robber_piece:
-            print(f"Drawing robber on piece {robber_piece}")
-            self.draw_robber_on_piece(robber_piece)
         
         # Draw existing settlements and cities
         for node in self.game_struct.graph.nodes:
