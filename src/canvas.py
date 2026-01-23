@@ -821,3 +821,64 @@ class Canvas:
         
         window.destroy()
         self.placement_complete = True  # Signal loop to exit
+
+    def draw_board_with_loaded_data(self, players: list) -> None:
+    
+        # Draw existing robber
+        robber_piece = self.game_struct.get_robber_piece()
+        if robber_piece:
+            self.draw_robber_on_piece(robber_piece)
+        
+        # Draw existing settlements and cities
+        for node in self.game_struct.graph.nodes:
+            if node.startswith("House"):
+                node_data = self.game_struct.graph.nodes[node]
+                owner = node_data.get('Player')
+                structure_type = node_data.get('Type')
+                
+                if owner and structure_type:
+                    # Extract house number from "House123" format
+                    house_num = int(node.replace("House", ""))
+                    x, y = self.corner_coords[house_num]
+                    
+                    # Get player color
+                    color = next((p.color for p in players if p.name == owner), "black")
+                    
+                    if structure_type == "House":
+                        self.draw_settlement(x, y, color)
+                    elif structure_type == "City":
+                        self.draw_city(x, y, color)
+            
+            elif node.startswith("City"):
+                # Cities are renamed nodes from House nodes
+                node_data = self.game_struct.graph.nodes[node]
+                owner = node_data.get('Player')
+                
+                if owner:
+                    # Extract house number from "City123" format
+                    house_num = int(node.replace("City", ""))
+                    x, y = self.corner_coords[house_num]
+                    
+                    # Get player color
+                    color = next((p.color for p in players if p.name == owner), "black")
+                    self.draw_city(x, y, color)
+        
+        # Draw existing roads
+        for edge in self.game_struct.graph.edges(data=True):
+            u, v, data = edge
+            owner = data.get('Player')
+            
+            # Only draw roads between House nodes (not Piece nodes)
+            if owner and u.startswith("House") and v.startswith("House"):
+                # Extract house numbers
+                house1_num = int(u.replace("House", ""))
+                house2_num = int(v.replace("House", ""))
+                
+                x1, y1 = self.corner_coords[house1_num]
+                x2, y2 = self.corner_coords[house2_num]
+                
+                # Get player color
+                color = next((p.color for p in players if p.name == owner), "black")
+                self.draw_road(x1, y1, x2, y2, color)
+
+        

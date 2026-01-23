@@ -76,6 +76,8 @@ def main():
 
         board = Canvas(root, game_struct)
 
+        
+
         game_loop = GameLoop(root, game_struct, board)
 
         players = []
@@ -84,6 +86,8 @@ def main():
             player.resources = pdata["resources"]
             players.append(player)
             tab = Tabs(root)
+
+        board.draw_board_with_loaded_data(players)
 
         tabs = tab.tabs()
 
