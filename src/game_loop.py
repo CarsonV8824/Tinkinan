@@ -14,45 +14,11 @@ class GameLoop:
         self.root = root
         self.game_struct = game_struct
         self.board:Canvas = board
-        self.player_count = 3
         self.first_dice = None
         self.second_dice = None
         self.total_of_dice = None
 
         self.player_index = 0
-
-    def start_screen(self):
-        self.root.withdraw()  
-        
-        self.first_screen = tk.Toplevel(self.root)
-        self.first_screen.geometry("400x300")
-        self.first_screen.title("Welcome to Catan")
-        self.first_screen.iconbitmap("src/hexagon.ico")
-        
-        label = ttk.Label(self.first_screen, text="Welcome to Catan!", font=("Arial", 16))
-        label.pack(pady=20)
-        start_button = ttk.Button(self.first_screen, text="Start Game", command=self.get_player_count)
-        start_button.pack(pady=10)
-        
-        self.player_count_widget = ttk.Entry(self.first_screen)
-        self.player_count_widget.pack(pady=10)
-        
-        self.root.wait_window(self.first_screen)
-        self.root.deiconify()  
-        return self.player_count # Default to 3 players if none selected
-
-    def get_player_count(self) -> int:
-        try:
-            count = int(self.player_count_widget.get())
-            if count in [3, 4]:
-                self.first_screen.destroy()
-                self.player_count  = count
-                return self.player_count
-            else:
-                raise ValueError
-        except ValueError:
-                pass
-        return 3
     
     """TODO: Make the players choose where to place their initial settlements and roads. 
         Try to keep canvas methods out of game struct class.
@@ -64,7 +30,7 @@ class GameLoop:
         
         total_initial_placements = len(players) * 2
         current_placement = 0
-
+        self.root.protocol("WM_DELETE_WINDOW", lambda: None)
         while current_placement < total_initial_placements:
             current_player = players[self.player_index]
 
@@ -73,8 +39,9 @@ class GameLoop:
             self.board.road_init(current_player)
             current_placement += 1
             self.player_index = (self.player_index + 1) % len(players)
-            
 
+        self.root.protocol("WM_DELETE_WINDOW", self.root.destroy)
+            
         tabs.pack(expand=True, fill="both") # Show tabs after placement is done
 
         self.board.canvas.bind("<Button-1>", self.board.on_canvas_click_game_loop)  # Re-bind the main game click handler
