@@ -251,6 +251,11 @@ class GameStruct:
 
         print(f"Added {self.graph.nodes[node_name]['Resource']} with dice number {self.graph.nodes[node_name]['dice_number']}")
 
+    def get_piece_resource(self, piece_number):
+        node = f"Piece{piece_number}"
+        
+        return self.graph.nodes[node]['Resource']
+
     def get_piece_dice_number(self, piece_number):
         node = f"Piece{piece_number}"
         

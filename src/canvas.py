@@ -166,9 +166,12 @@ class Canvas:
 
         row_1_start_x = 325 - (50 * math.sqrt(3))
         row1_start_y = 325 - 150
-        color = self.__choose_radom_color_from_piece_list()
         
-            
+        if self.game_struct.get_piece_resource(1) is not None:
+            color = self.game_struct.get_piece_resource(1)
+        
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         
         self.game_struct.add_image_color_to_piece(1, color)
 
@@ -185,7 +188,12 @@ class Canvas:
 
         row_2_start_x = 325
         row2_start_y = 325 - 150
-        color = self.__choose_radom_color_from_piece_list()
+
+        if self.game_struct.get_piece_resource(2) is not None:
+            color = self.game_struct.get_piece_resource(2)
+        
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(2, color)
 
         number = self.game_struct.get_piece_dice_number(2)
@@ -200,7 +208,10 @@ class Canvas:
 
         row_3_start_x = 325 + (50 * math.sqrt(3))
         row3_start_y = 325 - (150)
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(3) is not None:
+            color = self.game_struct.get_piece_resource(3)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(3, color)
 
         number = self.game_struct.get_piece_dice_number(3)
@@ -215,7 +226,10 @@ class Canvas:
 
         row_7_start_x = 325 + (50 * 1.5 * math.sqrt(3))
         row7_start_y = 325 - (50 * 1.5)
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(4) is not None:
+            color = self.game_struct.get_piece_resource(4)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(4, color)
         number = self.game_struct.get_piece_dice_number(4)
         self.__draw_hexagon(row_7_start_x, row7_start_y, 50, color)
@@ -228,7 +242,10 @@ class Canvas:
         #-- Row 5 ---
 
         row_12_start_x = 325 + (2 * 50 * math.sqrt(3))
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(5) is not None:
+            color = self.game_struct.get_piece_resource(5)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(5, color)
         self.__draw_hexagon(row_12_start_x, 325, 50, color)
         number = self.game_struct.get_piece_dice_number(5)
@@ -242,7 +259,10 @@ class Canvas:
 
         row_16_start_x = 325 + (1.5 * 50 * math.sqrt(3))
         row16_start_y = 325 + (50 * 1.5)
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(6) is not None:
+            color = self.game_struct.get_piece_resource(6)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(6, color)
         number = self.game_struct.get_piece_dice_number(6)
         self.__draw_hexagon(row_16_start_x, row16_start_y, 50, color)
@@ -256,7 +276,10 @@ class Canvas:
 
         row_19_start_x = 325 + (50 * math.sqrt(3))
         row19_start_y = 325 + 150
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(7) is not None:
+            color = self.game_struct.get_piece_resource(7)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(7, color)
         number = self.game_struct.get_piece_dice_number(7)
         self.__draw_hexagon(row_19_start_x, row19_start_y, 50, color)
@@ -270,7 +293,10 @@ class Canvas:
 
         row_18_start_x = 325
         row18_start_y = 325 + 150
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(8) is not None:
+            color = self.game_struct.get_piece_resource(8)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(8, color)
         number = self.game_struct.get_piece_dice_number(8)
         self.__draw_hexagon(row_18_start_x, row18_start_y, 50, color)
@@ -284,7 +310,10 @@ class Canvas:
 
         row_17_start_x = 325 - (50 * math.sqrt(3))
         row17_start_y = 325 + 150
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(9) is not None:
+            color = self.game_struct.get_piece_resource(9)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(9, color)
         number = self.game_struct.get_piece_dice_number(9)
         self.__draw_hexagon(row_17_start_x, row17_start_y, 50, color)
@@ -298,7 +327,10 @@ class Canvas:
 
         row_13_start_x = 325 - (1.5 * 50 * math.sqrt(3))
         row13_start_y = 325 + (50 * 1.5)
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(10) is not None:
+            color = self.game_struct.get_piece_resource(10)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(10, color)
         self.__draw_hexagon(row_13_start_x, row13_start_y, 50, color)
         number = self.game_struct.get_piece_dice_number(10)
@@ -311,7 +343,11 @@ class Canvas:
         #--- Row 11 ---
 
         row_8_start_x = 325 - (2 * 50 * math.sqrt(3))
-        color = self.__choose_radom_color_from_piece_list()
+        
+        if self.game_struct.get_piece_resource(11) is not None:
+            color = self.game_struct.get_piece_resource(11)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(11, color)
         number = self.game_struct.get_piece_dice_number(11)
         self.__draw_hexagon(row_8_start_x, 325, 50, color)
@@ -325,7 +361,10 @@ class Canvas:
 
         row_4_start_x = 325 - (1.5 * 50 * math.sqrt(3))
         row4_start_y = 325 - (50 * 1.5)
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(12) is not None:
+            color = self.game_struct.get_piece_resource(12)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(12, color)
 
         number = self.game_struct.get_piece_dice_number(12)
@@ -340,7 +379,10 @@ class Canvas:
 
         row_5_start_x = 325 - (50 * 0.5 * math.sqrt(3))
         row5_start_y = 325 - (50 * 1.5)
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(13) is not None:
+            color = self.game_struct.get_piece_resource(13)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(13, color)
         number = self.game_struct.get_piece_dice_number(13)
         self.__draw_hexagon(row_5_start_x, row5_start_y, 50, color)
@@ -354,7 +396,11 @@ class Canvas:
 
         row_6_start_x = 325 + (50 * 0.5 * math.sqrt(3))
         row6_start_y = 325 - (50 * 1.5)
-        color = self.__choose_radom_color_from_piece_list()
+        
+        if self.game_struct.get_piece_resource(14) is not None:
+            color = self.game_struct.get_piece_resource(14)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(14, color)
         number = self.game_struct.get_piece_dice_number(14)
         self.__draw_hexagon(row_6_start_x, row6_start_y, 50, color)
@@ -367,7 +413,10 @@ class Canvas:
         #--- Row 15 ---
 
         row_11_start_x = 325 + (50 * math.sqrt(3))
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(15) is not None:
+            color = self.game_struct.get_piece_resource(15)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(15, color)
         self.__draw_hexagon(row_11_start_x, 325, 50, color)
         number = self.game_struct.get_piece_dice_number(15)
@@ -381,7 +430,10 @@ class Canvas:
 
         row_15_start_x = 325 + (0.5 * 50 * math.sqrt(3))
         row15_start_y = 325 + (50 * 1.5)
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(16) is not None:
+            color = self.game_struct.get_piece_resource(16)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(16, color)
         number = self.game_struct.get_piece_dice_number(16)
         self.__draw_hexagon(row_15_start_x, row15_start_y, 50, color)
@@ -395,7 +447,10 @@ class Canvas:
 
         row_14_start_x = 325 - (0.5 * 50 * math.sqrt(3))
         row14_start_y = 325 + (50 * 1.5)
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(17) is not None:
+            color = self.game_struct.get_piece_resource(17)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(17, color)
         number = self.game_struct.get_piece_dice_number(17)
         self.__draw_hexagon(row_14_start_x, row14_start_y, 50, color)
@@ -408,7 +463,11 @@ class Canvas:
         #--- Row 18 ---
 
         row_9_start_x = 325 - (50 * math.sqrt(3))
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(18) is not None:
+            color = self.game_struct.get_piece_resource(18)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
+
         self.game_struct.add_image_color_to_piece(18, color)
         number = self.game_struct.get_piece_dice_number(18)
         self.__draw_hexagon(row_9_start_x, 325, 50, color)
@@ -420,7 +479,10 @@ class Canvas:
 
         #--- Row 19 ---
 
-        color = self.__choose_radom_color_from_piece_list()
+        if self.game_struct.get_piece_resource(19) is not None:
+            color = self.game_struct.get_piece_resource(19)
+        else:
+            color = self.__choose_radom_color_from_piece_list()
         self.game_struct.add_image_color_to_piece(19, color)
         self.__draw_hexagon(row_10_start_x := 325, 325, 50, color)
         number = self.game_struct.get_piece_dice_number(19)
