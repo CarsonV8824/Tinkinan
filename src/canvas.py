@@ -827,6 +827,7 @@ class Canvas:
         # Draw existing robber
         robber_piece = self.game_struct.get_robber_piece()
         if robber_piece:
+            print(f"Drawing robber on piece {robber_piece}")
             self.draw_robber_on_piece(robber_piece)
         
         # Draw existing settlements and cities
