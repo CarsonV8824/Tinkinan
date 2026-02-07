@@ -35,7 +35,7 @@ A Python-based implementation of the board game Catan (Settlers of Catan) with a
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/Tinkinan.git
+git clone https://github.com/CarsonV8824/Tinkinan.git
 cd Tinkinan
 
 ```
