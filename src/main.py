@@ -12,10 +12,14 @@ from player import Player
 from first_screen import FirstScreen
 import networkx as nx
 import random
+import os
 
 def load_data() -> list|None:
+    db_path = os.path.join("database", "Tinkinan.db")
+    if not os.path.exists(db_path):
+        return None
     try:
-        with Database("database/Tinkinan.db") as db:
+        with Database(db_path) as db:
             data = db.get_data()
             if not data:
                 return None
@@ -25,8 +29,11 @@ def load_data() -> list|None:
         return None
 
 def add_data(game_struct:GameStruct, PlayerData:list[Player], player_count:int, player_turn:int):
+    db_path = os.path.join("database", "Tinkinan.db")
+    if not os.path.exists(db_path):
+        return None
     try:
-        with Database("database/Tinkinan.db") as db:
+        with Database(db_path) as db:
             node_list = list(game_struct.graph.nodes(data=True))
             edge_list = list(game_struct.graph.edges(data=True))
             
@@ -53,7 +60,8 @@ def main():
     root.geometry("1200x800")
     root.title("Tinkinan")
 
-    root.iconbitmap("src/hexagon.ico")
+    logo_path = os.path.join("src", "hexagon.ico")  
+    root.iconbitmap(logo_path)
 
     first_screen = FirstScreen(root, load_data())
     player_count = first_screen.start_screen()
